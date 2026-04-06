@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PolicyProbe | Village Ledger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#fdf9ed",
+                        "error-dim": "#4e0309",
+                        "surface": "#fffbff",
+                        "primary": "#5f5e5e",
+                        "inverse-surface": "#0f0e0a",
+                        "surface-dim": "#e6e3cd",
+                        "outline-variant": "#bcbaa7",
+                        "on-background": "#39382b",
+                        "on-secondary-fixed": "#4e3c2c",
+                        "error": "#a64542",
+                        "tertiary-fixed": "#c8f17a",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#4e6e00",
+                        "on-tertiary-fixed-variant": "#476400",
+                        "on-primary-fixed": "#403f3f",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed": "#304600",
+                        "on-primary": "#faf7f6",
+                        "secondary": "#75604e",
+                        "background": "#fffbff",
+                        "on-error": "#ffffff",
+                        "primary-fixed": "#e5e2e1",
+                        "on-primary-container": "#525151",
+                        "secondary-fixed-dim": "#ebcfb9",
+                        "surface-bright": "#fffbff",
+                        "secondary-dim": "#695443",
+                        "surface-tint": "#5f5e5e",
+                        "tertiary-container": "#c8f17a",
+                        "surface-variant": "#ece9d5",
+                        "surface-container-highest": "#ece9d5",
+                        "tertiary-fixed-dim": "#bae26e",
+                        "primary-dim": "#535252",
+                        "tertiary-dim": "#446100",
+                        "primary-fixed-dim": "#d6d4d3",
+                        "surface-container": "#f7f4e5",
+                        "on-secondary-fixed-variant": "#6c5846",
+                        "secondary-fixed": "#faddc7",
+                        "on-error-container": "#752121",
+                        "primary-container": "#e5e2e1",
+                        "on-surface-variant": "#666555",
+                        "surface-container-high": "#f2eedd",
+                        "inverse-primary": "#ffffff",
+                        "inverse-on-surface": "#9f9d95",
+                        "on-secondary-container": "#624e3d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#5c5b5b",
+                        "outline": "#838170",
+                        "on-surface": "#39382b",
+                        "secondary-container": "#faddc7",
+                        "error-container": "#fe8983",
+                        "on-tertiary-container": "#3f5a00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .paper-grain {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+        .neo-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(57, 56, 43, 1);
+        }
+        .neo-shadow-hover:hover {
+            box-shadow: 6px 6px 0px 0px rgba(57, 56, 43, 1);
+            transform: translate(-2px, -2px);
+        }
+        .active-press:active {
+            box-shadow: 0px 0px 0px 0px rgba(57, 56, 43, 1);
+            transform: translate(4px, 4px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-tertiary-container selection:text-on-tertiary-container">
+<div class="fixed inset-0 paper-grain z-[60]"></div>
+<!-- Top Navigation Shell -->
+<nav class="flex justify-between items-center px-8 py-4 w-full sticky top-0 z-50 bg-[#f7f4e5] dark:bg-stone-900 w-full border-b-4 border-[#39382b] dark:border-stone-100 shadow-[4px_4px_0px_0px_rgba(57,56,43,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)]">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black text-[#39382b] dark:text-stone-100 uppercase tracking-tighter font-['Space_Grotesk']">PolicyProbe</span>
+<div class="hidden md:flex gap-6 font-['Space_Grotesk'] font-bold tracking-tight">
+<a class="text-[#39382b] dark:text-stone-300 hover:text-[#75604e] hover:-translate-y-0.5 transition-transform duration-200" href="#">Dashboard</a>
+<a class="text-[#39382b] dark:text-stone-300 hover:text-[#75604e] hover:-translate-y-0.5 transition-transform duration-200" href="#">Privacy Audits</a>
+<a class="text-[#39382b] dark:text-stone-300 hover:text-[#75604e] hover:-translate-y-0.5 transition-transform duration-200" href="#">Village Map</a>
+<a class="text-[#39382b] dark:text-stone-300 hover:text-[#75604e] hover:-translate-y-0.5 transition-transform duration-200" href="#">Ledger Archives</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-surface-container-lowest border-2 border-on-surface px-3 py-1 rounded-lg">
+<span class="material-symbols-outlined text-on-surface-variant text-xl">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm font-label placeholder:text-on-surface-variant/50" placeholder="Search village apps..." type="text"/>
+</div>
+<button class="bg-tertiary text-on-tertiary px-5 py-2 rounded-lg font-headline font-bold border-2 border-on-surface neo-shadow neo-shadow-hover active-press uppercase text-xs tracking-wider">New Audit</button>
+<div class="flex gap-2">
+<button class="p-2 text-on-surface hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<img alt="User Librarian Avatar" class="w-10 h-10 rounded-full border-2 border-on-surface" data-alt="portrait of a friendly middle-aged librarian with glasses in a cozy sunlit room with bookshelves background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQGWkPCf1PN_ZJ47W9oCR9QIHGa_7NsJcaepGid2zKYsvH2v75a7c4Qz47hKMZBD3jRsH5mF8Wg2YmXC_sDomfSRY9er1CRO4GWM3WQ03qqJ9Glu1ee4IceVHYjRt0BeGyEICx6APHE9QIzW6CIPsCQ6uKCw1EJHBOIFqAb0w8qKUjuB7vbgBMkTzGDVqBS21FPCMPkJY-DKcRj8zuyJ0xfMI3n3NjVFEE6zkrnH4jFyCO4SrjqLxePsxCOl7Sa5XwkSUy6rqthmAc"/>
+</div>
+</nav>
+<main class="max-w-7xl mx-auto px-6 pt-16 pb-24">
+<!-- Hero Section -->
+<section class="grid lg:grid-cols-12 gap-12 items-center mb-32">
+<div class="lg:col-span-7 space-y-8">
+<div class="inline-block bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full border-2 border-on-surface font-headline font-bold text-sm">
+                    🏛️ The Digital Ledger for Modern Schools
+                </div>
+<h1 class="font-headline text-6xl md:text-7xl font-black text-on-background leading-[0.9] tracking-tighter">
+                    Understand what <span class="text-tertiary">educational apps</span> do with student data.
+                </h1>
+<p class="font-body text-xl text-on-surface-variant max-w-xl leading-relaxed">
+                    PolicyProbe transforms complex legal jargon into clear, visual audits. Protect your village school from unseen data risks with our expert-vetted ledger.
+                </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-on-surface text-surface px-8 py-4 rounded-xl font-headline font-extrabold text-xl border-2 border-on-surface neo-shadow neo-shadow-hover active-press">
+                        Request a Ledger Audit
+                    </button>
+<button class="bg-surface text-on-surface px-8 py-4 rounded-xl font-headline font-bold text-xl border-2 border-on-surface hover:bg-surface-container transition-colors">
+                        View Public Archives
+                    </button>
+</div>
+</div>
+<!-- Product Preview Card (The Signature Bento Element) -->
+<div class="lg:col-span-5">
+<div class="bg-surface-container border-4 border-on-surface p-8 rounded-2xl neo-shadow relative overflow-hidden">
+<div class="absolute top-0 right-12 w-8 h-32 bg-tertiary border-x-2 border-b-2 border-on-surface shadow-md">
+<div class="flex flex-col items-center pt-4 text-on-tertiary">
+<span class="material-symbols-outlined text-sm font-bold" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+<div class="flex items-center gap-4 mb-8">
+<div class="w-16 h-16 bg-white border-2 border-on-surface rounded-xl flex items-center justify-center p-2">
+<img alt="App Icon" class="w-full h-full object-contain" data-alt="stylized vibrant minimalist geometric logo icon for an educational technology software application on a white background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRaPES-HqTtcF3XB2lxBBK8ZTN8iBRb0sILu1E7_Dc0oR8fgIhFvp9ZqGfUQSye-6xCBLsJd35LEHUmFpgqaWb1_6pH3wVXe2VGPKfVz_-bUGiBjgJwFHxwDnldUoId528mdkvVKlKcXm2X5zDcj6d1tQtWzS-yuz_CaRxkP5BS5X0-AykCjssoqNNBqhym41gNmB1c92zB85b61C_y_o_vPYATxPyJaNCyVHhtG3QfRhwrE8QS0eeCPhWuL1KTRAEtll1RXUu6X-w"/>
+</div>
+<div>
+<h3 class="font-headline text-2xl font-bold">LearnFlow AI</h3>
+<p class="font-label text-on-surface-variant uppercase tracking-widest text-xs">Vetted Oct 2024</p>
+</div>
+</div>
+<div class="flex justify-center mb-8">
+<div class="relative w-48 h-48 rounded-full border-8 border-surface-variant flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-tertiary" cx="50%" cy="50%" fill="none" r="44%" stroke="currentColor" stroke-dasharray="276" stroke-dashoffset="69" stroke-width="16"></circle>
+</svg>
+<div class="text-center">
+<span class="font-headline text-5xl font-black block">75</span>
+<span class="font-label text-on-surface-variant uppercase text-[10px] tracking-widest font-bold">Privacy Score</span>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center p-3 bg-surface-container-low rounded-lg border-2 border-on-surface/10">
+<span class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+                                Data Encryption
+                            </span>
+<span class="text-tertiary font-bold">A+</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-surface-container-low rounded-lg border-2 border-on-surface/10">
+<span class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">info</span>
+                                Third-party Sharing
+                            </span>
+<span class="text-secondary font-bold">B-</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- "How It Works" Section -->
+<section class="mt-40">
+<div class="text-center max-w-2xl mx-auto mb-16">
+<h2 class="font-headline text-4xl font-black mb-4 tracking-tight uppercase">The Village Standard for Safety</h2>
+<div class="h-1.5 w-24 bg-tertiary mx-auto mb-6"></div>
+<p class="font-body text-on-surface-variant">We follow a rigorous three-step ink-and-paper process to ensure every app used by our students meets the highest privacy manifesto standards.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Step 1 -->
+<div class="group bg-surface border-4 border-on-surface p-8 rounded-xl neo-shadow neo-shadow-hover transition-all">
+<div class="w-16 h-16 bg-tertiary-container border-2 border-on-surface rounded-full flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform">
+<span class="material-symbols-outlined text-3xl text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">history_edu</span>
+</div>
+<h4 class="font-headline text-2xl font-bold mb-4">Deep Inscription Audit</h4>
+<p class="text-on-surface-variant leading-relaxed">Our legal librarians pore over every line of the privacy manifesto, highlighting hidden data collectors and unclear retention policies.</p>
+</div>
+<!-- Step 2 -->
+<div class="group bg-surface border-4 border-on-surface p-8 rounded-xl neo-shadow neo-shadow-hover transition-all md:translate-y-8">
+<div class="w-16 h-16 bg-secondary-container border-2 border-on-surface rounded-full flex items-center justify-center mb-6 group-hover:-rotate-12 transition-transform">
+<span class="material-symbols-outlined text-3xl text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<h4 class="font-headline text-2xl font-bold mb-4">Village Map Scoring</h4>
+<p class="text-on-surface-variant leading-relaxed">We map the flow of data—where it travels, where it rests, and who can see it—using our 50-point safety rubric.</p>
+</div>
+<!-- Step 3 -->
+<div class="group bg-surface border-4 border-on-surface p-8 rounded-xl neo-shadow neo-shadow-hover transition-all">
+<div class="w-16 h-16 bg-surface-variant border-2 border-on-surface rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl text-on-surface" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<h4 class="font-headline text-2xl font-bold mb-4">The Ledger Seal</h4>
+<p class="text-on-surface-variant leading-relaxed">Once verified, the app is added to the Village Ledger with a permanent seal of transparency and our warden's recommendation.</p>
+</div>
+</div>
+</section>
+<!-- Trust Bento Grid -->
+<section class="mt-40 grid lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 bg-[#75604e] text-white p-12 rounded-3xl border-4 border-on-surface flex flex-col justify-between relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="font-headline text-4xl font-black mb-6 leading-tight">By the Village, <br/>For the Village.</h3>
+<p class="text-secondary-fixed/80 max-w-md text-lg leading-relaxed mb-8">Join over 400 district wardens and school librarians who use PolicyProbe as their primary source of truth for educational technology vetting.</p>
+<div class="flex -space-x-4">
+<img class="w-12 h-12 rounded-full border-2 border-on-surface" data-alt="portrait of a man with a beard smiling warmly in professional attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgjxC5MwowKwxQqKrT6_WqYbEWgCMl8PWgREld5nY0Oa1fyhX2y9c_uud5UOS6jISjwBFxVSX0OERDUlmqILXvTBQBGVrV0kZsUeEhAsFeK26SU_-0OdQ1-HVw_ijvJLzd0PXp6t82Vf6rfxTXhX8mgjDohMbcZXtVXGysTATB1lJojE211jnxwidLTSYg3KR5TkYru3U-C-SqwdOt3S4p_hsDn610hZ0J-fN-j7DjcvNxDLtp7F-dKOWzS0YyXn-WKd4E0sYzs726"/>
+<img class="w-12 h-12 rounded-full border-2 border-on-surface" data-alt="portrait of a woman with long dark hair smiling in a bright office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvw9L6qxGJBtAeKEbf6mh1v7UY83MeBR1GSDOLfTOCJ7lNi16wZqrzyi2ldJS338nMZ4N3rbt2qehW1xcRbj9r6upNL8O2tU7owtuN8jP1HiokQHwzrHhWXhr_jwmZBYwbvSq2Et8TmhMVTA0ViVmBCfVciOE8ANPMTOJvpGJkcbbsTc0W1HO0cJjqAHmj_2T9w0gso1js1ecKNQIx2ZFQCv2Oqu6jfYy78eC-Xi54aSTn9C0REFQLuGjGbxOjwsuCWLORhrcPzlH6"/>
+<img class="w-12 h-12 rounded-full border-2 border-on-surface" data-alt="portrait of a young man with glasses looking thoughtful" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIrz8hFi_RS9gG_g6UY33SUHvsu45-8rDkGkBISdeBkzfivR8LNeppZBq14j1kzcyYNhEGsDpjFwDrvOhhaon8hFnvWSHc3CT1W90jNwzM7vLGJfZfLUd68Ol3n1M3DlCME8_27hVXJ8y_yJtLRW9KfUyPVWWFy6BWPr35OzX_g1180iU8GC9h7qWlTUU0KetG7StaFtrgZ9CSw1BtT10fmbguuAV_me-EjSJd7yvWycdtYa5Jgsn7GXoZgIixlTF6sEHe09o4j2az"/>
+<div class="w-12 h-12 rounded-full bg-tertiary border-2 border-on-surface flex items-center justify-center text-xs font-bold">+397</div>
+</div>
+</div>
+<div class="absolute -right-10 -bottom-10 opacity-20 transform rotate-12">
+<span class="material-symbols-outlined text-[200px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+</div>
+<div class="bg-surface-container-high border-4 border-on-surface p-12 rounded-3xl flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-6xl text-tertiary mb-4">database</span>
+<h4 class="font-headline text-5xl font-black mb-2">1.2k+</h4>
+<p class="font-label uppercase tracking-widest text-on-surface-variant font-bold">Vetted Apps in Archive</p>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="flex flex-col md:flex-row justify-between items-center px-8 py-10 w-full gap-6 w-full border-t-4 border-[#39382b] dark:border-stone-100 mt-12 bg-[#f7f4e5] dark:bg-stone-950 text-[#39382b] dark:text-stone-300 font-['Inter'] text-sm uppercase tracking-widest">
+<div class="flex flex-col gap-2 items-center md:items-start">
+<span class="font-['Space_Grotesk'] font-bold text-[#39382b] dark:text-stone-100 text-xl">PolicyProbe Village Ledger</span>
+<p>© 2024 PolicyProbe Village Ledger. Hand-inked for school safety.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-[#75604e] dark:text-stone-400 hover:text-[#4e6e00] dark:hover:text-stone-100 transition-colors hover:italic underline decoration-2 underline-offset-4" href="#">Audit Standards</a>
+<a class="text-[#75604e] dark:text-stone-400 hover:text-[#4e6e00] dark:hover:text-stone-100 transition-colors hover:italic" href="#">Privacy Manifesto</a>
+<a class="text-[#75604e] dark:text-stone-400 hover:text-[#4e6e00] dark:hover:text-stone-100 transition-colors hover:italic" href="#">Terms of Residency</a>
+<a class="text-[#75604e] dark:text-stone-400 hover:text-[#4e6e00] dark:hover:text-stone-100 transition-colors hover:italic" href="#">Contact Warden</a>
+</div>
+</footer>
+<!-- FAB (Suppressed based on Rules for this type of page) -->
+</body></html>

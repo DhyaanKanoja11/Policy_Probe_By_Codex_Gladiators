@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>History - Policy Probe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-border {
+            position: relative;
+        }
+        .active-nav-border::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #005ac2;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-dim": "#004fab",
+                    "on-primary-container": "#004eaa",
+                    "on-error": "#fff7f6",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#f8f9fa",
+                    "surface": "#f8f9fa",
+                    "on-primary-fixed-variant": "#0057bd",
+                    "surface-dim": "#d1dce0",
+                    "primary-fixed-dim": "#c3d4ff",
+                    "secondary-container": "#e2e2e9",
+                    "tertiary-dim": "#53506b",
+                    "surface-container": "#eaeff1",
+                    "surface-container-high": "#e2e9ec",
+                    "on-tertiary-fixed": "#34314b",
+                    "outline": "#737c7f",
+                    "on-error-container": "#752121",
+                    "on-surface": "#2b3437",
+                    "on-tertiary": "#fcf7ff",
+                    "on-secondary-container": "#505157",
+                    "on-secondary-fixed": "#3e3f45",
+                    "error-dim": "#4e0309",
+                    "inverse-surface": "#0c0f10",
+                    "on-surface-variant": "#586064",
+                    "on-background": "#2b3437",
+                    "tertiary-container": "#d3ceef",
+                    "on-primary": "#f7f7ff",
+                    "tertiary-fixed-dim": "#c5c0e0",
+                    "tertiary-fixed": "#d3ceef",
+                    "on-secondary-fixed-variant": "#5a5b61",
+                    "inverse-primary": "#4d8eff",
+                    "secondary-dim": "#515359",
+                    "surface-container-low": "#f1f4f6",
+                    "primary-fixed": "#d8e2ff",
+                    "tertiary": "#5f5c78",
+                    "primary-container": "#d8e2ff",
+                    "on-secondary": "#f9f8ff",
+                    "on-tertiary-fixed-variant": "#504e69",
+                    "surface-container-highest": "#dbe4e7",
+                    "error-container": "#fe8983",
+                    "surface-tint": "#005ac2",
+                    "error": "#9f403d",
+                    "surface-bright": "#f8f9fa",
+                    "on-tertiary-container": "#47445f",
+                    "secondary": "#5e5f65",
+                    "secondary-fixed-dim": "#d4d4db",
+                    "primary": "#005ac2",
+                    "outline-variant": "#abb3b7",
+                    "on-primary-fixed": "#003c86",
+                    "surface-variant": "#dbe4e7",
+                    "secondary-fixed": "#e2e2e9",
+                    "inverse-on-surface": "#9b9d9e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(43,52,55,0.06)]">
+<div class="flex justify-between items-center h-16 px-6 max-w-7xl mx-auto font-headline antialiased tracking-tight">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-slate-900 dark:text-slate-50">Policy Probe</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-all duration-200 hover:opacity-80" href="#">Analyze</a>
+<a class="text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 active:scale-95 transition-transform" href="#">History</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-all duration-200 hover:opacity-80" href="#">Comparison</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-600 transition-all duration-200 hover:opacity-80 active:scale-95">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</button>
+<button class="px-5 py-2 rounded-xl bg-gradient-to-br from-primary to-primary-dim text-on-primary font-semibold transition-all duration-200 hover:opacity-90 active:scale-95 shadow-lg shadow-primary/20">
+                    Sign In
+                </button>
+</div>
+</div>
+</header>
+<main class="pt-28 pb-20 px-6 max-w-7xl mx-auto min-h-screen">
+<!-- Page Header -->
+<div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="space-y-2">
+<h1 class="text-4xl font-bold font-headline tracking-tight text-on-surface">Audit History</h1>
+<p class="text-on-surface-variant max-w-md">Review and compare previous privacy policy analysis reports from your audit ecosystem.</p>
+</div>
+<!-- Filter Actions -->
+<div class="flex flex-wrap items-center gap-3">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-2.5 rounded-xl border-none bg-surface-container-low focus:ring-2 focus:ring-primary/20 w-64 text-sm font-medium transition-all" placeholder="Search apps or policies..." type="text"/>
+</div>
+<div class="flex items-center bg-surface-container-low rounded-xl p-1 gap-1">
+<button class="px-4 py-1.5 rounded-lg text-sm font-semibold bg-surface-container-lowest shadow-sm text-on-surface">All</button>
+<button class="px-4 py-1.5 rounded-lg text-sm font-semibold text-on-surface-variant hover:bg-surface-container-high transition-colors">Safe</button>
+<button class="px-4 py-1.5 rounded-lg text-sm font-semibold text-on-surface-variant hover:bg-surface-container-high transition-colors">Risky</button>
+</div>
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-surface-container-high text-on-surface font-semibold text-sm transition-all hover:bg-surface-container-highest">
+<span class="material-symbols-outlined text-lg" data-icon="filter_list">filter_list</span>
+                    Filters
+                </button>
+</div>
+</div>
+<!-- History Grid/List -->
+<section class="space-y-4">
+<!-- Table Header (Desktop Only) -->
+<div class="hidden md:grid grid-cols-12 gap-4 px-6 py-3 text-xs font-bold text-on-surface-variant uppercase tracking-widest font-label">
+<div class="col-span-5">Application &amp; Policy</div>
+<div class="col-span-2">Scan Date</div>
+<div class="col-span-3">Risk Assessment</div>
+<div class="col-span-2 text-right">Action</div>
+</div>
+<!-- List Item 1 -->
+<div class="group relative bg-surface-container-lowest rounded-2xl p-4 md:p-6 shadow-[0px_20px_40px_rgba(43,52,55,0.06)] border border-transparent hover:border-primary/10 transition-all duration-300">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="clean minimalist logo icon for a blue tech company with rounded corners" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB40zhFsxZA42a48bijGxdhEEYbIXUc5wIol463Nn9c4fLmLpx9FANduJNM5uWWtVTrWDruoNllBxEgB4LrvJ4wIh0k0HizFdxj6WeXpM11gJGIspI6fL1N17ls3xYdLucDashtY3h6CpY3pg8XNggtGoISSGRtmXh5WyadmXb80I1rZWb4avHrF8oOl0rTJ0s_rC6RLssXpDKMppmO2ou3H4uzdpZy_2rg53-DUSHQuR2plYYlWkp0dKMtSUL1oz9CJcXl05Z1JagX"/>
+</div>
+<div>
+<h3 class="font-bold text-lg text-on-surface font-headline leading-tight">Nexus CRM</h3>
+<p class="text-xs font-medium text-on-surface-variant">Version 4.2.1 • Privacy Update</p>
+</div>
+</div>
+<div class="col-span-2 flex items-center gap-2 text-sm text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+                        2 days ago
+                    </div>
+<div class="col-span-3">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary-container text-on-tertiary-container text-[11px] font-bold uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                            Safe
+                        </span>
+</div>
+<div class="col-span-2 text-right">
+<button class="px-4 py-2 rounded-xl bg-surface-container-high text-on-surface font-bold text-sm transition-all hover:bg-primary hover:text-on-primary">
+                            View Report
+                        </button>
+</div>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="group relative bg-surface-container-lowest rounded-2xl p-4 md:p-6 shadow-[0px_20px_40px_rgba(43,52,55,0.06)] border border-transparent hover:border-primary/10 transition-all duration-300">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="minimalist orange circular vector logo for creative software app" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMvVB4DVWQplRX_UUAV-aXb9guZ6LslkhkZcUc4OylTGEiUyfNRg2Ffs338VXmcEFrqTYDO6ZPh1d_jSCUMNkYyvyISzOb2Dp4ICuSmPlkUAAgIO9alprfgrdE4eC8Kab8CDnqAqagvik3QP79MOyXT7aEfG4sSUtxIAaT6_xBqJPIoGR3zwKyqTY2-VI_0pbGXKdDmgyRAVQ9SWcN1n9GIbWLZnERmyjD5i_Ro0Br2FAqMMoei_F9-3M4NTeMPSLOIUgSt-pSOjwt"/>
+</div>
+<div>
+<h3 class="font-bold text-lg text-on-surface font-headline leading-tight">Lumina Creative</h3>
+<p class="text-xs font-medium text-on-surface-variant">EULA Update • Terms of Service</p>
+</div>
+</div>
+<div class="col-span-2 flex items-center gap-2 text-sm text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+                        5 days ago
+                    </div>
+<div class="col-span-3">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-[11px] font-bold uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                            Amber
+                        </span>
+</div>
+<div class="col-span-2 text-right">
+<button class="px-4 py-2 rounded-xl bg-surface-container-high text-on-surface font-bold text-sm transition-all hover:bg-primary hover:text-on-primary">
+                            View Report
+                        </button>
+</div>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="group relative bg-surface-container-lowest rounded-2xl p-4 md:p-6 shadow-[0px_20px_40px_rgba(43,52,55,0.06)] border border-transparent hover:border-primary/10 transition-all duration-300">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="dark purple abstract tech icon logo for modern data processing software" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXKdvrh_ABWCB-ZDsdVWP6rluV-XEcdO2dVplzqhjt13eBH_bAdZ5ErtTOgQ2s-8i5iuozYWnMqcUacwzNaR_5bm3mPHDmtTdU66R7ryjD9jOb9sZjvbxw5vB_ZFOecvsjTDZ-BwrNxy23UI6TmLO57SqdUzN3ok5w6kn_cYkQZ6aiX6YXP-UgOM66SE1GDR27QcjzUGeiw-ZQj6wz_dOIaoNpx6jRJ1O-3FAo6UsPFBVxJ41sTLLzxnr50n9O4sJ4jN1ujmjnp9V9"/>
+</div>
+<div>
+<h3 class="font-bold text-lg text-on-surface font-headline leading-tight">DataStream AI</h3>
+<p class="text-xs font-medium text-on-surface-variant">Marketing Data Addendum</p>
+</div>
+</div>
+<div class="col-span-2 flex items-center gap-2 text-sm text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+                        1 week ago
+                    </div>
+<div class="col-span-3">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-error-container text-on-error-container text-[11px] font-bold uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                            Red
+                        </span>
+</div>
+<div class="col-span-2 text-right">
+<button class="px-4 py-2 rounded-xl bg-surface-container-high text-on-surface font-bold text-sm transition-all hover:bg-primary hover:text-on-primary">
+                            View Report
+                        </button>
+</div>
+</div>
+</div>
+<!-- List Item 4 -->
+<div class="group relative bg-surface-container-lowest rounded-2xl p-4 md:p-6 shadow-[0px_20px_40px_rgba(43,52,55,0.06)] border border-transparent hover:border-primary/10 transition-all duration-300">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+<div class="col-span-5 flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="abstract green shape logo for environmental or clean tech mobile app" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrF5iQHdbk5yZmXm6Z9kept7bigNyfHihrRouTRkBF3dfGKYfCQroKRSpKy1E6myMfaSNjxnOUiZeRMBKnDTerDJvx4_Alui6aA30myNpiEIW2SUz89FQfARm2E6aVpRLp8joaxbbhJ1oo8N5axkZK1uVG7vMepPe88glR-MMT5wCl63IaDfDxk8aqfwiFWXXrkbPTvrFii8Z5J-OR_x0Y5ivwuSXFdBwFXD3AN1_pzWz2a7hUHMObqybGgh9wyb3LHIPlld-WW3hQ"/>
+</div>
+<div>
+<h3 class="font-bold text-lg text-on-surface font-headline leading-tight">EcoSync Health</h3>
+<p class="text-xs font-medium text-on-surface-variant">User Health Data Policy</p>
+</div>
+</div>
+<div class="col-span-2 flex items-center gap-2 text-sm text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-sm" data-icon="calendar_today">calendar_today</span>
+                        2 weeks ago
+                    </div>
+<div class="col-span-3">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary-container text-on-tertiary-container text-[11px] font-bold uppercase tracking-wider">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                            Safe
+                        </span>
+</div>
+<div class="col-span-2 text-right">
+<button class="px-4 py-2 rounded-xl bg-surface-container-high text-on-surface font-bold text-sm transition-all hover:bg-primary hover:text-on-primary">
+                            View Report
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Pagination / Load More -->
+<div class="mt-12 flex justify-center">
+<button class="px-8 py-3 rounded-xl border border-outline-variant/30 text-on-surface font-bold hover:bg-surface-container-high transition-colors flex items-center gap-2">
+                Load older records
+                <span class="material-symbols-outlined" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-4 pb-safe bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-50 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-90 transition-transform text-[10px] font-semibold uppercase tracking-wider font-manrope" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span>Analyze</span>
+</a>
+<a class="flex flex-col items-center justify-center text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20 rounded-xl px-4 py-1 active:scale-90 transition-transform text-[10px] font-semibold uppercase tracking-wider font-manrope" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span>History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-90 transition-transform text-[10px] font-semibold uppercase tracking-wider font-manrope" href="#">
+<span class="material-symbols-outlined" data-icon="compare_arrows">compare_arrows</span>
+<span>Compare</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="w-full py-12 bg-slate-50 dark:bg-slate-950">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-7xl mx-auto space-y-4 md:space-y-0 font-manrope text-sm text-slate-500 dark:text-slate-400">
+<div class="font-bold text-slate-900 dark:text-slate-100">
+                Policy Probe
+            </div>
+<div class="text-center md:text-left">
+                © 2024 Policy Probe. Secure Analysis Intelligence.
+            </div>
+<div class="flex gap-6">
+<a class="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors" href="#">Privacy Policy</a>
+<a class="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors" href="#">Terms of Service</a>
+<a class="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors" href="#">Security Audit</a>
+</div>
+</div>
+</footer>
+</body></html>

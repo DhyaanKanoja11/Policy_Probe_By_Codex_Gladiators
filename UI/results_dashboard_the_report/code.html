@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Privacy Audit Report | Policy Probe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#666555",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#e5e2e1",
+                        "on-tertiary-fixed": "#304600",
+                        "on-tertiary-container": "#3f5a00",
+                        "primary-fixed-dim": "#d6d4d3",
+                        "on-primary": "#faf7f6",
+                        "surface-variant": "#ece9d5",
+                        "secondary-fixed-dim": "#ebcfb9",
+                        "tertiary-fixed": "#c8f17a",
+                        "on-error": "#ffffff",
+                        "primary": "#5f5e5e",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#476400",
+                        "error-dim": "#4e0309",
+                        "inverse-on-surface": "#9f9d95",
+                        "on-secondary-container": "#624e3d",
+                        "on-secondary-fixed": "#4e3c2c",
+                        "tertiary": "#4e6e00",
+                        "on-primary-fixed-variant": "#5c5b5b",
+                        "on-primary-container": "#525151",
+                        "surface": "#fffbff",
+                        "surface-container-low": "#fdf9ed",
+                        "error": "#a64542",
+                        "error-container": "#fe8983",
+                        "inverse-primary": "#ffffff",
+                        "surface-tint": "#5f5e5e",
+                        "on-surface": "#39382b",
+                        "primary-fixed": "#e5e2e1",
+                        "outline": "#838170",
+                        "primary-dim": "#535252",
+                        "surface-container-highest": "#ece9d5",
+                        "on-secondary-fixed-variant": "#6c5846",
+                        "on-primary-fixed": "#403f3f",
+                        "secondary-dim": "#695443",
+                        "secondary-fixed": "#faddc7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#752121",
+                        "tertiary-fixed-dim": "#bae26e",
+                        "secondary-container": "#faddc7",
+                        "surface-container-high": "#f2eedd",
+                        "inverse-surface": "#0f0e0a",
+                        "tertiary-dim": "#446100",
+                        "outline-variant": "#bcbaa7",
+                        "background": "#fffbff",
+                        "surface-container": "#f7f4e5",
+                        "surface-dim": "#e6e3cd",
+                        "secondary": "#75604e",
+                        "surface-bright": "#fffbff",
+                        "tertiary-container": "#c8f17a",
+                        "on-background": "#39382b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #fffbff; background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .neo-shadow { box-shadow: 4px 4px 0px 0px rgba(95,94,94,1); }
+        .neo-shadow-sm { box-shadow: 2px 2px 0px 0px rgba(95,94,94,1); }
+        .neo-shadow-active { box-shadow: 1px 1px 0px 0px rgba(95,94,94,1); transform: translate(1px, 1px); }
+        .audit-ribbon { writing-mode: vertical-rl; text-orientation: mixed; }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- Top Navigation -->
+<header class="bg-[#f7f4e5] dark:bg-[#1C1C1C] flex justify-between items-center w-full px-8 py-4 max-w-screen-2xl mx-auto sticky top-0 z-50 border-b-2 border-[#5f5e5e] shadow-[4px_4px_0px_0px_rgba(95,94,94,1)]">
+<div class="text-2xl font-black text-[#39382b] dark:text-[#f7f4e5] font-['Space_Grotesk'] tracking-tight">Policy Probe</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-[#39382b] dark:text-[#bcbaa7] font-medium hover:text-[#4e6e00] hover:-translate-y-0.5 transition-all duration-200" href="#">Analyze</a>
+<a class="text-[#4e6e00] font-bold border-b-2 border-[#4e6e00] pb-1 hover:text-[#4e6e00] hover:-translate-y-0.5 transition-all duration-200" href="#">History</a>
+<a class="text-[#39382b] dark:text-[#bcbaa7] font-medium hover:text-[#4e6e00] hover:-translate-y-0.5 transition-all duration-200" href="#">Comparison</a>
+</nav>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-bold border-2 border-on-surface neo-shadow hover:neo-shadow-active transition-all">Sign In</button>
+</header>
+<main class="max-w-screen-xl mx-auto px-6 py-12">
+<!-- Hero Section: Privacy Score -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
+<div class="lg:col-span-8 bg-surface-container border-2 border-primary p-8 rounded-xl neo-shadow relative overflow-hidden">
+<div class="absolute top-0 right-0 h-full w-4 bg-tertiary"></div>
+<div class="flex flex-col md:flex-row items-center gap-10">
+<div class="relative w-48 h-48 flex items-center justify-center bg-surface-container-lowest rounded-full border-4 border-dashed border-primary">
+<div class="text-6xl font-black font-headline text-on-surface">74</div>
+<div class="absolute -bottom-2 bg-tertiary text-on-tertiary px-3 py-1 rounded border-2 border-primary font-bold text-xs">GOOD STANDING</div>
+<!-- Decorative pixel circles -->
+<div class="absolute top-2 right-2 w-3 h-3 bg-tertiary border-2 border-primary rounded-sm"></div>
+<div class="absolute bottom-6 left-2 w-2 h-2 bg-secondary border border-primary rounded-sm"></div>
+</div>
+<div class="flex-1 space-y-4">
+<h1 class="text-4xl font-black font-headline tracking-tight">The Privacy Audit Report</h1>
+<p class="text-lg text-on-surface-variant leading-relaxed">We've examined "LearnFlow Academy v4.2". The application shows strong commitment to data encryption but requires adjustments in third-party cookie handling for student accounts.</p>
+<div class="flex flex-wrap gap-3">
+<span class="bg-surface-container-highest px-3 py-1 rounded-sm border-2 border-primary text-xs font-bold uppercase tracking-wider">Policy Date: Oct 2023</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-sm border-2 border-primary text-xs font-bold uppercase tracking-wider">Compliance: FERPA / GDPR</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Summary Chips -->
+<div class="lg:col-span-4 flex flex-col gap-4">
+<div class="bg-surface-container-low border-2 border-primary p-5 rounded-xl neo-shadow flex items-center gap-4">
+<div class="bg-tertiary-container p-3 rounded-lg border-2 border-primary">
+<span class="material-symbols-outlined text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div>
+<div class="text-sm font-bold text-on-surface-variant uppercase">Student Data</div>
+<div class="text-xl font-bold font-headline">Highly Protected</div>
+</div>
+</div>
+<div class="bg-surface-container-low border-2 border-primary p-5 rounded-xl neo-shadow flex items-center gap-4">
+<div class="bg-secondary-container p-3 rounded-lg border-2 border-primary">
+<span class="material-symbols-outlined text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div>
+<div class="text-sm font-bold text-on-surface-variant uppercase">Risk Level</div>
+<div class="text-xl font-bold font-headline">Moderate (3 Points)</div>
+</div>
+</div>
+<div class="bg-surface-container-low border-2 border-primary p-5 rounded-xl neo-shadow flex items-center gap-4">
+<div class="bg-primary-container p-3 rounded-lg border-2 border-primary">
+<span class="material-symbols-outlined text-on-primary-container" style="font-variation-settings: 'FILL' 1;">share</span>
+</div>
+<div>
+<div class="text-sm font-bold text-on-surface-variant uppercase">3rd Party Sharing</div>
+<div class="text-xl font-bold font-headline">Limited Disclosure</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Findings Bento Grid -->
+<h2 class="text-3xl font-black font-headline mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary">analytics</span> 
+            Detailed Ledger Findings
+        </h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Data Collected -->
+<div class="bg-surface-container-lowest border-2 border-primary rounded-xl overflow-hidden neo-shadow flex flex-col">
+<div class="bg-surface-container-high p-4 border-b-2 border-primary flex justify-between items-center">
+<h3 class="font-black font-headline">Data Collected</h3>
+<span class="material-symbols-outlined">database</span>
+</div>
+<div class="p-6 flex-1 space-y-4">
+<p class="text-sm text-on-surface-variant italic leading-relaxed">"What is being recorded while students learn?"</p>
+<ul class="space-y-3">
+<li class="flex items-start gap-2 group">
+<span class="material-symbols-outlined text-tertiary text-sm mt-0.5">check_circle</span>
+<span class="text-sm font-medium">Names and academic identifiers</span>
+</li>
+<li class="flex items-start gap-2 group">
+<span class="material-symbols-outlined text-tertiary text-sm mt-0.5">check_circle</span>
+<span class="text-sm font-medium">Internal progress metrics</span>
+</li>
+<li class="flex items-start gap-2 group">
+<span class="material-symbols-outlined text-error text-sm mt-0.5">cancel</span>
+<span class="text-sm font-medium">Precise geolocation data (Suspicious)</span>
+</li>
+</ul>
+</div>
+<div class="p-4 bg-surface-container text-xs font-bold border-t-2 border-primary">
+                    EVIDENCE: SECTION 4.2 OF POLICY
+                </div>
+</div>
+<!-- Third-Party Sharing -->
+<div class="bg-surface-container-lowest border-2 border-primary rounded-xl overflow-hidden neo-shadow flex flex-col">
+<div class="bg-surface-container-high p-4 border-b-2 border-primary flex justify-between items-center">
+<h3 class="font-black font-headline">Sharing Protocols</h3>
+<span class="material-symbols-outlined">hub</span>
+</div>
+<div class="p-6 flex-1 space-y-4">
+<div class="flex items-center gap-3 bg-secondary-container p-3 rounded-lg border-2 border-primary mb-4">
+<span class="material-symbols-outlined">lock_open</span>
+<div class="text-xs font-bold">SHARES WITH 12 PARTNERS</div>
+</div>
+<div class="space-y-3">
+<div class="bg-surface-container p-3 rounded border-2 border-primary text-xs font-medium">
+<div class="flex justify-between mb-1">
+<span>Analytics Tools</span>
+<span class="text-tertiary">Anonymized</span>
+</div>
+<div class="w-full bg-outline-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary w-full h-full"></div>
+</div>
+</div>
+<div class="bg-surface-container p-3 rounded border-2 border-primary text-xs font-medium">
+<div class="flex justify-between mb-1">
+<span>Advertising Networks</span>
+<span class="text-error">Personalized</span>
+</div>
+<div class="w-full bg-outline-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-error w-[45%] h-full"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-surface-container text-xs font-bold border-t-2 border-primary">
+                    EVIDENCE: ANNEX B - DATA VENDORS
+                </div>
+</div>
+<!-- Data Retention -->
+<div class="bg-surface-container-lowest border-2 border-primary rounded-xl overflow-hidden neo-shadow flex flex-col">
+<div class="bg-surface-container-high p-4 border-b-2 border-primary flex justify-between items-center">
+<h3 class="font-black font-headline">Retention Ledger</h3>
+<span class="material-symbols-outlined">history</span>
+</div>
+<div class="p-6 flex-1 space-y-6">
+<div class="flex flex-col items-center">
+<div class="text-4xl font-black font-headline text-secondary">7 YEARS</div>
+<div class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Default storage period</div>
+</div>
+<div class="border-t-2 border-primary border-dashed pt-4">
+<p class="text-xs leading-relaxed">The policy states data is held for "the duration of the educational relationship plus 7 years." This exceeds standard village ledger practices.</p>
+</div>
+</div>
+<div class="p-4 bg-surface-container text-xs font-bold border-t-2 border-primary">
+                    EVIDENCE: DATA LIFECYCLE V.1
+                </div>
+</div>
+</div>
+<!-- Red Flags & Positive Signals -->
+<section class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Positive Signals -->
+<div class="space-y-4">
+<h3 class="text-xl font-black font-headline text-tertiary uppercase flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">thumb_up</span>
+                    The Green Meadows
+                </h3>
+<div class="bg-surface-container-high border-2 border-tertiary p-6 rounded-xl space-y-4">
+<div class="flex gap-4 p-4 bg-surface-container-lowest rounded-lg border-2 border-tertiary neo-shadow-sm">
+<span class="material-symbols-outlined text-tertiary">encrypted</span>
+<div>
+<div class="font-bold">Full End-to-End Encryption</div>
+<div class="text-sm text-on-surface-variant">Messages between students and teachers are fully sealed.</div>
+</div>
+</div>
+<div class="flex gap-4 p-4 bg-surface-container-lowest rounded-lg border-2 border-tertiary neo-shadow-sm">
+<span class="material-symbols-outlined text-tertiary">no_accounts</span>
+<div>
+<div class="font-bold">No Mandatory Social Login</div>
+<div class="text-sm text-on-surface-variant">Students can create siloed accounts without tracking tags.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Red Flags -->
+<div class="space-y-4">
+<h3 class="text-xl font-black font-headline text-error uppercase flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">priority_high</span>
+                    Storm Warnings
+                </h3>
+<div class="bg-surface-container-high border-2 border-error p-6 rounded-xl space-y-4">
+<div class="flex gap-4 p-4 bg-surface-container-lowest rounded-lg border-2 border-error neo-shadow-sm">
+<span class="material-symbols-outlined text-error">campaign</span>
+<div>
+<div class="font-bold">Ambiguous Data Selling</div>
+<div class="text-sm text-on-surface-variant">Section 12.1 uses "Marketing Partners" vaguely.</div>
+</div>
+</div>
+<div class="flex gap-4 p-4 bg-surface-container-lowest rounded-lg border-2 border-error neo-shadow-sm">
+<span class="material-symbols-outlined text-error">visibility_off</span>
+<div>
+<div class="font-bold">Dark Pattern Deletion</div>
+<div class="text-sm text-on-surface-variant">Account deletion requires contacting a support desk manually.</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final Verdict / Audit Ribbon Component -->
+<section class="mt-20 relative">
+<div class="bg-primary text-on-primary p-12 rounded-2xl neo-shadow flex flex-col md:flex-row items-center gap-12 overflow-hidden">
+<div class="absolute left-0 top-0 h-full w-24 bg-tertiary/20 flex items-center justify-center border-r-2 border-primary-dim">
+<span class="audit-ribbon font-black text-2xl tracking-[0.2em] opacity-30 select-none">VERIFIED LEDGER</span>
+</div>
+<div class="relative z-10 md:ml-16">
+<h2 class="text-4xl font-black font-headline mb-4">The Village Expert Verdict</h2>
+<p class="text-lg opacity-90 max-w-2xl">While LearnFlow is technically capable, their legal language is designed to protect their profit margins over student privacy. We recommend using it with a VPN and disabling 'Personalized Experience' in the settings.</p>
+<div class="mt-8 flex gap-4">
+<button class="bg-tertiary text-on-tertiary px-8 py-3 rounded-lg font-bold border-2 border-on-surface neo-shadow hover:neo-shadow-active transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">picture_as_pdf</span> Download Full Report
+                        </button>
+<button class="bg-secondary-container text-on-secondary-container px-8 py-3 rounded-lg font-bold border-2 border-on-surface neo-shadow hover:neo-shadow-active transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">compare_arrows</span> Compare with Rivals
+                        </button>
+</div>
+</div>
+<div class="hidden lg:block w-48 shrink-0">
+<img class="w-full grayscale brightness-200" data-alt="a hand-drawn 8-bit style document scroll icon representing a formal certified privacy audit report with a wax seal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlwrqzKDkeNuUJUQdSAnHuHhzEMbb-Jb1UWraVMjkUfl2Mf0ip5XKbNbfv2XHxXanQGynwSYaxBVAhyLUaY1kovjukvOmOC9r2NpOdb7G9vhIahPnzpoRceuhejOZRHRnoN-fMWaBg74PYhoUZKjCH_427WUBehci7qNB6pmkbP6YXB7eiX6nDhJiPmB11tfVTL7hC89rrdFYCSHI2iPcucHmACQN1WItl8hFhkU2hjY7ccol8KtPaoF6XkP4ujLUFl4qeEK1VP_Q-"/>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-[#f7f4e5] dark:bg-[#1C1C1C] w-full py-12 flex flex-col items-center justify-center gap-4 text-center border-t-2 border-[#5f5e5e]">
+<div class="text-[#39382b] dark:text-[#f7f4e5] text-sm font-medium space-x-6">
+<a class="underline decoration-2 text-[#4e6e00] hover:text-[#39382b] hover:underline transition-all" href="#">Privacy Policy</a>
+<a class="text-[#75604e] dark:text-[#bcbaa7] hover:text-[#39382b] hover:underline transition-all" href="#">Terms of Service</a>
+<a class="text-[#75604e] dark:text-[#bcbaa7] hover:text-[#39382b] hover:underline transition-all" href="#">Security Audit</a>
+</div>
+<p class="text-on-surface-variant text-xs font-body tracking-wider">© 2024 Policy Probe. Hand-crafted privacy ledger.</p>
+</footer>
+</body></html>

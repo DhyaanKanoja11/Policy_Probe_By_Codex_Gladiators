@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-dim": "#004fab",
+                    "on-primary-container": "#004eaa",
+                    "on-error": "#fff7f6",
+                    "surface-container-lowest": "#ffffff",
+                    "background": "#f8f9fa",
+                    "surface": "#f8f9fa",
+                    "on-primary-fixed-variant": "#0057bd",
+                    "surface-dim": "#d1dce0",
+                    "primary-fixed-dim": "#c3d4ff",
+                    "secondary-container": "#e2e2e9",
+                    "tertiary-dim": "#53506b",
+                    "surface-container": "#eaeff1",
+                    "surface-container-high": "#e2e9ec",
+                    "on-tertiary-fixed": "#34314b",
+                    "outline": "#737c7f",
+                    "on-error-container": "#752121",
+                    "on-surface": "#2b3437",
+                    "on-tertiary": "#fcf7ff",
+                    "on-secondary-container": "#505157",
+                    "on-secondary-fixed": "#3e3f45",
+                    "error-dim": "#4e0309",
+                    "inverse-surface": "#0c0f10",
+                    "on-surface-variant": "#586064",
+                    "on-background": "#2b3437",
+                    "tertiary-container": "#d3ceef",
+                    "on-primary": "#f7f7ff",
+                    "tertiary-fixed-dim": "#c5c0e0",
+                    "tertiary-fixed": "#d3ceef",
+                    "on-secondary-fixed-variant": "#5a5b61",
+                    "inverse-primary": "#4d8eff",
+                    "secondary-dim": "#515359",
+                    "surface-container-low": "#f1f4f6",
+                    "primary-fixed": "#d8e2ff",
+                    "tertiary": "#5f5c78",
+                    "primary-container": "#d8e2ff",
+                    "on-secondary": "#f9f8ff",
+                    "on-tertiary-fixed-variant": "#504e69",
+                    "surface-container-highest": "#dbe4e7",
+                    "error-container": "#fe8983",
+                    "surface-tint": "#005ac2",
+                    "error": "#9f403d",
+                    "surface-bright": "#f8f9fa",
+                    "on-tertiary-container": "#47445f",
+                    "secondary": "#5e5f65",
+                    "secondary-fixed-dim": "#d4d4db",
+                    "primary": "#005ac2",
+                    "outline-variant": "#abb3b7",
+                    "on-primary-fixed": "#003c86",
+                    "surface-variant": "#dbe4e7",
+                    "secondary-fixed": "#e2e2e9",
+                    "inverse-on-surface": "#9b9d9e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": [
+                            "Manrope"
+                    ],
+                    "body": [
+                            "Inter"
+                    ],
+                    "label": [
+                            "Inter"
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Shell -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-[0px_20px_40px_rgba(43,52,55,0.06)] font-manrope antialiased tracking-tight">
+<div class="flex justify-between items-center h-16 px-6 max-w-7xl mx-auto">
+<div class="text-xl font-bold tracking-tighter text-slate-900 dark:text-slate-50">
+                Policy Probe
+            </div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600" href="#">Analyze</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-all duration-200 hover:opacity-80" href="#">History</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-all duration-200 hover:opacity-80" href="#">Comparison</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-600 dark:text-slate-400 transition-all duration-200 hover:opacity-80">
+<span class="material-symbols-outlined" data-icon="dark_mode">dark_mode</span>
+</button>
+<button class="bg-primary text-on-primary px-5 py-2 rounded-xl font-semibold active:scale-95 transition-transform">
+                    Sign In
+                </button>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="pt-32 pb-24 px-6 max-w-7xl mx-auto min-h-screen">
+<!-- Hero Editorial Section -->
+<div class="max-w-3xl mx-auto text-center mb-16">
+<h1 class="text-5xl md:text-6xl font-bold tracking-tight text-on-surface mb-6 leading-[1.1]">
+                Uncover the Fine Print in <span class="text-primary">Seconds</span>.
+            </h1>
+<p class="text-lg text-on-surface-variant leading-relaxed">
+                Automated privacy analysis for any web platform or application. We extract critical clauses and hidden risks so you don't have to read thousands of words.
+            </p>
+</div>
+<!-- Central URL Input Card -->
+<div class="max-w-2xl mx-auto mb-24">
+<div class="bg-surface-container-lowest rounded-2xl p-8 md:p-12 shadow-[0px_20px_40px_rgba(43,52,55,0.06)] border border-outline-variant/10">
+<div class="space-y-6">
+<!-- Website URL Field -->
+<div class="space-y-2">
+<div class="flex justify-between items-end mb-2">
+<label class="text-sm font-semibold text-on-surface font-label">Website URL</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary/20" type="checkbox"/>
+<span class="text-xs font-semibold text-on-surface-variant group-hover:text-primary transition-colors">Direct Privacy Link</span>
+</label>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-4 text-on-surface placeholder:text-outline-variant focus:ring-2 focus:ring-primary/10 transition-all" placeholder="https://example.com" type="text"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-outline-variant">
+<span class="material-symbols-outlined text-xl" data-icon="link">link</span>
+</div>
+</div>
+</div>
+<!-- App Name Field -->
+<div class="space-y-2">
+<label class="text-sm font-semibold text-on-surface font-label">App Name <span class="text-outline-variant font-normal">(Optional)</span></label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-4 text-on-surface placeholder:text-outline-variant focus:ring-2 focus:ring-primary/10 transition-all" placeholder="e.g. Duolingo" type="text"/>
+</div>
+<!-- CTA -->
+<button class="w-full py-4 bg-gradient-to-r from-primary to-primary-dim text-on-primary rounded-xl font-bold text-lg shadow-lg active:scale-[0.98] transition-transform flex items-center justify-center gap-3">
+<span class="material-symbols-outlined" data-icon="search" style="font-variation-settings: 'wght' 600;">search</span>
+                        Run Privacy Audit
+                    </button>
+<!-- Helper Text -->
+<div class="flex items-center justify-center gap-2 text-on-surface-variant/70">
+<span class="material-symbols-outlined text-sm" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<p class="text-xs font-medium">Your privacy data is never stored.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Analyses Grid -->
+<section class="max-w-5xl mx-auto">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-2xl font-bold tracking-tight text-on-surface">Recent Analyses</h2>
+<a class="text-sm font-semibold text-primary flex items-center gap-1 group" href="#">
+                    View History 
+                    <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Analysis Item 1 -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl hover:bg-surface-container-highest transition-colors cursor-pointer border border-outline-variant/5">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Official duolingo bird icon mascot on a light green background with clean vector lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgev97-fEF_9mHNwujJmtOVFZbOa5lIGI3eJDXAcvGf9CF49KlzgPxkyTz3ahHhp6Ve4DLr5FqQtvIYkDH1qMHV5kjZsYYDHI0GfUAELfFwoto01z8zq-aA4de13QytW3xbWFSM8tOFm78Quvd-Sw_KfVfFwkDcdG83sUpTx15QWn6Lainp8cfhVzOFNAJlHXrNAPkzi1fBvebMMbM3Yp4xmPv-Cy_htWpgs-ylFl0V7OUjn2PNLk_qa5ZEQsmWjHJhJFA4g29wVS2"/>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-on-surface truncate">Duolingo</h3>
+<p class="text-[10px] text-on-surface-variant font-semibold tracking-wider font-label uppercase">Education</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-on-surface-variant font-medium">Score</span>
+<div class="px-3 py-1 rounded-full bg-tertiary-container text-on-tertiary-container text-sm font-bold">
+                            88
+                        </div>
+</div>
+</div>
+<!-- Analysis Item 2 -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl hover:bg-surface-container-highest transition-colors cursor-pointer border border-outline-variant/5">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Purple Kahoot game app icon with a stylized exclamation point in a white circle" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLKk6BG-O-f1f421-n7fhIXfKSHQ-dG8HI68AxcdKDUHNPKMhlA1gjsrUmaxZRAA9Jfsa-z4hjMiUVatLc4zhSJ9OtcVob_B7DSqh5oc1rnziah_KtPhDe2JJHJsoC2YwnCEh3siU7yZiDKS9LNH_vLAin9PNEPN5v3PgTmuheDdiLOHr6Ai9Wn17IkReniGk9EiUMMXVN-_L1mv7xh_rmyjWprARY404Y_A2LNHEvEyUMcjd1MuuigefBqwlo9brxHVUE-Nm67q_m"/>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-on-surface truncate">Kahoot</h3>
+<p class="text-[10px] text-on-surface-variant font-semibold tracking-wider font-label uppercase">Interactive</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-on-surface-variant font-medium">Score</span>
+<div class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-sm font-bold">
+                            72
+                        </div>
+</div>
+</div>
+<!-- Analysis Item 3 -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl hover:bg-surface-container-highest transition-colors cursor-pointer border border-outline-variant/5">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="LinkedIn professional networking app icon with blue background and white letter font" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXSMiYI8qeoYwmZ_wS18tfDKHKAmjR9QsGPntIrVLjTZCyx4YoRWl4ofAXkumY_yeobcykXJtYYX6-fKh5yKD981142uNxNRq9THuo7Y7ce9Hsnv7lWS_HFCyG_q59tPNyalRZ6mszsfb_EdoDkzCIKTm9Kg25t2W9qGXjYsYcYzXldZS1QRrTeYWj2fb3Wnu909g9GY8YkmPepkXFs9n6Ib4MnCPP7irzPuPbyunW7X6Onr9UV_cBQdR4MNoUaBH1eyGK7xpmmqWB"/>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-on-surface truncate">LinkedIn</h3>
+<p class="text-[10px] text-on-surface-variant font-semibold tracking-wider font-label uppercase">Professional</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-on-surface-variant font-medium">Score</span>
+<div class="px-3 py-1 rounded-full bg-error-container text-on-error-container text-sm font-bold">
+                            45
+                        </div>
+</div>
+</div>
+<!-- Analysis Item 4 -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl hover:bg-surface-container-highest transition-colors cursor-pointer border border-outline-variant/5">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Canvas LMS app icon with colorful circular logo design representing connectivity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnV8fW1zw8PeQ6vwD-z5jCt8lyt745HuwWK70V3UMV2awnJ_DT9J9WJrYF8nruH17XxrcAGhYkhu7U0i0lGxcpFF6pXNwZMyGqss3FdxpjgmMFZdpNWUHb6te6kjeLhTxdjimf9u3d5ydo-1qlXFiCp9Jb_3Lkgk7insCZJFYkab1GJps2-JgnvpbT4KzmWLoa31caKuWIGSJzKt9b2cbPBRfhhwcs1Rl-dUZD9GbnItHyw-RdP6C7RQpO7yOhslbjS4vlZkDR30Tl"/>
+</div>
+<div class="flex-1 min-w-0">
+<h3 class="font-bold text-on-surface truncate">Canvas</h3>
+<p class="text-[10px] text-on-surface-variant font-semibold tracking-wider font-label uppercase">LMS</p>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs text-on-surface-variant font-medium">Score</span>
+<div class="px-3 py-1 rounded-full bg-tertiary-container text-on-tertiary-container text-sm font-bold">
+                            91
+                        </div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 bg-slate-50 dark:bg-slate-950 font-manrope text-sm text-slate-500 dark:text-slate-400">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-7xl mx-auto space-y-4 md:space-y-0">
+<div class="font-bold text-slate-900 dark:text-slate-100">
+                © 2024 Policy Probe. Secure Analysis Intelligence.
+            </div>
+<div class="flex gap-8">
+<a class="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors" href="#">Privacy Policy</a>
+<a class="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors" href="#">Terms of Service</a>
+<a class="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition-colors" href="#">Security Audit</a>
+</div>
+</div>
+</footer>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-4 pb-safe bg-white dark:bg-slate-900 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl z-50">
+<a class="flex flex-col items-center justify-center text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-900/20 rounded-xl px-4 py-1 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="search">search</span>
+<span class="text-[10px] font-semibold uppercase tracking-wider font-manrope">Analyze</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="history">history</span>
+<span class="text-[10px] font-semibold uppercase tracking-wider font-manrope">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="compare_arrows">compare_arrows</span>
+<span class="text-[10px] font-semibold uppercase tracking-wider font-manrope">Compare</span>
+</a>
+</nav>
+</body></html>

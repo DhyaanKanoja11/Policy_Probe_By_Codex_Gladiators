@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap');
+
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+html { scroll-behavior: smooth; }
+a { text-decoration: none; color: inherit; }
+
+.hero-grid {
+  background-image: radial-gradient(rgba(0, 90, 194, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.dark .hero-grid {
+  background-image: radial-gradient(rgba(77, 142, 255, 0.04) 1px, transparent 1px);
+}
+.glass-panel {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+/* Skeleton animation */
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, rgba(0,0,0,0.06) 25%, rgba(0,0,0,0.1) 37%, rgba(0,0,0,0.06) 63%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+.dark .skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 37%, rgba(255,255,255,0.04) 63%);
+  background-size: 200px 100%;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.4); }
+
+/* Print Styles for PDF Export */
+@media print {
+  body { background: white !important; color: black !important; }
+  header, footer, .no-print { display: none !important; }
+  main { padding: 0 !important; margin: 0 !important; }
+  * { box-shadow: none !important; }
+  .MuiContainer-root { max-width: none !important; padding: 0 !important; }
+  
+  /* Ensure charts break nicely or don't break across pages */
+  .recharts-wrapper { page-break-inside: avoid; }
+  
+  /* Solidify borders for print */
+  .MuiBox-root, .MuiCard-root { border-color: #ddd !important; }
+  
+  /* Fix chip print colors */
+  .MuiChip-root { border: 1px solid #ccc !important; }
+}

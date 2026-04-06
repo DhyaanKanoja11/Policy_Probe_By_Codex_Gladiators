@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Policy Probe | Side-by-Side Audit</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#666555",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#e5e2e1",
+                        "on-tertiary-fixed": "#304600",
+                        "on-tertiary-container": "#3f5a00",
+                        "primary-fixed-dim": "#d6d4d3",
+                        "on-primary": "#faf7f6",
+                        "surface-variant": "#ece9d5",
+                        "secondary-fixed-dim": "#ebcfb9",
+                        "tertiary-fixed": "#c8f17a",
+                        "on-error": "#ffffff",
+                        "primary": "#5f5e5e",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#476400",
+                        "error-dim": "#4e0309",
+                        "inverse-on-surface": "#9f9d95",
+                        "on-secondary-container": "#624e3d",
+                        "on-secondary-fixed": "#4e3c2c",
+                        "tertiary": "#4e6e00",
+                        "on-primary-fixed-variant": "#5c5b5b",
+                        "on-primary-container": "#525151",
+                        "surface": "#fffbff",
+                        "surface-container-low": "#fdf9ed",
+                        "error": "#a64542",
+                        "error-container": "#fe8983",
+                        "inverse-primary": "#ffffff",
+                        "surface-tint": "#5f5e5e",
+                        "on-surface": "#39382b",
+                        "primary-fixed": "#e5e2e1",
+                        "outline": "#838170",
+                        "primary-dim": "#535252",
+                        "surface-container-highest": "#ece9d5",
+                        "on-secondary-fixed-variant": "#6c5846",
+                        "on-primary-fixed": "#403f3f",
+                        "secondary-dim": "#695443",
+                        "secondary-fixed": "#faddc7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error-container": "#752121",
+                        "tertiary-fixed-dim": "#bae26e",
+                        "secondary-container": "#faddc7",
+                        "surface-container-high": "#f2eedd",
+                        "inverse-surface": "#0f0e0a",
+                        "tertiary-dim": "#446100",
+                        "outline-variant": "#bcbaa7",
+                        "background": "#fffbff",
+                        "surface-container": "#f7f4e5",
+                        "surface-dim": "#e6e3cd",
+                        "secondary": "#75604e",
+                        "surface-bright": "#fffbff",
+                        "tertiary-container": "#c8f17a",
+                        "on-background": "#39382b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #fffbff; background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .neo-shadow { box-shadow: 4px 4px 0px 0px rgba(95,94,94,1); }
+        .active-interaction:active { transform: translate(2px, 2px); box-shadow: none; }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- TopNavBar -->
+<header class="bg-[#f7f4e5] dark:bg-[#1C1C1C] flex justify-between items-center w-full px-8 py-4 max-w-screen-2xl mx-auto sticky top-0 z-50 border-b-2 border-[#5f5e5e] shadow-[4px_4px_0px_0px_rgba(95,94,94,1)]">
+<div class="text-2xl font-black text-[#39382b] dark:text-[#f7f4e5] font-['Space_Grotesk'] tracking-tight">Policy Probe</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-[#39382b] dark:text-[#bcbaa7] font-medium hover:text-[#4e6e00] hover:-translate-y-0.5 transition-all duration-200" href="#">Analyze</a>
+<a class="text-[#39382b] dark:text-[#bcbaa7] font-medium hover:text-[#4e6e00] hover:-translate-y-0.5 transition-all duration-200" href="#">History</a>
+<a class="text-[#4e6e00] font-bold border-b-2 border-[#4e6e00] pb-1 hover:-translate-y-0.5 transition-all duration-200" href="#">Comparison</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 bg-primary text-on-primary border-2 border-on-surface font-bold rounded-lg neo-shadow active-interaction transition-all">Sign In</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-8 py-12">
+<!-- Hero Header -->
+<div class="mb-16 text-center">
+<h1 class="font-headline text-5xl font-black tracking-tight mb-4">Side-by-Side Audit</h1>
+<p class="font-body text-on-surface-variant max-w-2xl mx-auto text-lg">Comparing digital paper trails to ensure your privacy is never a second thought. Hand-verified ledger analysis.</p>
+</div>
+<!-- Comparison Bento Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Comparison Platform A -->
+<div class="lg:col-span-5 bg-surface-container border-2 border-primary rounded-xl overflow-hidden neo-shadow relative">
+<!-- Verified Ribbon -->
+<div class="absolute top-6 left-0 bg-tertiary text-on-tertiary px-3 py-1 font-black text-xs uppercase tracking-widest flex items-center gap-2 rounded-r-lg border-y-2 border-r-2 border-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+                    Gold Standard
+                </div>
+<div class="p-8 pt-16">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-20 h-20 bg-surface-container-lowest border-2 border-primary rounded-lg flex items-center justify-center p-2">
+<img class="w-full h-full object-contain" data-alt="minimalist tech logo for education platform on warm cream paper texture with thick outlines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtMR0dy9f6SBgQ4x7fN0-mFC6Y_43U9qN5HMCY1V-3ZvOHRediIrIFCY7iFwmKNoCcHyQhiIPhy1fScl2WNZ9RYmuh2piAMjZ1SUUhJSjj9vVQ5q9bCKymMHlWaRYfJo0F13-GuwAXF0D_x9QOQVIBtUXnDsJR4YIKlGFKx4cvkUwZCM18RnSt7aG9ZGCOh-GaSFqTGG8VG9qCjJpDiGZ3r2C9BebCgJ7zfUJ0tm2ItDgU5qo9jLUjZF7X0C8Jtk7w0u9CtTqOn3zQ"/>
+</div>
+<div>
+<h2 class="font-headline text-3xl font-bold">Google Classroom</h2>
+<p class="font-body text-secondary font-medium">Enterprise Learning Suite</p>
+</div>
+</div>
+<div class="space-y-6">
+<!-- Metric: Privacy Score -->
+<div class="bg-surface-container-lowest p-4 rounded-lg border-2 border-outline-variant">
+<div class="flex justify-between items-end mb-2">
+<span class="font-headline font-bold text-sm uppercase tracking-tighter">Privacy Score</span>
+<span class="font-headline text-3xl font-black text-tertiary">84/100</span>
+</div>
+<div class="w-full h-4 bg-surface-container-high border-2 border-primary rounded-full overflow-hidden">
+<div class="h-full bg-tertiary" style="width: 84%"></div>
+</div>
+</div>
+<!-- Table-style Comparison Rows -->
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant/30">
+<span class="font-label text-sm text-on-surface-variant font-medium">Risk: Data Profiling</span>
+<span class="material-symbols-outlined text-error font-black" style="font-variation-settings: 'FILL' 0;">close</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant/30">
+<span class="font-label text-sm text-on-surface-variant font-medium">Rights: Data Portability</span>
+<span class="material-symbols-outlined text-tertiary font-black" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant/30">
+<span class="font-label text-sm text-on-surface-variant font-medium">Data Sharing: Third Parties</span>
+<span class="material-symbols-outlined text-error font-black" style="font-variation-settings: 'FILL' 0;">close</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant/30">
+<span class="font-label text-sm text-on-surface-variant font-medium">Coverage: GDPR/CCPA</span>
+<span class="material-symbols-outlined text-tertiary font-black" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- VS Divider (Mobile or Mid) -->
+<div class="lg:col-span-2 flex items-center justify-center">
+<div class="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-on-primary font-headline text-3xl font-black border-4 border-on-primary shadow-xl">VS</div>
+</div>
+<!-- Comparison Platform B -->
+<div class="lg:col-span-5 bg-surface-container border-2 border-primary rounded-xl overflow-hidden neo-shadow relative">
+<!-- Alert Ribbon -->
+<div class="absolute top-6 left-0 bg-secondary text-on-secondary px-3 py-1 font-black text-xs uppercase tracking-widest flex items-center gap-2 rounded-r-lg border-y-2 border-r-2 border-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">warning</span>
+                    Manual Review
+                </div>
+<div class="p-8 pt-16">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-20 h-20 bg-surface-container-lowest border-2 border-primary rounded-lg flex items-center justify-center p-2">
+<img class="w-full h-full object-contain" data-alt="clean vector logo of a professional educational dashboard on textured stationary background with heavy outlines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXqkzb2Js_McMx-SCs-F8v_F35mM1QYSvd8rdCwhuh6fWkIJF9JclTjK8qE7b3KjGX9-9ulRV1nIry1t9nJMdcQyoPf3U-rP7XXMBJ8B6zw5IPIEOq2bax_IB20fTOixzM-mRA6Zp7KQlAOarguw8h6z_Uwa5HubZSiCSZRrIBXeyQestLno1TQyxqh_8o-FBRfCmk46y0fvMCFGxR_6UotjDITlhrmRFWzpqWZ3tfFZoPbd3pP5JvFNrlcnNR0-VFteRTrqikzBp2"/>
+</div>
+<div>
+<h2 class="font-headline text-3xl font-bold">Canvas LMS</h2>
+<p class="font-body text-secondary font-medium">Infrastructure Management</p>
+</div>
+</div>
+<div class="space-y-6">
+<!-- Metric: Privacy Score -->
+<div class="bg-surface-container-lowest p-4 rounded-lg border-2 border-outline-variant">
+<div class="flex justify-between items-end mb-2">
+<span class="font-headline font-bold text-sm uppercase tracking-tighter">Privacy Score</span>
+<span class="font-headline text-3xl font-black text-secondary">72/100</span>
+</div>
+<div class="w-full h-4 bg-surface-container-high border-2 border-primary rounded-full overflow-hidden">
+<div class="h-full bg-secondary" style="width: 72%"></div>
+</div>
+</div>
+<!-- Table-style Comparison Rows -->
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant/30">
+<span class="font-label text-sm text-on-surface-variant font-medium">Risk: Data Profiling</span>
+<span class="material-symbols-outlined text-tertiary font-black" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant/30">
+<span class="font-label text-sm text-on-surface-variant font-medium">Rights: Data Portability</span>
+<span class="material-symbols-outlined text-tertiary font-black" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant/30">
+<span class="font-label text-sm text-on-surface-variant font-medium">Data Sharing: Third Parties</span>
+<span class="material-symbols-outlined text-error font-black" style="font-variation-settings: 'FILL' 0;">close</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant/30">
+<span class="font-label text-sm text-on-surface-variant font-medium">Coverage: GDPR/CCPA</span>
+<span class="material-symbols-outlined text-error font-black" style="font-variation-settings: 'FILL' 0;">close</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Ledger Details Section -->
+<section class="mt-20">
+<h3 class="font-headline text-2xl font-bold mb-8 border-b-4 border-tertiary inline-block">Audit Logs &amp; Methodology</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Detail Card 1 -->
+<div class="p-6 bg-surface-container-lowest border-2 border-primary rounded-lg relative">
+<span class="material-symbols-outlined text-secondary text-4xl mb-4" style="font-variation-settings: 'FILL' 0;">history_edu</span>
+<h4 class="font-headline text-lg font-bold mb-2">Policy Evolution</h4>
+<p class="font-body text-sm text-on-surface-variant">We track changes across 5 years of archival data. Google's policy has simplified 12%, while Canvas remains dense.</p>
+</div>
+<!-- Detail Card 2 -->
+<div class="p-6 bg-surface-container-lowest border-2 border-primary rounded-lg">
+<span class="material-symbols-outlined text-secondary text-4xl mb-4" style="font-variation-settings: 'FILL' 0;">shield_person</span>
+<h4 class="font-headline text-lg font-bold mb-2">User Agency</h4>
+<p class="font-body text-sm text-on-surface-variant">Detailed breakdown of opt-out mechanics. Both platforms fail to offer a simple "One-Click Erasure" button.</p>
+</div>
+<!-- Detail Card 3 -->
+<div class="p-6 bg-surface-container-lowest border-2 border-primary rounded-lg">
+<span class="material-symbols-outlined text-secondary text-4xl mb-4" style="font-variation-settings: 'FILL' 0;">fingerprint</span>
+<h4 class="font-headline text-lg font-bold mb-2">Shadow Profiles</h4>
+<p class="font-body text-sm text-on-surface-variant">Audit of cookies and tracking pixels used when users are signed out. 42 pixels found on Classroom login page.</p>
+</div>
+</div>
+</section>
+<!-- CTA Action -->
+<div class="mt-20 p-12 bg-[#faddc7] border-4 border-primary rounded-xl flex flex-col md:flex-row items-center justify-between gap-8 neo-shadow">
+<div class="max-w-xl">
+<h3 class="font-headline text-3xl font-black mb-4">Request a Custom Ledger</h3>
+<p class="font-body text-on-secondary-container">Need to compare internal corporate tools? Our team of analysts can craft a bespoke audit for your enterprise stack.</p>
+</div>
+<button class="px-8 py-4 bg-primary text-on-primary font-headline font-bold text-xl rounded-lg border-2 border-on-surface neo-shadow active-interaction whitespace-nowrap">Start Enterprise Audit</button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 flex flex-col items-center justify-center gap-4 text-center bg-[#f7f4e5] dark:bg-[#1C1C1C] border-t-2 border-[#5f5e5e]">
+<div class="flex gap-6 mb-2">
+<a class="text-[#75604e] dark:text-[#bcbaa7] font-body text-sm hover:text-[#39382b] hover:underline transition-all" href="#">Privacy Policy</a>
+<a class="text-[#75604e] dark:text-[#bcbaa7] font-body text-sm hover:text-[#39382b] hover:underline transition-all underline decoration-2 text-[#4e6e00]" href="#">Terms of Service</a>
+<a class="text-[#75604e] dark:text-[#bcbaa7] font-body text-sm hover:text-[#39382b] hover:underline transition-all" href="#">Security Audit</a>
+</div>
+<p class="font-body text-sm text-[#39382b] dark:text-[#f7f4e5] opacity-80">© 2024 Policy Probe. Hand-crafted privacy ledger.</p>
+</footer>
+</body></html>
