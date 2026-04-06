@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
-import { Box, Container, Typography, TextField, Button, Grid, useTheme, CircularProgress, Alert } from '@mui/material';
-import { CompareArrows, CheckCircle, Warning, ArrowForward, VerifiedUser } from '@mui/icons-material';
+import { Box, Container, Typography, TextField, Button, Grid, useTheme, CircularProgress, Alert, Chip, LinearProgress } from '@mui/material';
+import { CompareArrows, CheckCircle, Warning, Cancel, ArrowForward, VerifiedUser, TrendingUp, TrendingDown, Remove } from '@mui/icons-material';
 import { motion, Variants } from 'framer-motion';
 import { AnalysisResult } from '@/lib/types';
 
@@ -9,6 +9,53 @@ const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
+
+// Comparison factor definition for structured scoring
+interface ComparisonFactor {
+  label: string;
+  key: string;
+  getValueA: (r: AnalysisResult) => number | string | boolean;
+  getValueB: (r: AnalysisResult) => number | string | boolean;
+  format: (v: number | string | boolean) => string;
+  /** 'higher' = higher is better, 'lower' = lower is better, 'bool' = true is better */
+  direction: 'higher' | 'lower' | 'bool';
+  maxScore?: number;
+}
+
+const COMPARISON_FACTORS: ComparisonFactor[] = [
+  { label: 'Overall Privacy Score', key: 'overall_score', getValueA: r => r.overall_score, getValueB: r => r.overall_score, format: v => `${v}/100`, direction: 'higher', maxScore: 100 },
+  { label: 'Privacy Grade', key: 'privacy_grade', getValueA: r => ({ A: 4, B: 3, C: 2, D: 1, F: 0 }[r.privacy_grade] || 0), getValueB: r => ({ A: 4, B: 3, C: 2, D: 1, F: 0 }[r.privacy_grade] || 0), format: v => ['F', 'D', 'C', 'B', 'A'][v as number] || '?', direction: 'higher' },
+  { label: 'Data Collection (Max 20)', key: 'data_collection', getValueA: r => r.score_breakdown.data_collection, getValueB: r => r.score_breakdown.data_collection, format: v => `${v}/20`, direction: 'higher', maxScore: 20 },
+  { label: 'Third-Party Sharing (Max 20)', key: 'third_party', getValueA: r => r.score_breakdown.third_party_sharing, getValueB: r => r.score_breakdown.third_party_sharing, format: v => `${v}/20`, direction: 'higher', maxScore: 20 },
+  { label: 'Child Safety (Max 15)', key: 'child_safety', getValueA: r => r.score_breakdown.child_safety, getValueB: r => r.score_breakdown.child_safety, format: v => `${v}/15`, direction: 'higher', maxScore: 15 },
+  { label: 'Retention Clarity (Max 10)', key: 'retention', getValueA: r => r.score_breakdown.retention_clarity, getValueB: r => r.score_breakdown.retention_clarity, format: v => `${v}/10`, direction: 'higher', maxScore: 10 },
+  { label: 'User Rights (Max 10)', key: 'user_rights', getValueA: r => r.score_breakdown.user_rights, getValueB: r => r.score_breakdown.user_rights, format: v => `${v}/10`, direction: 'higher', maxScore: 10 },
+  { label: 'Transparency (Max 10)', key: 'transparency', getValueA: r => r.score_breakdown.transparency, getValueB: r => r.score_breakdown.transparency, format: v => `${v}/10`, direction: 'higher', maxScore: 10 },
+  { label: 'Security (Max 5)', key: 'security', getValueA: r => r.score_breakdown.security, getValueB: r => r.score_breakdown.security, format: v => `${v}/5`, direction: 'higher', maxScore: 5 },
+  { label: 'Tracking / Cookies (Max 5)', key: 'tracking', getValueA: r => r.score_breakdown.tracking_cookies, getValueB: r => r.score_breakdown.tracking_cookies, format: v => `${v}/5`, direction: 'higher', maxScore: 5 },
+  { label: 'Red Flags Count', key: 'red_flags', getValueA: r => r.red_flags.length, getValueB: r => r.red_flags.length, format: v => `${v} found`, direction: 'lower' },
+  { label: 'Third-Party Entities', key: 'tp_count', getValueA: r => r.third_party_sharing.length, getValueB: r => r.third_party_sharing.length, format: v => `${v} entities`, direction: 'lower' },
+  { label: 'Data Categories Collected', key: 'data_cats', getValueA: r => r.data_collected.length, getValueB: r => r.data_collected.length, format: v => `${v} categories`, direction: 'lower' },
+  { label: 'GDPR Compliant', key: 'gdpr', getValueA: r => r.compliance_flags.gdpr?.compliant ?? false, getValueB: r => r.compliance_flags.gdpr?.compliant ?? false, format: v => v ? 'Yes' : 'No', direction: 'bool' },
+  { label: 'COPPA Compliant', key: 'coppa', getValueA: r => r.compliance_flags.coppa?.compliant ?? false, getValueB: r => r.compliance_flags.coppa?.compliant ?? false, format: v => v ? 'Yes' : 'No', direction: 'bool' },
+  { label: 'DPDP Act Compliant', key: 'dpdp', getValueA: r => r.compliance_flags.dpdp?.compliant ?? false, getValueB: r => r.compliance_flags.dpdp?.compliant ?? false, format: v => v ? 'Yes' : 'No', direction: 'bool' },
+  { label: 'FERPA Compliant', key: 'ferpa', getValueA: r => r.compliance_flags.ferpa?.compliant ?? false, getValueB: r => r.compliance_flags.ferpa?.compliant ?? false, format: v => v ? 'Yes' : 'No', direction: 'bool' },
+  { label: 'Completeness', key: 'completeness', getValueA: r => ({ High: 3, Medium: 2, Low: 1 }[r.integrity_check?.completeness || 'Low'] || 0), getValueB: r => ({ High: 3, Medium: 2, Low: 1 }[r.integrity_check?.completeness || 'Low'] || 0), format: v => ['', 'Low', 'Medium', 'High'][v as number] || '?', direction: 'higher' },
+  { label: 'Readability Score', key: 'readability', getValueA: r => r.readability_score, getValueB: r => r.readability_score, format: v => `${v}/100`, direction: 'higher', maxScore: 100 },
+  { label: 'Confidence Score', key: 'confidence', getValueA: r => r.confidence_score, getValueB: r => r.confidence_score, format: v => `${v}/100`, direction: 'higher', maxScore: 100 },
+];
+
+function getWinner(valA: number | string | boolean, valB: number | string | boolean, direction: 'higher' | 'lower' | 'bool'): 'A' | 'B' | 'Tie' {
+  if (direction === 'bool') {
+    if (valA === valB) return 'Tie';
+    return valA ? 'A' : 'B';
+  }
+  const a = Number(valA);
+  const b = Number(valB);
+  if (a === b) return 'Tie';
+  if (direction === 'higher') return a > b ? 'A' : 'B';
+  return a < b ? 'A' : 'B';
+}
 
 export default function ComparePage() {
   const theme = useTheme();
@@ -29,13 +76,14 @@ export default function ComparePage() {
     setLoading(true);
 
     try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
       const [resA, resB] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/analyze`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: urlA }) }),
-        fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/analyze`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: urlB }) })
+        fetch(`${apiUrl}/api/analyze`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: urlA }) }),
+        fetch(`${apiUrl}/api/analyze`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: urlB }) })
       ]);
 
-      if (!resA.ok) throw new Error(`App A Analysis Failed: ${await resA.text()}`);
-      if (!resB.ok) throw new Error(`App B Analysis Failed: ${await resB.text()}`);
+      if (!resA.ok) { const d = await resA.json().catch(() => ({})); throw new Error(`App A: ${d.error || resA.statusText}`); }
+      if (!resB.ok) { const d = await resB.json().catch(() => ({})); throw new Error(`App B: ${d.error || resB.statusText}`); }
 
       const dataA: AnalysisResult = await resA.json();
       const dataB: AnalysisResult = await resB.json();
@@ -48,19 +96,18 @@ export default function ComparePage() {
     }
   };
 
-  const renderComparisonRow = (label: string, valA: React.ReactNode, valB: React.ReactNode, saferApp: 'A' | 'B' | 'Tie' = 'Tie') => (
-    <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', borderBottom: '1px solid', borderColor: 'divider', py: 2 }}>
-      <Typography sx={{ fontWeight: 800, color: 'text.secondary', fontSize: '0.9rem', display: 'flex', alignItems: 'center' }}>
-        {label}
-      </Typography>
-      <Box sx={{ p: 1, bgcolor: saferApp === 'A' ? (isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)') : 'transparent', borderLeft: saferApp === 'A' ? `3px solid ${theme.palette.success.main}` : '3px solid transparent' }}>
-        {valA}
-      </Box>
-      <Box sx={{ p: 1, bgcolor: saferApp === 'B' ? (isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)') : 'transparent', borderLeft: saferApp === 'B' ? `3px solid ${theme.palette.success.main}` : '3px solid transparent' }}>
-        {valB}
-      </Box>
-    </Box>
-  );
+  // Calculate overall verdict
+  const getVerdict = () => {
+    if (!results) return { winner: 'Tie' as const, winsA: 0, winsB: 0, ties: 0 };
+    let winsA = 0, winsB = 0, ties = 0;
+    COMPARISON_FACTORS.forEach(f => {
+      const w = getWinner(f.getValueA(results.A), f.getValueB(results.B), f.direction);
+      if (w === 'A') winsA++;
+      else if (w === 'B') winsB++;
+      else ties++;
+    });
+    return { winner: winsA > winsB ? 'A' as const : winsB > winsA ? 'B' as const : 'Tie' as const, winsA, winsB, ties };
+  };
 
   return (
     <Box sx={{ py: { xs: 6, md: 10 }, minHeight: '80vh' }}>
@@ -70,7 +117,7 @@ export default function ComparePage() {
             Compare Privacy Policies
           </Typography>
           <Typography align="center" color="text.secondary" sx={{ mb: 6, maxWidth: 600, mx: 'auto', lineHeight: 1.7 }}>
-            Enter two application URLs to run a side-by-side DPDP compliance and risk assessment.
+            Enter two application URLs to run a full side-by-side comparison across {COMPARISON_FACTORS.length} factors.
           </Typography>
         </motion.div>
 
@@ -109,86 +156,151 @@ export default function ComparePage() {
                   boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000', '&:hover': { transform: 'translate(-2px, -2px)' }
                 }}
               >
-                {loading ? 'Analyzing with AI...' : 'Compare Privacy Policy'}
+                {loading ? 'Analyzing Both with AI...' : 'Compare Privacy Policies'}
               </Button>
+              {loading && <LinearProgress sx={{ mt: 2, height: 3 }} />}
             </Box>
           </motion.div>
         ) : (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Button onClick={() => setResults(null)} startIcon={<ArrowForward sx={{ transform: 'rotate(180deg)' }} />} sx={{ fontWeight: 800, color: 'text.secondary' }}>
-                New Comparison
-              </Button>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, bgcolor: 'success.main', color: '#fff', px: 2, py: 0.5 }}>
-                <VerifiedUser fontSize="small" />
-                <Typography sx={{ fontWeight: 800, fontSize: '0.8rem' }}>
-                  Safer Choice: {results.A.overall_score > results.B.overall_score ? results.A.app_name : results.B.app_name}
-                </Typography>
-              </Box>
-            </Box>
+            {/* Verdict Banner */}
+            {(() => {
+              const v = getVerdict();
+              const winnerName = v.winner === 'A' ? results.A.app_name : v.winner === 'B' ? results.B.app_name : null;
+              return (
+                <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
+                  <Button onClick={() => setResults(null)} startIcon={<ArrowForward sx={{ transform: 'rotate(180deg)' }} />} sx={{ fontWeight: 800, color: 'text.secondary' }}>
+                    New Comparison
+                  </Button>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+                    <Chip label={`App A wins ${v.winsA}`} size="small" color={v.winner === 'A' ? 'success' : 'default'} icon={<TrendingUp />} />
+                    <Chip label={`Ties ${v.ties}`} size="small" icon={<Remove />} />
+                    <Chip label={`App B wins ${v.winsB}`} size="small" color={v.winner === 'B' ? 'success' : 'default'} icon={<TrendingDown />} />
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, bgcolor: v.winner !== 'Tie' ? 'success.main' : 'warning.main', color: '#fff', px: 2, py: 0.5 }}>
+                      <VerifiedUser fontSize="small" />
+                      <Typography sx={{ fontWeight: 800, fontSize: '0.8rem' }}>
+                        {winnerName ? `Safer: ${winnerName}` : 'Verdict: Tie'}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
+              );
+            })()}
 
+            {/* Comparison Table */}
             <Box sx={{
-              bgcolor: 'background.paper', p: 0, borderRadius: 0,
+              bgcolor: 'background.paper', borderRadius: 0,
               boxShadow: isDark ? '6px 6px 0px #fff' : '6px 6px 0px #000',
               border: '2px solid', borderColor: isDark ? 'text.primary' : '#000',
+              overflow: 'hidden',
             }}>
-              <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', bgcolor: isDark ? 'rgba(255,255,255,0.05)' : '#f8f9fa', borderBottom: '2px solid', borderColor: 'text.primary' }}>
-                <Box sx={{ p: 3 }}></Box>
-                <Box sx={{ p: 3, borderLeft: '1px solid', borderColor: 'divider' }}>
-                  <Typography variant="h5" sx={{ fontWeight: 800 }}>{results.A.app_name}</Typography>
+              {/* Header */}
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr 1fr 1fr', md: '2fr 1fr 1fr' }, bgcolor: isDark ? 'rgba(255,255,255,0.05)' : '#f8f9fa', borderBottom: '2px solid', borderColor: 'text.primary' }}>
+                <Box sx={{ p: 2.5, display: 'flex', alignItems: 'center' }}>
+                  <Typography sx={{ fontWeight: 800, fontSize: '0.85rem', color: 'text.secondary' }}>COMPARISON FACTOR ({COMPARISON_FACTORS.length})</Typography>
                 </Box>
-                <Box sx={{ p: 3, borderLeft: '1px solid', borderColor: 'divider' }}>
-                  <Typography variant="h5" sx={{ fontWeight: 800 }}>{results.B.app_name}</Typography>
+                <Box sx={{ p: 2.5, borderLeft: '1px solid', borderColor: 'divider', textAlign: 'center' }}>
+                  <Typography sx={{ fontWeight: 800, fontSize: '1rem' }}>{results.A.app_name}</Typography>
+                  <Chip label={results.A.privacy_grade} size="small" color={results.A.privacy_grade === 'A' ? 'success' : results.A.privacy_grade === 'B' ? 'warning' : 'error'} sx={{ mt: 0.5, fontWeight: 800 }} />
+                </Box>
+                <Box sx={{ p: 2.5, borderLeft: '1px solid', borderColor: 'divider', textAlign: 'center' }}>
+                  <Typography sx={{ fontWeight: 800, fontSize: '1rem' }}>{results.B.app_name}</Typography>
+                  <Chip label={results.B.privacy_grade} size="small" color={results.B.privacy_grade === 'A' ? 'success' : results.B.privacy_grade === 'B' ? 'warning' : 'error'} sx={{ mt: 0.5, fontWeight: 800 }} />
                 </Box>
               </Box>
 
-              <Box sx={{ p: 3 }}>
-                {renderComparisonRow('Privacy Score (Higher is Better)',
-                  <Typography sx={{ fontWeight: 800, fontSize: '1.2rem', color: results.A.overall_score >= 85 ? 'success.main' : results.A.overall_score >= 70 ? 'warning.main' : 'error.main' }}>{results.A.overall_score}/100</Typography>,
-                  <Typography sx={{ fontWeight: 800, fontSize: '1.2rem', color: results.B.overall_score >= 85 ? 'success.main' : results.B.overall_score >= 70 ? 'warning.main' : 'error.main' }}>{results.B.overall_score}/100</Typography>,
-                  results.A.overall_score > results.B.overall_score ? 'A' : 'B'
-                )}
-                
-                {renderComparisonRow('DPDP Act Compliance',
-                  results.A.compliance_flags.dpdp?.compliant ? <CheckCircle color="success" /> : <Warning color="error" />,
-                  results.B.compliance_flags.dpdp?.compliant ? <CheckCircle color="success" /> : <Warning color="error" />,
-                  results.A.compliance_flags.dpdp?.compliant && !results.B.compliance_flags.dpdp?.compliant ? 'A' : results.B.compliance_flags.dpdp?.compliant && !results.A.compliance_flags.dpdp?.compliant ? 'B' : 'Tie'
-                )}
+              {/* Factor Rows */}
+              {COMPARISON_FACTORS.map((factor, idx) => {
+                const valA = factor.getValueA(results.A);
+                const valB = factor.getValueB(results.B);
+                const winner = getWinner(valA, valB, factor.direction);
+                const isAlt = idx % 2 === 0;
 
-                {renderComparisonRow('Child Safety Tracking',
-                  <Typography variant="body2">{results.A.child_data_flags[0]}</Typography>,
-                  <Typography variant="body2">{results.B.child_data_flags[0]}</Typography>
-                )}
-
-                {renderComparisonRow('Third-Party Sharing',
-                  <Typography variant="body2">{results.A.third_party_sharing.length} entities</Typography>,
-                  <Typography variant="body2">{results.B.third_party_sharing.length} entities</Typography>,
-                  results.A.third_party_sharing.length < results.B.third_party_sharing.length ? 'A' : 'B'
-                )}
-                
-                {renderComparisonRow('Data Collection Scope',
-                  <Typography variant="body2">{results.A.data_collected.length} categories</Typography>,
-                  <Typography variant="body2">{results.B.data_collected.length} categories</Typography>,
-                  results.A.data_collected.length < results.B.data_collected.length ? 'A' : 'B'
-                )}
-
-                {renderComparisonRow('Verification Layer (Completeness)',
-                  <Box>
-                    <Typography variant="body2" sx={{ fontWeight: 800, color: results.A.integrity_check?.completeness === 'High' ? 'success.main' : 'warning.main' }}>{results.A.integrity_check?.completeness}</Typography>
-                    {results.A.integrity_check && results.A.integrity_check.missing_sections.length > 0 && (
-                      <Typography variant="caption" sx={{ color: 'error.main', display: 'block', mt: 0.5 }}>Missing: {results.A.integrity_check.missing_sections.length} critical sections</Typography>
-                    )}
-                  </Box>,
-                  <Box>
-                    <Typography variant="body2" sx={{ fontWeight: 800, color: results.B.integrity_check?.completeness === 'High' ? 'success.main' : 'warning.main' }}>{results.B.integrity_check?.completeness}</Typography>
-                    {results.B.integrity_check && results.B.integrity_check.missing_sections.length > 0 && (
-                      <Typography variant="caption" sx={{ color: 'error.main', display: 'block', mt: 0.5 }}>Missing: {results.B.integrity_check.missing_sections.length} critical sections</Typography>
-                    )}
-                  </Box>,
-                  results.A.integrity_check?.completeness === 'High' && results.B.integrity_check?.completeness !== 'High' ? 'A' : results.B.integrity_check?.completeness === 'High' && results.A.integrity_check?.completeness !== 'High' ? 'B' : 'Tie'
-                )}
-              </Box>
+                return (
+                  <Box key={factor.key} sx={{
+                    display: 'grid', gridTemplateColumns: { xs: '1fr 1fr 1fr', md: '2fr 1fr 1fr' },
+                    borderBottom: '1px solid', borderColor: 'divider',
+                    bgcolor: isAlt ? (isDark ? 'rgba(255,255,255,0.015)' : 'rgba(0,0,0,0.01)') : 'transparent',
+                    '&:hover': { bgcolor: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.025)' },
+                    transition: 'background 0.15s',
+                  }}>
+                    <Box sx={{ p: 2, display: 'flex', alignItems: 'center' }}>
+                      <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', color: 'text.secondary' }}>{factor.label}</Typography>
+                    </Box>
+                    {/* App A Cell */}
+                    <Box sx={{
+                      p: 2, borderLeft: winner === 'A' ? `3px solid ${theme.palette.success.main}` : '3px solid transparent',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1,
+                      bgcolor: winner === 'A' ? (isDark ? 'rgba(74,222,128,0.06)' : 'rgba(22,163,74,0.04)') : 'transparent',
+                    }}>
+                      {winner === 'A' && <CheckCircle sx={{ fontSize: 16, color: 'success.main' }} />}
+                      {winner === 'B' && <Cancel sx={{ fontSize: 16, color: 'error.main', opacity: 0.5 }} />}
+                      <Typography sx={{ fontWeight: 800, fontSize: '0.9rem', color: winner === 'A' ? 'success.main' : winner === 'B' ? 'error.main' : 'text.primary' }}>
+                        {factor.format(valA)}
+                      </Typography>
+                    </Box>
+                    {/* App B Cell */}
+                    <Box sx={{
+                      p: 2, borderLeft: winner === 'B' ? `3px solid ${theme.palette.success.main}` : '3px solid transparent',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1,
+                      bgcolor: winner === 'B' ? (isDark ? 'rgba(74,222,128,0.06)' : 'rgba(22,163,74,0.04)') : 'transparent',
+                    }}>
+                      {winner === 'B' && <CheckCircle sx={{ fontSize: 16, color: 'success.main' }} />}
+                      {winner === 'A' && <Cancel sx={{ fontSize: 16, color: 'error.main', opacity: 0.5 }} />}
+                      <Typography sx={{ fontWeight: 800, fontSize: '0.9rem', color: winner === 'B' ? 'success.main' : winner === 'A' ? 'error.main' : 'text.primary' }}>
+                        {factor.format(valB)}
+                      </Typography>
+                    </Box>
+                  </Box>
+                );
+              })}
             </Box>
+
+            {/* Red Flags Comparison */}
+            <Grid container spacing={3} sx={{ mt: 3 }}>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Box sx={{ bgcolor: 'background.paper', p: 3, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000', boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000' }}>
+                  <Typography sx={{ fontWeight: 800, mb: 2 }}>🚩 {results.A.app_name} — Red Flags ({results.A.red_flags.length})</Typography>
+                  {results.A.red_flags.length === 0 ? (
+                    <Typography variant="body2" color="success.main" sx={{ fontWeight: 600 }}>No red flags detected ✓</Typography>
+                  ) : results.A.red_flags.map((f, i) => (
+                    <Box key={i} sx={{ mb: 1.5, pl: 2, borderLeft: `3px solid ${f.severity === 'Critical' ? theme.palette.error.main : theme.palette.warning.main}` }}>
+                      <Typography sx={{ fontWeight: 700, fontSize: '0.85rem' }}>{f.title}</Typography>
+                      <Typography variant="caption" color="text.secondary">{f.description}</Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Box sx={{ bgcolor: 'background.paper', p: 3, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000', boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000' }}>
+                  <Typography sx={{ fontWeight: 800, mb: 2 }}>🚩 {results.B.app_name} — Red Flags ({results.B.red_flags.length})</Typography>
+                  {results.B.red_flags.length === 0 ? (
+                    <Typography variant="body2" color="success.main" sx={{ fontWeight: 600 }}>No red flags detected ✓</Typography>
+                  ) : results.B.red_flags.map((f, i) => (
+                    <Box key={i} sx={{ mb: 1.5, pl: 2, borderLeft: `3px solid ${f.severity === 'Critical' ? theme.palette.error.main : theme.palette.warning.main}` }}>
+                      <Typography sx={{ fontWeight: 700, fontSize: '0.85rem' }}>{f.title}</Typography>
+                      <Typography variant="caption" color="text.secondary">{f.description}</Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Grid>
+            </Grid>
+
+            {/* Summary */}
+            <Grid container spacing={3} sx={{ mt: 1 }}>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Box sx={{ bgcolor: 'background.paper', p: 3, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000', boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000' }}>
+                  <Typography sx={{ fontWeight: 800, mb: 1 }}>📝 {results.A.app_name} Summary</Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>{results.A.summary_plain_english}</Typography>
+                </Box>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Box sx={{ bgcolor: 'background.paper', p: 3, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000', boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000' }}>
+                  <Typography sx={{ fontWeight: 800, mb: 1 }}>📝 {results.B.app_name} Summary</Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>{results.B.summary_plain_english}</Typography>
+                </Box>
+              </Grid>
+            </Grid>
           </motion.div>
         )}
       </Container>

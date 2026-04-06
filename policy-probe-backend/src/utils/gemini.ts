@@ -1,7 +1,7 @@
 import { AnalysisResult } from './types';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent`;
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
 
 const ANALYSIS_PROMPT = `You are a privacy policy analysis engine for educational apps. Analyze the following privacy policy text and return a STRICT JSON response (no markdown, no code fences, just raw JSON).
 
