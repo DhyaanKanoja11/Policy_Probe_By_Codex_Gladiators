@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import {
   Box, Container, Typography, TextField, Button, Card, useTheme,
-  ToggleButton, ToggleButtonGroup, CircularProgress, Alert, LinearProgress, Switch, FormControlLabel
+  CircularProgress, Alert, LinearProgress, Switch, FormControlLabel
 } from '@mui/material';
 import { Search, Link as LinkIcon, Description, TextSnippet, ArrowForward, Lock } from '@mui/icons-material';
 import { motion, Variants } from 'framer-motion';
@@ -16,10 +16,10 @@ const fadeUp: Variants = {
 };
 
 const inputModes = [
-  { value: 'name' as InputMode, label: 'App Name', icon: <Search fontSize="small" /> },
-  { value: 'url' as InputMode, label: 'Website URL', icon: <LinkIcon fontSize="small" /> },
-  { value: 'policy' as InputMode, label: 'Policy URL', icon: <Description fontSize="small" /> },
-  { value: 'text' as InputMode, label: 'Paste Text', icon: <TextSnippet fontSize="small" /> },
+  { value: 'name' as InputMode, label: 'App Name', shortLabel: 'App', icon: <Search fontSize="small" /> },
+  { value: 'url' as InputMode, label: 'Website URL', shortLabel: 'URL', icon: <LinkIcon fontSize="small" /> },
+  { value: 'policy' as InputMode, label: 'Policy URL', shortLabel: 'Policy', icon: <Description fontSize="small" /> },
+  { value: 'text' as InputMode, label: 'Paste Text', shortLabel: 'Text', icon: <TextSnippet fontSize="small" /> },
 ];
 
 const placeholders: Record<InputMode, string> = {
@@ -97,28 +97,39 @@ export default function AnalyzePage() {
             boxShadow: '0px 4px 40px rgba(0,0,0,0.04)',
             border: `1px solid ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(171,179,183,0.1)'}`,
           }}>
-            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
-              <ToggleButtonGroup
-                value={mode} exclusive
-                onChange={(_, v) => { if (v) { setMode(v); setValue(''); setError(''); } }}
-                sx={{
-                  '& .MuiToggleButton-root': {
-                    px: 2.5, py: 1, textTransform: 'none', fontWeight: 600, fontSize: '0.82rem',
-                    border: 'none', borderRadius: '12px !important', mx: 0.5,
-                    color: 'text.secondary',
-                    '&.Mui-selected': {
-                      bgcolor: isDark ? 'rgba(77,142,255,0.12)' : '#d8e2ff',
-                      color: 'primary.main',
-                    },
-                  },
-                }}
-              >
+            {/* Mode selector — 2×2 grid on mobile, row on desktop */}
+            <Box sx={{ mb: 4 }}>
+              <Box sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr 1fr', sm: 'repeat(4, 1fr)' },
+                gap: 1,
+                bgcolor: isDark ? 'rgba(255,255,255,0.04)' : '#f1f4f6',
+                borderRadius: 3,
+                p: 0.75,
+              }}>
                 {inputModes.map((m) => (
-                  <ToggleButton key={m.value} value={m.value}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75 }}>{m.icon} {m.label}</Box>
-                  </ToggleButton>
+                  <Box
+                    key={m.value}
+                    onClick={() => { setMode(m.value); setValue(''); setError(''); }}
+                    sx={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.75,
+                      px: { xs: 1, sm: 2 }, py: { xs: 1.25, sm: 1 },
+                      borderRadius: 2.5, cursor: 'pointer', fontWeight: 600,
+                      fontSize: { xs: '0.75rem', sm: '0.82rem' },
+                      transition: 'all 0.18s',
+                      color: mode === m.value ? 'primary.main' : 'text.secondary',
+                      bgcolor: mode === m.value ? (isDark ? 'rgba(77,142,255,0.15)' : '#fff') : 'transparent',
+                      boxShadow: mode === m.value ? (isDark ? 'none' : '0 1px 4px rgba(0,0,0,0.08)') : 'none',
+                      '&:hover': { color: 'primary.main', bgcolor: isDark ? 'rgba(77,142,255,0.08)' : 'rgba(255,255,255,0.7)' },
+                      userSelect: 'none',
+                    }}
+                  >
+                    {m.icon}
+                    <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>{m.label}</Box>
+                    <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>{m.shortLabel}</Box>
+                  </Box>
                 ))}
-              </ToggleButtonGroup>
+              </Box>
             </Box>
 
             {mode === 'text' ? (
@@ -132,12 +143,12 @@ export default function AnalyzePage() {
 
             {error && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
 
-            <Box sx={{ mb: 3, p: 2, borderRadius: 3, bgcolor: isDark ? 'rgba(77,142,255,0.04)' : '#f8f9fa', border: `1px solid ${isDark ? 'rgba(77,142,255,0.1)' : 'rgba(0,90,194,0.1)'}` }}>
+            <Box sx={{ mb: 3, p: { xs: 1.5, sm: 2 }, borderRadius: 3, bgcolor: isDark ? 'rgba(77,142,255,0.04)' : '#f8f9fa', border: `1px solid ${isDark ? 'rgba(77,142,255,0.1)' : 'rgba(0,90,194,0.1)'}` }}>
               <FormControlLabel
-                control={<Switch checked={deepAudit} onChange={(e) => setDeepAudit(e.target.checked)} color="primary" />}
+                control={<Switch checked={deepAudit} onChange={(e) => setDeepAudit(e.target.checked)} color="primary" size="small" />}
                 label={
                   <Box>
-                    <Typography sx={{ fontWeight: 700, fontSize: '0.9rem', color: deepAudit ? 'primary.main' : 'text.primary' }}>Deep Audit (Behavioral Scan)</Typography>
+                    <Typography sx={{ fontWeight: 700, fontSize: { xs: '0.82rem', sm: '0.9rem' }, color: deepAudit ? 'primary.main' : 'text.primary' }}>Deep Audit (Behavioral Scan)</Typography>
                     <Typography variant="caption" color="text.secondary">Simulate scanning for hidden trackers and permission mismatches.</Typography>
                   </Box>
                 }
