@@ -1,9 +1,28 @@
 'use client';
-import React, { useState } from 'react';
-import { Box, Container, Typography, TextField, Button, Grid, useTheme, CircularProgress, Alert, Chip, LinearProgress } from '@mui/material';
-import { CompareArrows, CheckCircle, Warning, Cancel, ArrowForward, VerifiedUser, TrendingUp, TrendingDown, Remove } from '@mui/icons-material';
-import { motion, Variants } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { Box, Container, Typography, TextField, Button, Grid, useTheme, Alert, Chip, Skeleton } from '@mui/material';
+import { CompareArrows, CheckCircle, Cancel, ArrowForward, VerifiedUser, TrendingUp, TrendingDown, Remove, SearchOutlined, AutoAwesome, Shield } from '@mui/icons-material';
+import { motion, Variants, AnimatePresence } from 'framer-motion';
 import { AnalysisResult } from '@/lib/types';
+
+/** Extract a readable display name from a URL */
+function getDomain(url: string): string {
+  try {
+    const hostname = new URL(url.startsWith('http') ? url : `https://${url}`).hostname;
+    // Strip www. and return capitalised root domain
+    return hostname.replace(/^www\./, '').split('.')[0].charAt(0).toUpperCase() +
+      hostname.replace(/^www\./, '').split('.')[0].slice(1);
+  } catch {
+    return url || 'App';
+  }
+}
+
+/** Resolve best display name — prefer API name if it isn't the generic fallback */
+function resolveAppName(apiName: string, url: string): string {
+  const generic = ['Analyzed App', 'Unknown App', '', 'App'];
+  if (generic.includes(apiName.trim())) return getDomain(url);
+  return apiName;
+}
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -57,6 +76,85 @@ function getWinner(valA: number | string | boolean, valB: number | string | bool
   return a < b ? 'A' : 'B';
 }
 
+const LOADING_STEPS = [
+  { icon: SearchOutlined, label: 'Fetching privacy policies…', pct: 15 },
+  { icon: AutoAwesome,    label: 'Running Gemini AI analysis on both…', pct: 45 },
+  { icon: Shield,         label: 'Scoring 20 comparison factors…', pct: 75 },
+  { icon: VerifiedUser,   label: 'Generating final verdict…', pct: 95 },
+];
+
+function CompareLoadingOverlay({ urlA, urlB }: { urlA: string; urlB: string }) {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === 'dark';
+  const [step, setStep] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    // Advance steps every ~4s
+    intervalRef.current = setInterval(() => {
+      setStep(s => Math.min(s + 1, LOADING_STEPS.length - 1));
+    }, 4000);
+    // Smooth progress bar
+    const target = LOADING_STEPS[step]?.pct ?? 95;
+    const tick = setInterval(() => setProgress(p => p < target ? p + 1 : p), 80);
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); clearInterval(tick); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step]);
+
+  const current = LOADING_STEPS[step];
+  const Icon = current.icon;
+
+  return (
+    <Box sx={{ py: 10, textAlign: 'center' }}>
+      <motion.div animate={{ scale: [1, 1.08, 1] }} transition={{ repeat: Infinity, duration: 2 }}>
+        <Box sx={{ width: 80, height: 80, borderRadius: '50%', bgcolor: isDark ? 'rgba(77,142,255,0.12)' : '#d8e2ff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', mb: 3 }}>
+          <Icon sx={{ fontSize: 36, color: 'primary.main' }} />
+        </Box>
+      </motion.div>
+      <Typography variant="h5" sx={{ fontWeight: 800, mb: 1 }}>Comparing Policies</Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 4, flexWrap: 'wrap' }}>
+        <Chip label={getDomain(urlA)} size="small" color="primary" variant="outlined" />
+        <Typography sx={{ fontWeight: 800, color: 'text.secondary', lineHeight: '24px' }}>vs</Typography>
+        <Chip label={getDomain(urlB)} size="small" color="secondary" variant="outlined" />
+      </Box>
+      {/* Progress bar */}
+      <Box sx={{ maxWidth: 480, mx: 'auto', mb: 2 }}>
+        <Box sx={{ height: 6, borderRadius: 3, bgcolor: isDark ? 'rgba(255,255,255,0.08)' : '#e5e9f0', overflow: 'hidden' }}>
+          <motion.div
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            style={{ height: '100%', background: `linear-gradient(90deg, ${theme.palette.primary.main}, ${isDark ? '#00b4d8' : '#005ac2'})`, borderRadius: 3 }}
+          />
+        </Box>
+        <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>{progress}%</Typography>
+      </Box>
+      {/* Step messages */}
+      <AnimatePresence mode="wait">
+        <motion.div key={step} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.35 }}>
+          <Typography color="text.secondary" sx={{ fontSize: '0.9rem' }}>{current.label}</Typography>
+        </motion.div>
+      </AnimatePresence>
+      {/* Step dots */}
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 3 }}>
+        {LOADING_STEPS.map((_, i) => (
+          <Box key={i} sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: i <= step ? 'primary.main' : (isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)'), transition: 'background 0.3s' }} />
+        ))}
+      </Box>
+    </Box>
+  );
+}
+
+function CompareSkeletonRow() {
+  return (
+    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr 1fr 1fr', md: '2fr 1fr 1fr' }, borderBottom: '1px solid', borderColor: 'divider', py: 0.5 }}>
+      <Box sx={{ p: 2 }}><Skeleton width="60%" height={20} /></Box>
+      <Box sx={{ p: 2, borderLeft: '3px solid transparent' }}><Skeleton width="50%" height={20} sx={{ mx: 'auto' }} /></Box>
+      <Box sx={{ p: 2, borderLeft: '3px solid transparent' }}><Skeleton width="50%" height={20} sx={{ mx: 'auto' }} /></Box>
+    </Box>
+  );
+}
+
 export default function ComparePage() {
   const theme = useTheme();
   const isDark = theme.palette.mode === 'dark';
@@ -65,30 +163,23 @@ export default function ComparePage() {
   const [urlB, setUrlB] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [results, setResults] = useState<{ A: AnalysisResult; B: AnalysisResult } | null>(null);
+  const [results, setResults] = useState<{ A: AnalysisResult; B: AnalysisResult; nameA: string; nameB: string } | null>(null);
 
   const handleCompare = async () => {
-    if (!urlA || !urlB) {
-      setError('Please enter URLs for both apps.');
-      return;
-    }
+    if (!urlA || !urlB) { setError('Please enter URLs for both apps.'); return; }
     setError('');
     setLoading(true);
-
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
       const [resA, resB] = await Promise.all([
         fetch(`${apiUrl}/api/analyze`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: urlA }) }),
         fetch(`${apiUrl}/api/analyze`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: urlB }) })
       ]);
-
       if (!resA.ok) { const d = await resA.json().catch(() => ({})); throw new Error(`App A: ${d.error || resA.statusText}`); }
       if (!resB.ok) { const d = await resB.json().catch(() => ({})); throw new Error(`App B: ${d.error || resB.statusText}`); }
-
       const dataA: AnalysisResult = await resA.json();
       const dataB: AnalysisResult = await resB.json();
-
-      setResults({ A: dataA, B: dataB });
+      setResults({ A: dataA, B: dataB, nameA: resolveAppName(dataA.app_name, urlA), nameB: resolveAppName(dataB.app_name, urlB) });
     } catch (err: any) {
       setError(err.message || 'Comparison failed.');
     } finally {
@@ -121,7 +212,11 @@ export default function ComparePage() {
           </Typography>
         </motion.div>
 
-        {!results ? (
+        {/* Show animated loading overlay while fetching */}
+        {loading && <CompareLoadingOverlay urlA={urlA} urlB={urlB} />}
+
+        {/* Input form — hide while loading or when results shown */}
+        {!loading && !results && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
             <Box sx={{
               bgcolor: 'background.paper', p: { xs: 3, md: 5 }, borderRadius: 0,
@@ -150,23 +245,25 @@ export default function ComparePage() {
               {error && <Alert severity="error" sx={{ mt: 3, borderRadius: 0 }}>{error}</Alert>}
 
               <Button fullWidth variant="contained" size="large" disabled={loading} onClick={handleCompare}
-                startIcon={loading ? <CircularProgress size={18} color="inherit" /> : <CompareArrows />}
+                startIcon={<CompareArrows />}
                 sx={{
                   mt: 4, py: 1.75, fontSize: '1rem', borderRadius: 0, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000',
                   boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000', '&:hover': { transform: 'translate(-2px, -2px)' }
                 }}
               >
-                {loading ? 'Analyzing Both with AI...' : 'Compare Privacy Policies'}
+                Compare Privacy Policies
               </Button>
-              {loading && <LinearProgress sx={{ mt: 2, height: 3 }} />}
             </Box>
           </motion.div>
-        ) : (
+        )}
+
+        {/* Results */}
+        {!loading && results && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             {/* Verdict Banner */}
             {(() => {
               const v = getVerdict();
-              const winnerName = v.winner === 'A' ? results.A.app_name : v.winner === 'B' ? results.B.app_name : null;
+              const winnerName = v.winner === 'A' ? results.nameA : v.winner === 'B' ? results.nameB : null;
               return (
                 <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
                   <Button onClick={() => setResults(null)} startIcon={<ArrowForward sx={{ transform: 'rotate(180deg)' }} />} sx={{ fontWeight: 800, color: 'text.secondary' }}>
@@ -200,11 +297,11 @@ export default function ComparePage() {
                   <Typography sx={{ fontWeight: 800, fontSize: '0.85rem', color: 'text.secondary' }}>COMPARISON FACTOR ({COMPARISON_FACTORS.length})</Typography>
                 </Box>
                 <Box sx={{ p: 2.5, borderLeft: '1px solid', borderColor: 'divider', textAlign: 'center' }}>
-                  <Typography sx={{ fontWeight: 800, fontSize: '1rem' }}>{results.A.app_name}</Typography>
+                  <Typography sx={{ fontWeight: 800, fontSize: '1rem' }}>{results.nameA}</Typography>
                   <Chip label={results.A.privacy_grade} size="small" color={results.A.privacy_grade === 'A' ? 'success' : results.A.privacy_grade === 'B' ? 'warning' : 'error'} sx={{ mt: 0.5, fontWeight: 800 }} />
                 </Box>
                 <Box sx={{ p: 2.5, borderLeft: '1px solid', borderColor: 'divider', textAlign: 'center' }}>
-                  <Typography sx={{ fontWeight: 800, fontSize: '1rem' }}>{results.B.app_name}</Typography>
+                  <Typography sx={{ fontWeight: 800, fontSize: '1rem' }}>{results.nameB}</Typography>
                   <Chip label={results.B.privacy_grade} size="small" color={results.B.privacy_grade === 'A' ? 'success' : results.B.privacy_grade === 'B' ? 'warning' : 'error'} sx={{ mt: 0.5, fontWeight: 800 }} />
                 </Box>
               </Box>
@@ -260,7 +357,7 @@ export default function ComparePage() {
             <Grid container spacing={3} sx={{ mt: 3 }}>
               <Grid size={{ xs: 12, md: 6 }}>
                 <Box sx={{ bgcolor: 'background.paper', p: 3, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000', boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000' }}>
-                  <Typography sx={{ fontWeight: 800, mb: 2 }}>🚩 {results.A.app_name} — Red Flags ({results.A.red_flags.length})</Typography>
+                  <Typography sx={{ fontWeight: 800, mb: 2 }}>🚩 {results.nameA} — Red Flags ({results.A.red_flags.length})</Typography>
                   {results.A.red_flags.length === 0 ? (
                     <Typography variant="body2" color="success.main" sx={{ fontWeight: 600 }}>No red flags detected ✓</Typography>
                   ) : results.A.red_flags.map((f, i) => (
@@ -273,7 +370,7 @@ export default function ComparePage() {
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <Box sx={{ bgcolor: 'background.paper', p: 3, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000', boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000' }}>
-                  <Typography sx={{ fontWeight: 800, mb: 2 }}>🚩 {results.B.app_name} — Red Flags ({results.B.red_flags.length})</Typography>
+                  <Typography sx={{ fontWeight: 800, mb: 2 }}>🚩 {results.nameB} — Red Flags ({results.B.red_flags.length})</Typography>
                   {results.B.red_flags.length === 0 ? (
                     <Typography variant="body2" color="success.main" sx={{ fontWeight: 600 }}>No red flags detected ✓</Typography>
                   ) : results.B.red_flags.map((f, i) => (
@@ -290,13 +387,13 @@ export default function ComparePage() {
             <Grid container spacing={3} sx={{ mt: 1 }}>
               <Grid size={{ xs: 12, md: 6 }}>
                 <Box sx={{ bgcolor: 'background.paper', p: 3, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000', boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000' }}>
-                  <Typography sx={{ fontWeight: 800, mb: 1 }}>📝 {results.A.app_name} Summary</Typography>
+                  <Typography sx={{ fontWeight: 800, mb: 1 }}>📝 {results.nameA} Summary</Typography>
                   <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>{results.A.summary_plain_english}</Typography>
                 </Box>
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <Box sx={{ bgcolor: 'background.paper', p: 3, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000', boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000' }}>
-                  <Typography sx={{ fontWeight: 800, mb: 1 }}>📝 {results.B.app_name} Summary</Typography>
+                  <Typography sx={{ fontWeight: 800, mb: 1 }}>📝 {results.nameB} Summary</Typography>
                   <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>{results.B.summary_plain_english}</Typography>
                 </Box>
               </Grid>
