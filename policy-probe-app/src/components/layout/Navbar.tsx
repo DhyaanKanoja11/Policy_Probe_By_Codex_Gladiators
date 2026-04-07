@@ -83,10 +83,10 @@ export default function Navbar() {
                 sx={{
                   fontFamily: '"Manrope", sans-serif',
                   fontWeight: 900,
-                  fontSize: '1.4rem',
+                  fontSize: { xs: '1.2rem', sm: '1.4rem' },
                   letterSpacing: '-0.04em',
                   color: 'text.primary',
-                  display: { xs: 'none', sm: 'block' }
+                  display: 'block'
                 }}
               >
                 PolicyProbe
