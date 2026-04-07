@@ -17,62 +17,116 @@ const steps = [
   { icon: <Description sx={{ fontSize: 36 }} />, num: '4', title: 'Generate Report', desc: 'Receive a professional intelligence brief ready for school board review.' },
 ];
 
-const AntiGravityBackground = ({ isDark }: { isDark: boolean }) => {
-  const elements = Array.from({ length: 45 });
-  const themeColor = isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)';
-  const highlightColor = isDark ? 'rgba(77, 142, 255, 0.3)' : 'rgba(26, 115, 232, 0.2)';
+const InteractiveBackground = ({ isDark }: { isDark: boolean }) => {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  
+  const particles = React.useMemo(() => {
+    return Array.from({ length: 40 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: isDark ? Math.random() * 3 + 2 : Math.random() * 8 + 4,
+      speed: Math.random() * 20 + 20,
+      delay: Math.random() * -40,
+      isSpecial: i % 4 === 0,
+      drift: Math.random() * 10 - 5,
+    }));
+  }, [isDark]);
+
+  React.useEffect(() => {
+    let animationFrameId: number;
+    let targetX = typeof window !== 'undefined' ? window.innerWidth / 2 : 500;
+    let targetY = typeof window !== 'undefined' ? window.innerHeight / 2 : 500;
+    let currentX = targetX;
+    let currentY = targetY;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+    };
+
+    const animate = () => {
+      if (containerRef.current) {
+        currentX += (targetX - currentX) * 0.08;
+        currentY += (targetY - currentY) * 0.08;
+        containerRef.current.style.setProperty('--mouse-x', `${currentX}px`);
+        containerRef.current.style.setProperty('--mouse-y', `${currentY}px`);
+      }
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    animate();
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
+
+  const themeColor = isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
+  const highlightColor = isDark ? '#4d8eff' : '#1a73e8';
 
   return (
-    <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', zIndex: 0, pointerEvents: 'none' }}>
-      {elements.map((_, i) => {
-        const type = i % 4; // 0: circle, 1: square, 2: plus, 3: dot
-        const size = Math.random() * 30 + 10;
-        const color = i % 5 === 0 ? highlightColor : themeColor;
-        
+    <Box ref={containerRef} sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', zIndex: 0, pointerEvents: 'none' }}>
+      
+      {!isDark && (
+        <Box sx={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: `radial-gradient(${themeColor} 1.5px, transparent 1.5px)`,
+          backgroundSize: '30px 30px',
+          opacity: 0.6,
+          WebkitMaskImage: 'radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black 10%, transparent 100%)',
+          maskImage: 'radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black 10%, transparent 100%)',
+        }} />
+      )}
+
+      {isDark && (
+        <Box sx={{
+          position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: `linear-gradient(${themeColor} 1px, transparent 1px), linear-gradient(90deg, ${themeColor} 1px, transparent 1px)`,
+          backgroundSize: '40px 40px',
+          opacity: 0.3,
+          WebkitMaskImage: 'radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black 10%, transparent 100%)',
+          maskImage: 'radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), black 10%, transparent 100%)',
+        }} />
+      )}
+
+      {particles.map((p) => {
+        const color = p.isSpecial ? highlightColor : themeColor;
         return (
-          <motion.div
-            key={i}
-            initial={{ 
-              x: `${Math.random() * 100}vw`, 
-              y: `${100 + Math.random() * 20}vh`, 
-              rotate: Math.random() * 360,
-              scale: Math.random() * 0.5 + 0.5
-            }}
+           <motion.div
+            key={p.id}
+            initial={{ x: `${p.x}vw`, y: `110vh`, opacity: 0 }}
             animate={{ 
-              y: '-20vh',
-              rotate: Math.random() > 0.5 ? 360 : -360
+              y: `-10vh`,
+              x: `${p.x + p.drift}vw`,
+              opacity: [0, 1, 1, 0],
+              rotate: isDark ? 0 : 360
             }}
-            transition={{ 
-              duration: Math.random() * 20 + 25, 
-              repeat: Infinity, 
-              ease: "linear", 
-              delay: Math.random() * -30 // Negative delay so they are on screen immediately
-            }}
-            style={{ 
-              position: 'absolute', 
-              display: 'flex', 
-              justifyContent: 'center', 
-              alignItems: 'center' 
-            }}
+            transition={{ duration: p.speed, repeat: Infinity, ease: "linear", delay: p.delay, times: [0, 0.1, 0.9, 1] }}
+            style={{ position: 'absolute', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
           >
-            {type === 0 && (
-              <Box sx={{ width: size, height: size, border: `2px solid ${color}`, borderRadius: '50%' }} />
-            )}
-            {type === 1 && (
-              <Box sx={{ width: size, height: size, border: `2px solid ${color}` }} />
-            )}
-            {type === 2 && (
-              <Box sx={{ position: 'relative', width: size, height: size }}>
-                <Box sx={{ position: 'absolute', top: '50%', left: 0, right: 0, height: 2, bgcolor: color, transform: 'translateY(-50%)' }} />
-                <Box sx={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 2, bgcolor: color, transform: 'translateX(-50%)' }} />
-              </Box>
-            )}
-            {type === 3 && (
-              <Box sx={{ width: 6, height: 6, bgcolor: color, borderRadius: '50%' }} />
+            {isDark ? (
+              <Box sx={{ width: p.size, height: p.size, backgroundColor: color, borderRadius: '50%', boxShadow: p.isSpecial ? `0 0 ${p.size * 2}px ${color}` : 'none' }} />
+            ) : (
+              p.isSpecial ? (
+                <Box sx={{ width: p.size, height: p.size, border: `2px solid ${color}`, borderRadius: '2px', transform: 'rotate(45deg)' }} />
+              ) : (
+                <Box sx={{ width: p.size, height: p.size, border: `2px solid ${color}`, borderRadius: '50%' }} />
+              )
             )}
           </motion.div>
         );
       })}
+
+      <Box sx={{
+        position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+        background: isDark 
+          ? 'radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(77,142,255,0.1), transparent 60%)'
+          : 'radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(26,115,232,0.06), transparent 60%)',
+      }} />
+
     </Box>
   );
 };
@@ -91,7 +145,7 @@ export default function LandingPage() {
         onMouseLeave={() => setIsHovered(false)} 
         sx={{ position: 'relative', pb: 10, pt: 16, minHeight: '90vh', display: 'flex', alignItems: 'center', bgcolor: isDark ? '#000' : '#fefefe' }}
       >
-        <AntiGravityBackground isDark={isDark} />
+        <InteractiveBackground isDark={isDark} />
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>          <Grid container spacing={6} alignItems="center" justifyContent="center">
             <Grid size={{ xs: 12, md: 10, lg: 9 }} sx={{ textAlign: 'center' }}>
               <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>

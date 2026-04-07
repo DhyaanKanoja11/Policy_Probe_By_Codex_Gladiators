@@ -138,37 +138,22 @@ export async function analyzeWithGemini(policyText: string, appName: string, pol
 
   // Ensure all required fields exist with defaults
   const breakdown = result.score_breakdown || {
-    data_collection: 20, third_party_sharing: 20, child_safety: 15, retention_clarity: 10,
-    user_rights: 10, transparency: 10, security: 5, tracking_cookies: 5, ambiguity: 5
+    data_collection: 15, third_party_sharing: 15, child_safety: 10, retention_clarity: 5,
+    user_rights: 5, transparency: 5, security: 3, tracking_cookies: 2, ambiguity: 2
   };
 
-  // Enforce score constraints strictly
-  breakdown.data_collection = Math.min(20, Math.max(0, breakdown.data_collection || 0));
-  breakdown.third_party_sharing = Math.min(20, Math.max(0, breakdown.third_party_sharing || 0));
-  breakdown.child_safety = Math.min(15, Math.max(0, breakdown.child_safety || 0));
-  breakdown.retention_clarity = Math.min(10, Math.max(0, breakdown.retention_clarity || 0));
-  breakdown.user_rights = Math.min(10, Math.max(0, breakdown.user_rights || 0));
-  breakdown.transparency = Math.min(10, Math.max(0, breakdown.transparency || 0));
-  breakdown.security = Math.min(5, Math.max(0, breakdown.security || 0));
-  breakdown.tracking_cookies = Math.min(5, Math.max(0, breakdown.tracking_cookies || 0));
-  breakdown.ambiguity = Math.min(5, Math.max(0, breakdown.ambiguity || 0));
+  const finalScore = result.overall_score ?? 50;
+  let finalGrade: 'A' | 'B' | 'C' | 'D' = 'D';
+  let finalRisk: 'Low' | 'Medium' | 'High' = 'High';
 
-  const strictScore = Math.round(
-    breakdown.data_collection + breakdown.third_party_sharing + breakdown.child_safety +
-    breakdown.retention_clarity + breakdown.user_rights + breakdown.transparency +
-    breakdown.security + breakdown.tracking_cookies + breakdown.ambiguity
-  );
-
-  let strictGrade: 'A'|'B'|'C'|'D' = 'D';
-  let strictRisk: 'Low'|'Medium'|'High' = 'High';
-  if (strictScore >= 85) { strictGrade = 'A'; strictRisk = 'Low'; }
-  else if (strictScore >= 70) { strictGrade = 'B'; strictRisk = 'Medium'; }
-  else if (strictScore >= 50) { strictGrade = 'C'; strictRisk = 'High'; }
+  if (finalScore >= 85) { finalGrade = 'A'; finalRisk = 'Low'; }
+  else if (finalScore >= 70) { finalGrade = 'B'; finalRisk = 'Medium'; }
+  else if (finalScore >= 50) { finalGrade = 'C'; finalRisk = 'High'; }
 
   return {
     app_name: result.app_name || appName,
-    overall_score: strictScore,
-    risk_level: strictRisk,
+    overall_score: finalScore,
+    risk_level: finalRisk,
     readability_score: result.readability_score ?? 50,
     transparency_score: result.transparency_score ?? 50,
     data_collected: result.data_collected || [],
@@ -184,7 +169,7 @@ export async function analyzeWithGemini(policyText: string, appName: string, pol
     recommendations: result.recommendations || [],
     score_breakdown: breakdown,
     risk_reasons: result.risk_reasons || [],
-    privacy_grade: strictGrade,
+    privacy_grade: finalGrade,
     confidence_score: result.confidence_score ?? 80,
     compliance_flags: result.compliance_flags || {
       gdpr: { compliant: false, missing_requirements: ['Full assessment required'] },
