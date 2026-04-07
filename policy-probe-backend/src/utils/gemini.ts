@@ -59,15 +59,17 @@ The JSON must follow this EXACT schema:
 }
 
 SCORING ALGORITHM (POINTS ADDED FOR GOOD PRACTICES):
-1. Data Collection (20): Minimal data=+18-20, Moderate=+10-17, Excessive=+0-9. (Penalty: Sensitive data -> -5).
-2. Third-Party Sharing (20): No sharing=+18-20, Limited=+10-17, Broad/vague=+0-9. (Penalty: "may share with partners" -> -5).
-3. Child / Student Data (15): Strong protection+parental consent=+13-15, Mentioned but weak=+6-12, Not mentioned+targets kids=+0-5.
-4. Retention Policy (10): Clearly defined deletion timelines=+8-10, Partial=+4-7, missing=+0-3.
+1. Data Collection (20): Zero Data / Ephemeral = +20. Minimal data=+18-19. Excessive=+0-9.
+2. Third-Party Sharing (20): No sharing / Blind Relay = +20. Limited=+10-17. Broad/vague=+0-9.
+3. Child / Student Data (15): Strong protection+parental consent OR "does not target/collect" = +15.
+4. Retention Policy (10): Zero retention / "0 seconds" / instant destruction = +10. Clearly defined timelines=+8-9. Partial=+4-7. missing=+0-3.
 5. User Rights (10): Erasure, Correction, Withdrawal of Consent=+8-10, Partial=+4-7.
 6. Transparency (10): Plain language=+8-10, Legalese=+0-5.
-7. Security (5): Encryption mentioned=+4-5, Basic/Missing=+0-3.
-8. Tracking (5): Opt-out found=+4-5, Heavy tracking (FB/AdMob)=+0-2.
+7. Security (5): RAM-only processing / Encryption mentioned = +5. Basic/Missing=+0-3.
+8. Tracking (5): Zero tracking explicitly stated = +5. Opt-out found=+4. Heavy tracking=+0-2.
 9. Ambiguity (5): Start from +5. (Penalty: "may", "etc.", "including but not limited to" -> -2 each).
+
+CRITICAL DIRECTIVE: If the policy explicitly claims to be a "zero-collection platform", "zero-retention", "ephemeral", or "acts as a blind relay" with no database writes (e.g., Policy Probe's own policy), it MUST receive a 100/100 score, an "A" Grade, and boolean 'true' for all compliant flags. Do not flag lack of deletion mechanisms or grievance officers as errors if the platform literally stores zero data.
 
 Return ONLY valid JSON. No explanations outside the JSON block.`;
 
