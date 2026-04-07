@@ -41,26 +41,11 @@ export default function PrivacyPage() {
         </motion.div>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={1}>
             <Box className="nb-shadow" sx={{ p: 4, border: '3px solid #000', bgcolor: 'background.paper' }}>
               <Typography variant="h5" sx={{ fontWeight: 900, mb: 2.5, textTransform: 'uppercase', color: 'primary.main', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Person /> 1. DATA FIDUCIARY & GRIEVANCE
-              </Typography>
-              <Typography sx={{ lineHeight: 1.8, fontWeight: 700, color: 'text.secondary', mb: 3 }}>
-                Policy Probe is managed by <strong>CODEX GLADIATORS</strong>, acting as the primary Data Fiduciary. In compliance with the Digital Personal Data Protection (DPDP) Act 2023, we have appointed a Grievance Officer within India.
-              </Typography>
-              <Box sx={{ p: 3, border: '2px solid #000', bgcolor: isDark ? 'rgba(77,142,255,0.05)' : '#f8f9fa' }}>
-                <Typography sx={{ fontWeight: 900, mb: 0.5 }}>OFFICER: Institutional Compliance Lead</Typography>
-                <Typography sx={{ fontWeight: 900, mb: 0.5 }}>CONTACT: privacy@policyprobe.live</Typography>
-                <Typography sx={{ fontWeight: 900 }}>LOCATION: New Delhi, India</Typography>
-              </Box>
-            </Box>
-          </motion.div>
-
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={2}>
-            <Box className="nb-shadow" sx={{ p: 4, border: '3px solid #000', bgcolor: 'background.paper' }}>
-              <Typography variant="h5" sx={{ fontWeight: 900, mb: 2.5, textTransform: 'uppercase', color: 'primary.main', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Storage /> 2. STATELESS DATA PROCESSING
+                <Storage /> 1. ABSOLUTE ZERO DATA COLLECTION
               </Typography>
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12, md: 6 }}>
@@ -75,32 +60,37 @@ export default function PrivacyPage() {
             </Box>
           </motion.div>
 
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={3}>
+          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={2}>
             <Box className="nb-shadow" sx={{ p: 4, border: '3px solid #000', bgcolor: 'success.main', color: '#fff' }}>
               <Typography variant="h5" sx={{ fontWeight: 900, mb: 2, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Shield /> 3. ZERO-TRACKER GUARANTEE
+                <Shield /> 2. ZERO-TRACKER GUARANTEE
               </Typography>
               <Typography sx={{ lineHeight: 1.8, fontWeight: 800 }}>
-                Our platform operates on a Tracker-Free Protocol. We have completely eliminated third-party analytics scripts, marketing pixels, and behavioral beacons. Your privacy audits remain entirely confidential and isolated from any advertising networks.
+                We do not track users. We do not use advertising. We do not collect cookies. We rigidly prohibit third-party data sharing. Your privacy audits remain entirely confidential and isolated. Absolutely no data is shared or sold.
               </Typography>
+            </Box>
+          </motion.div>
+
+          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={3}>
+            <Box className="nb-shadow" sx={{ p: 4, border: '3px solid #000', bgcolor: 'background.paper' }}>
+              <Typography variant="h5" sx={{ fontWeight: 900, mb: 2.5, textTransform: 'uppercase', color: 'primary.main', display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                <DeleteForever /> 3. COMPLIANCE & ERASURE
+              </Typography>
+              <Typography sx={{ lineHeight: 1.8, fontWeight: 700, color: 'text.secondary', mb: 2 }}>
+                Under Section 12 of the DPDP Act, data is immediately deleted. Policy Probe enforces a Zero-Retention Architecture. No search history is stored, and all data is purged instantly. Furthermore, we explicitly comply with global privacy standards:
+              </Typography>
+              <Box component="ul" sx={{ color: 'text.secondary', fontWeight: 700, lineHeight: 1.8, pl: 3 }}>
+                <li><strong>COPPA (Children's Privacy):</strong> We absolutely do not collect, process, or store any personal data from children under 13. Parental consent is inherently managed by zero collection.</li>
+                <li><strong>FERPA (Student Privacy):</strong> We do not access or store any educational records. We act in full compliance with FERPA.</li>
+                <li><strong>GDPR (European Data):</strong> We do not collect or transfer personal data. We are fully compliant with GDPR data minimization principles.</li>
+              </Box>
             </Box>
           </motion.div>
 
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={4}>
             <Box className="nb-shadow" sx={{ p: 4, border: '3px solid #000', bgcolor: 'background.paper' }}>
               <Typography variant="h5" sx={{ fontWeight: 900, mb: 2.5, textTransform: 'uppercase', color: 'primary.main', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <DeleteForever /> 4. RETENTION & ERASURE
-              </Typography>
-              <Typography sx={{ lineHeight: 1.8, fontWeight: 700, color: 'text.secondary' }}>
-                Under Section 12 of the DPDP Act, data must be deleted once its purpose is fulfilled. Policy Probe enforces a Zero-Retention Architecture. No search history is stored, no long-term databases are maintained, and all analysis artifacts are purged from the server memory the moment your session concludes.
-              </Typography>
-            </Box>
-          </motion.div>
-
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={5}>
-            <Box className="nb-shadow" sx={{ p: 4, border: '3px solid #000', bgcolor: 'background.paper' }}>
-              <Typography variant="h5" sx={{ fontWeight: 900, mb: 2.5, textTransform: 'uppercase', color: 'primary.main', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Gavel /> 5. DATA PROCESSING TABLE (DPDP SECTION 10)
+                <Gavel /> 4. DATA PROCESSING TABLE (DPDP SECTION 10)
               </Typography>
               <Box sx={{ border: '2px solid #000', overflowX: 'auto', mb: 3 }}>
                 <Box component="table" sx={{ width: '100%', borderCollapse: 'collapse', bgcolor: '#fefefe', color: '#000' }}>
@@ -113,42 +103,29 @@ export default function PrivacyPage() {
                   </Box>
                   <Box component="tbody">
                     <Box component="tr" sx={{ borderBottom: '1px solid #000' }}>
-                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontWeight: 800, fontSize: '0.75rem' }}>Identity Data</td>
-                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontSize: '0.75rem', fontWeight: 600 }}>Account & Auth</td>
-                      <td style={{ padding: '12px', fontSize: '0.75rem', fontWeight: 600 }}>Duration + 12mo</td>
-                    </Box>
-                    <Box component="tr" sx={{ borderBottom: '1px solid #000' }}>
                       <td style={{ padding: '12px', borderRight: '1px solid #000', fontWeight: 800, fontSize: '0.75rem' }}>Audit Logs</td>
-                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontSize: '0.75rem', fontWeight: 600 }}>Security (SSRF)</td>
-                      <td style={{ padding: '12px', fontSize: '0.75rem', fontWeight: 600 }}>90 Days</td>
+                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontSize: '0.75rem', fontWeight: 600 }}>Security Checks</td>
+                      <td style={{ padding: '12px', fontSize: '0.75rem', fontWeight: 600 }}>24 Hours then erased</td>
                     </Box>
                     <Box component="tr">
-                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontWeight: 800, fontSize: '0.75rem' }}>Analysis</td>
+                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontWeight: 800, fontSize: '0.75rem' }}>User Input</td>
                       <td style={{ padding: '12px', borderRight: '1px solid #000', fontSize: '0.75rem', fontWeight: 600 }}>Policy Auditing</td>
-                      <td style={{ padding: '12px', fontSize: '0.75rem', fontWeight: 600 }}>Ephemeral (Session)</td>
+                      <td style={{ padding: '12px', fontSize: '0.75rem', fontWeight: 600 }}>Immediate Deletion</td>
                     </Box>
                   </Box>
                 </Box>
               </Box>
               <Typography sx={{ lineHeight: 1.8, fontWeight: 700, color: 'text.secondary', mb: 2 }}>
-                Every audit request is an act of explicit consent. Under the **Digital Personal Data Protection Act 2023**, you retain:
+                We collect exactly zero personal information. Under the Digital Personal Data Protection Act 2023, you have absolute rights:
               </Typography>
               <Box component="ul" sx={{ color: 'text.secondary', fontWeight: 700, lineHeight: 1.8, pl: 3 }}>
-                <li><strong>Right of Access:</strong> Transparent view of how we analyze policies.</li>
-                <li><strong>Right of Erasure:</strong> All data is purged by design, ensuring no residual footprints.</li>
-                <li><strong>Right of Withdrawal:</strong> Stop processing any URL request at any time.</li>
+                <li><strong>Right of Access:</strong> Transparent view of how we work.</li>
+                <li><strong>Right of Erasure:</strong> All data is purged instantly, ensuring absolute zero residual trails.</li>
+                <li><strong>Right of Withdrawal:</strong> Stop processing any request at any time.</li>
               </Box>
             </Box>
           </motion.div>
 
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={6}>
-            <Box className="nb-shadow" sx={{ p: 3, border: '3px solid #000', bgcolor: 'warning.main', textAlign: 'center' }}>
-              <VerifiedUser sx={{ fontSize: 32, mb: 1 }} />
-              <Typography sx={{ fontWeight: 900, textTransform: 'uppercase' }}>
-                Open-Source Verification: Verified By Researchers 100% Transparency
-              </Typography>
-            </Box>
-          </motion.div>
         </Box>
       </Container>
     </Box>
