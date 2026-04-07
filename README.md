@@ -9,7 +9,7 @@
 | Service | URL |
 |---------|-----|
 | 🖥️ **Frontend (Vercel)** | [https://policy-probe.vercel.app](https://policy-probe.vercel.app) |
-| ⚙️ **Backend API (Render)** | [https://policy-probe-api.onrender.com](https://policy-probe-api.onrender.com) |
+| ⚙️ **Backend API (Render)** | [https://policy-probe-api.onrender.com](https://policyprobe.onrender.com/) |
 
 > ⚠️ The backend runs on Render's **free tier** — the first request after 15 min of inactivity may take ~30 seconds to wake up.
 
