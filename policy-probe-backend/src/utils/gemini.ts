@@ -1,9 +1,10 @@
 import { AnalysisResult } from './types';
 
 // ─── Model Config ────────────────────────────────────────────────────────────
-// gemini-2.0-flash is the current stable recommended model for REST API usage.
-// gemini-1.5-flash is kept as the first fallback within the Gemini service.
+// gemini-2.5-flash is the latest stable model — confirmed working.
+// Falls back through 2.0 and 1.5 if a model is unavailable or quota-limited.
 const GEMINI_MODELS = [
+  'gemini-2.5-flash',
   'gemini-2.0-flash',
   'gemini-1.5-flash',
 ];
