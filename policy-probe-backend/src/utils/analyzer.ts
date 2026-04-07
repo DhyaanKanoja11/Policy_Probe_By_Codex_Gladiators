@@ -220,7 +220,7 @@ export function analyzePolicy(text: string, appName: string = 'Unknown App', pol
     ? retSentences[0].trim()
     : 'No specific retention policy language detected.';
 
-  const summary_plain_english = `Our automated keyword scan of ${appName} identifies it as a ${risk_level}-risk platform. ${red_flags.length > 0 ? `We detected ${red_flags.length} critical policy gaps, specifically concerning ${red_flags[0].title.toLowerCase()}.` : 'The policy appears to follow standard transparency patterns with no immediate critical red flags detected by the heuristic scanner.'} ${strengths.length > 0 ? `On the positive side, it explicitly mentions ${strengths[0].toLowerCase()}.` : ''} The document is written with a readability score of ${readability_score}/100.`;
+  const summary_plain_english = `${appName} ${risk_level === 'Low' ? 'demonstrates generally good' : risk_level === 'Medium' ? 'shows mixed' : 'raises significant concerns about'} privacy practices. ${red_flags.length > 0 ? `There are ${red_flags.length} red flag(s) identified including ${red_flags[0].title.toLowerCase()}.` : 'No major red flags were detected.'} ${strengths.length > 0 ? `Positive aspects include ${strengths[0].toLowerCase()}.` : ''} The policy has a readability score of ${readability_score}/100.`;
 
   const recommendations = [
     ...(red_flags.length > 0 ? ['Address identified red flags, particularly around data sharing and vague language'] : []),

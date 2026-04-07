@@ -2,53 +2,18 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
-import ipaddr from 'ipaddr.js';
-import dns from 'dns';
-import { promisify } from 'util';
-import { analyzeWithGemini, GeminiError } from './utils/gemini';
+import { analyzeWithGemini } from './utils/gemini';
 import { analyzePolicy } from './utils/analyzer';
 import { AnalyzeRequest } from './utils/types';
 import { rateLimit } from './utils/rateLimit';
 
 dotenv.config();
 
-const lookup = promisify(dns.lookup);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// SSRF prevention: Validate if the hostname resolves to a public IP
-async function isSafeUrl(urlStr: string): Promise<boolean> {
-  try {
-    const url = new URL(urlStr);
-    if (!['http:', 'https:'].includes(url.protocol)) return false;
-    
-    // Resolve hostname
-    const { address } = await lookup(url.hostname);
-    const addr = ipaddr.parse(address);
-    const range = addr.range();
-    
-    // Block private/reserved ranges
-    const unsafeRanges = ['private', 'loopback', 'linkLocal', 'multicast', 'broadcast', 'reserved', 'uniqueLocal', 'unspecified'];
-    if (unsafeRanges.includes(range)) return false;
-    
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 // Security headers
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "https:"],
-      connectSrc: ["'self'", "https://generativelanguage.googleapis.com"]
-    }
-  }
-}));
+app.use(helmet());
 
 app.use(cors({
   origin: ['http://localhost:3000', 'https://policy-probe.vercel.app'],
@@ -58,7 +23,7 @@ app.use(cors({
 app.use(express.json({ limit: '1mb' }));
 
 app.get('/', (_req, res) => {
-  res.json({ status: 'ok', service: 'Policy Probe API', version: '1.1.0 (Hardened)' });
+  res.json({ status: 'ok', service: 'Policy Probe API', version: '1.0.0' });
 });
 
 app.post('/api/analyze', async (req: Request, res: Response): Promise<void> => {
@@ -76,8 +41,12 @@ app.post('/api/analyze', async (req: Request, res: Response): Promise<void> => {
     const body: AnalyzeRequest = req.body;
     const { appName, url, policyUrl, rawText } = body;
 
-    if (rawText && rawText.length > 200000) {
-      res.status(400).json({ error: 'Input text is too large (max 200k chars).' });
+    if (rawText && rawText.length > 100000) {
+      res.status(400).json({ error: 'Input text is too large (max 100,000 characters).' });
+      return;
+    }
+    if (url && url.length > 2048) {
+      res.status(400).json({ error: 'URL is too long.' });
       return;
     }
 
@@ -87,29 +56,22 @@ app.post('/api/analyze', async (req: Request, res: Response): Promise<void> => {
     if (rawText && rawText.trim().length > 0) {
       policyText = rawText;
     } else if (resolvedUrl) {
-      // SSRF Check
-      if (!(await isSafeUrl(resolvedUrl))) {
-        res.status(400).json({ error: 'Invalid or restricted URL. Please paste text directly.' });
+      try { new URL(resolvedUrl); } catch {
+        res.status(400).json({ error: 'Invalid URL format.' });
         return;
       }
-
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 15000); // 15s timeout
+        const timeout = setTimeout(() => controller.abort(), 12000);
         const response = await fetch(resolvedUrl, {
-          headers: { 
-            'User-Agent': 'Mozilla/5.0 (compatible; PolicyProbe/1.1; +https://policy-probe.vercel.app)',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9'
-          },
+          headers: { 'User-Agent': 'PolicyProbe/1.0 (Privacy Analysis Tool)' },
           signal: controller.signal,
         });
         clearTimeout(timeout);
-        
         if (!response.ok) {
-          res.status(400).json({ error: `Policy fetch failed (HTTP ${response.status})` });
+          res.status(400).json({ error: `Failed to fetch: ${response.status}` });
           return;
         }
-
         const html = await response.text();
         policyText = html
           .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
@@ -117,62 +79,43 @@ app.post('/api/analyze', async (req: Request, res: Response): Promise<void> => {
           .replace(/<[^>]+>/g, ' ')
           .replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/&quot;/gi, '"').replace(/&#39;/gi, "'")
           .replace(/\s+/g, ' ').trim();
-      } catch (e: any) {
-         res.status(400).json({ error: e.name === 'AbortError' ? 'Fetch timed out' : 'Cloudflare/Firewall blocked access. Paste text instead.' });
+      } catch {
+         res.status(400).json({ error: 'Could not fetch URL. Please paste the text directly.' });
          return;
       }
     } else if (appName && appName.trim()) {
       policyText = `Privacy policy analysis request for ${appName}. Using AI knowledge base.`;
     } else {
-      res.status(400).json({ error: 'Provide app name or URL.' });
+      res.status(400).json({ error: 'Provide an app name, URL, or policy text.' });
       return;
     }
 
-    if (policyText.length < 50) {
-       res.status(400).json({ error: 'Extracted text too short to verify.' });
+    if (policyText.length < 20) {
+       res.status(400).json({ error: 'Text too short to analyze.' });
        return;
     }
 
-    const name = appName || 'Analyzed Entity';
+    const name = appName || 'Analyzed App';
 
     try {
-      const result = await analyzeWithGemini(policyText, name, resolvedUrl, !!body.deepAudit);
+      const result = await analyzeWithGemini(policyText, name, resolvedUrl);
       res.set('X-RateLimit-Remaining', String(remaining));
       res.json({ ...result, analysis_method: 'ai' });
-    } catch (aiError: unknown) {
-      // ── Structured fallback logging ─────────────────────────────────────────
-      const isGeminiErr = aiError instanceof GeminiError;
-      const reason = isGeminiErr ? aiError.reason : 'unknown';
-      const message = aiError instanceof Error ? aiError.message : String(aiError);
-
-      // Permanent config failure — no point running analysis, surface the problem clearly
-      if (reason === 'missing_api_key' || reason === 'invalid_api_key') {
-        console.error(`[Gemini-Fatal] reason=${reason} — keyword fallback suppressed. Fix environment variable GEMINI_API_KEY on Render.`);
-        res.status(503).json({
-          error: 'AI analysis unavailable: API key configuration error.',
-          fallback_reason: reason,
-          analysis_method: 'none',
-        });
-        return;
-      }
-
-      // Transient or parseable failure — use keyword fallback but log clearly
-      console.error(`[Gemini-Fallback] reason=${reason} message=${message}`);
-      if (isGeminiErr && aiError.statusCode) {
-        console.error(`[Gemini-Fallback] HTTP status=${aiError.statusCode}`);
-      }
-
+      return;
+    } catch (aiError) {
+      console.warn('Gemini AI fallback:', aiError);
       const result = analyzePolicy(policyText, name, resolvedUrl);
       res.set('X-RateLimit-Remaining', String(remaining));
-      res.json({ ...result, analysis_method: 'keyword', fallback_reason: reason });
+      res.json({ ...result, analysis_method: 'keyword' });
+      return;
     }
   } catch (error) {
-    console.error('Audit Engine Critical Fail:', error);
-    res.status(500).json({ error: 'Audit engine encountered a critical failure.' });
+    console.error('Analysis error:', error);
+    res.status(500).json({ error: 'An unexpected error occurred.' });
+    return;
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Probe HQ: Active on port ${PORT}`);
+  console.log(`Backend server running on http://localhost:${PORT}`);
 });
-
