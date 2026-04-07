@@ -37,18 +37,28 @@ export default function LandingPage() {
                 }}>
                   🇮🇳 INDIA'S FIRST · DPDP ACT 2023
                 </Box>
-                <Typography variant="h1" sx={{ fontFamily: '"Manrope"', fontWeight: 900, fontSize: { xs: '2.6rem', md: '4.2rem', lg: '5rem' }, lineHeight: 0.95, mb: 4, color: 'text.primary', textTransform: 'uppercase', letterSpacing: '-0.06em' }}>
+                <motion.div 
+                  initial={{ y: 0 }}
+                  animate={{ y: [-10, 10, -10] }}
+                  transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                  style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}
+                >
+                  <Box component="img" src="/logo.png" alt="PolicyProbe Shield" sx={{ width: 100, height: 100, filter: isDark ? 'brightness(1.2)' : 'none' }} />
+                </motion.div>
+                <Typography variant="h1" sx={{ fontFamily: '"Manrope"', fontWeight: 900, fontSize: { xs: '2.2rem', md: '3.6rem', lg: '4.2rem' }, lineHeight: 1.1, mb: 4, color: 'text.primary', textTransform: 'uppercase', letterSpacing: '-0.06em' }}>
                   <Box component="span" sx={{ 
                     bgcolor: 'error.main', color: '#fff', px: 1.5, py: 0.5,
                     display: 'inline-block', border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827',
                     boxShadow: `4px 4px 0px ${isDark ? '#fefefe' : '#111827'}`,
-                  }}>India{"'s"} First</Box> <br/>
+                    mb: 2
+                  }}>INDIA'S FIRST</Box> <br/>
                   <Box component="span" sx={{ 
                     bgcolor: isDark ? 'primary.main' : 'warning.main', 
-                    color: isDark ? '#fff' : '#000', px: 1.5, 
+                    color: isDark ? '#fff' : '#000', px: 1.5, py: 0.2,
                     display: 'inline-block', border: '4px solid', borderColor: isDark ? '#fefefe' : '#111827',
-                    transform: 'rotate(-1deg)', mt: 1
-                  }}>PRIVACY AUDIT</Box>
+                    transform: 'rotate(-1deg)', mb: 2
+                  }}>PRIVACY AUDIT SYSTEM</Box> <br/>
+                  FOR STUDENTS
                 </Typography>
               </motion.div>
               <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={1}>
