@@ -1,6 +1,6 @@
-# 🔍 Policy Probe
+# 🔍 Policy Probe — India's First Privacy Audit Platform
 
-> **AI-powered educational privacy policy analyzer** — paste any privacy policy URL or raw text, get instant plain-English explanations, a scored risk breakdown, compliance flags, and smart side-by-side app comparisons. Powered by **Gemini 2.0 Flash**.
+> 🇮🇳 **India's first AI-powered educational privacy audit platform** — paste any privacy policy URL or raw text, get instant plain-English explanations, a scored risk breakdown, DPDP Act 2023 compliance checks, and smart side-by-side app comparisons. Powered by **Gemini 2.0 Flash**.
 
 ---
 
@@ -10,7 +10,6 @@
 |---------|-----|
 | 🖥️ **Frontend (Vercel)** | [https://policy-probe.vercel.app](https://policy-probe.vercel.app) |
 | ⚙️ **Backend API (Render)** | [https://policy-probe-api.onrender.com](https://policy-probe-api.onrender.com) |
-| 📬 **API Health Check** | [https://policy-probe-api.onrender.com/health](https://policy-probe-api.onrender.com/health) |
 
 > ⚠️ The backend runs on Render's **free tier** — the first request after 15 min of inactivity may take ~30 seconds to wake up.
 
@@ -30,7 +29,33 @@ It is specifically designed with **parents, students, and educators** in mind, h
 - 🎓 Make privacy understandable for non-lawyers
 - 🔴 Surface red flags and dangerous clauses automatically
 - ⚖️ Enable side-by-side comparison of any two apps
-- 🌍 Check compliance against GDPR, COPPA, DPDP Act, and FERPA
+- 🌍 Check compliance against GDPR, COPPA, DPDP Act 2023, and FERPA
+
+---
+
+## 🎨 Design System
+
+**Neubrutalism** — a high-contrast, bold aesthetic featuring:
+- `3px` hard borders with `0px` border-radius
+- Offset box shadows (`nb-shadow`) with theme-aware colors
+- **Manrope 900** for headings, **Inter** for body text
+- Radial expansion theme toggle (dark ↔ light)
+- Top-level progress bar on route transitions
+- Full `@media print` optimization for professional PDF audit exports
+
+---
+
+## 🛡️ Security Posture
+
+| Layer | Protection |
+|-------|------------|
+| **SSRF Prevention** | DNS resolution + private IP range blocking (`ipaddr.js`) |
+| **Rate Limiting** | Per-IP sliding window with `Retry-After` headers |
+| **Input Validation** | 200KB raw text cap, 15s fetch timeout, HTML stripping |
+| **CSP Headers** | `helmet()` with strict `Content-Security-Policy` |
+| **CORS** | Allowlisted origins only (`localhost`, `policy-probe.vercel.app`) |
+| **Zero Retention** | No user data stored — all analysis is ephemeral |
+| **API Key Sanitization** | `.trim()` on env vars to prevent copy-paste errors |
 
 ---
 
@@ -66,12 +91,13 @@ It is specifically designed with **parents, students, and educators** in mind, h
 │                                                                  │
 │  Route: POST /api/analyze                                        │
 │    1. Validate input (URL | rawText | appName)                   │
-│    2. Fetch + strip HTML if URL provided (12s timeout)           │
-│    3. Truncate to 15,000 chars                                   │
-│    4. Call analyzeWithGemini()   ──►  Gemini 2.0 Flash API       │
+│    2. SSRF check (DNS resolve + private IP block)                │
+│    3. Fetch + strip HTML if URL provided (15s timeout)           │
+│    4. Truncate to 15,000 chars                                   │
+│    5. Call analyzeWithGemini()   ──►  Gemini 2.0 Flash API       │
 │       └─ on failure: fallback to analyzePolicy() (keyword scan) │
-│    5. Enforce score constraints + recalculate grade              │
-│    6. Return structured AnalysisResult JSON                      │
+│    6. Enforce score constraints + recalculate grade              │
+│    7. Return structured AnalysisResult JSON                      │
 │                                                                  │
 │  Route: POST /api/compare (calls /api/analyze × 2 in parallel)  │
 └──────────────────────────────────────────────────────────────────┘
@@ -347,10 +373,10 @@ Analyze a single privacy policy.
 - `Retry-After` — seconds until reset (on 429)
 
 **Limits:**
-- Raw text max: 100,000 characters
-- URL max: 2,048 characters
+- Raw text max: 200,000 characters
 - Text sent to AI: truncated to 15,000 characters
 - Rate limited per IP (sliding window)
+- SSRF-protected: private/reserved IPs blocked
 
 ---
 
@@ -400,7 +426,9 @@ See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full guide covering Render (bac
 
 ## 👥 Team
 
-Built for the **CODEX Gladiators Gen AI Hackathon** 🏆
+Built by **Team CODEX** for the **CODEX Gladiators Gen AI Hackathon** 🏆
+
+- **Dhyaan Kanoja** — Full-Stack & AI Integration
 
 ---
 
