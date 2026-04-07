@@ -29,40 +29,50 @@ export default function HistoryPage() {
   }, []);
 
   return (
-    <Box sx={{ py: { xs: 4, md: 6 }, minHeight: '80vh' }}>
+    <Box sx={{ py: { xs: 4, md: 6 }, minHeight: '80vh', bgcolor: 'background.default' }}>
       <Container maxWidth="md">
         <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
-          <Typography variant="h3" sx={{ fontFamily: '"Manrope"', fontWeight: 800, mb: 1, letterSpacing: '-0.02em' }}>Analysis History</Typography>
-          <Typography color="text.secondary" sx={{ mb: 5 }}>View your previous privacy policy analyses (Ephemeral Session)</Typography>
+          <Typography variant="h3" sx={{ fontFamily: '"Manrope"', fontWeight: 900, mb: 1.5, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>Analysis History</Typography>
+          <Typography color="text.secondary" sx={{ mb: 6, fontWeight: 600 }}>Your ephemeral forensic audit history.</Typography>
         </motion.div>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {history.length > 0 && history.map((item, i) => (
             <motion.div key={i} initial="hidden" animate="visible" variants={fadeUp} custom={i + 1}>
               <Box
                 onClick={() => router.push(`/results?source=live`)}
+                className="nb-shadow"
                 sx={{
-                  bgcolor: 'background.paper', p: 3, borderRadius: 4, cursor: 'pointer',
-                  boxShadow: '0px 4px 40px rgba(0,0,0,0.02)',
-                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(171,179,183,0.05)'}`,
-                  transition: 'all 0.2s', '&:hover': { transform: 'translateY(-2px)', boxShadow: '0px 8px 40px rgba(0,0,0,0.06)' },
+                  bgcolor: 'background.paper', p: 3, borderRadius: 0, cursor: 'pointer',
+                  border: `3px solid ${isDark ? '#fefefe' : '#111827'}`,
+                  transition: 'transform 0.1s', '&:active': { transform: 'translate(2px, 2px)' },
                 }}
               >
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
-                     <Box sx={{ width: 44, height: 44, borderRadius: 3, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: isDark ? 'rgba(77,142,255,0.1)' : '#d8e2ff' }}>
-                      <Assessment sx={{ color: 'primary.main', fontSize: 22 }} />
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                     <Box sx={{ 
+                       width: 48, height: 48, borderRadius: 0, border: '2px solid', borderColor: 'primary.main',
+                       display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                       bgcolor: isDark ? 'rgba(77,142,255,0.1)' : '#d8e2ff' 
+                     }}>
+                      <Assessment sx={{ color: 'primary.main', fontSize: 24 }} />
                     </Box>
                     <Box>
-                      <Typography sx={{ fontFamily: '"Manrope"', fontWeight: 700, mb: 0.25 }}>{item.app_name}</Typography>
-                      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap' }}>
-                        <Typography variant="caption" color="text.secondary" sx={{ fontFamily: '"Manrope"', fontWeight: 600 }}>Score: {item.overall_score}/100</Typography>
-                        <Chip label={`${item.risk_level} Risk`} size="small" color={riskColors[item.risk_level]} variant="outlined" sx={{ fontSize: '0.6rem', height: 20, borderRadius: 100 }} />
-                        <Typography variant="caption" color="text.secondary">{new Date(item.analyzed_at).toLocaleDateString()}</Typography>
+                      <Typography sx={{ fontFamily: '"Manrope"', fontWeight: 900, mb: 0.5, textTransform: 'uppercase', fontSize: '1.1rem' }}>{item.app_name}</Typography>
+                      <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap' }}>
+                        <Typography variant="caption" sx={{ fontWeight: 800, color: 'text.primary' }}>Score: {item.overall_score}/100</Typography>
+                        <Chip label={`${item.risk_level} Risk`} size="small" 
+                          sx={{ 
+                            fontSize: '0.65rem', fontWeight: 900, borderRadius: 0, bgcolor: `${riskColors[item.risk_level]}.main`, color: '#fff',
+                            border: '1px solid #000'
+                          }} />
+                        <Typography variant="caption" color="text.secondary" sx={{ fontWeight: 600 }}>{new Date(item.analyzed_at).toLocaleDateString()}</Typography>
                       </Box>
                     </Box>
                   </Box>
-                  <IconButton size="small" sx={{ color: 'text.secondary' }}><Visibility fontSize="small" /></IconButton>
+                  <IconButton size="small" sx={{ color: 'text.primary', border: '2px solid transparent', '&:hover': { border: '2px solid', borderColor: isDark ? '#fff' : '#000', borderRadius: 0 } }}>
+                    <Visibility fontSize="small" />
+                  </IconButton>
                 </Box>
               </Box>
             </motion.div>
@@ -70,12 +80,21 @@ export default function HistoryPage() {
         </Box>
 
         {history.length === 0 && (
-          <Box sx={{ bgcolor: 'background.paper', p: 8, textAlign: 'center', borderRadius: 4, boxShadow: '0px 4px 40px rgba(0,0,0,0.03)' }}>
-            <Assessment sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-            <Typography sx={{ fontFamily: '"Manrope"', fontWeight: 700, mb: 1 }}>No analyses yet</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>Start by analyzing your first privacy policy.</Typography>
-            <Button variant="contained" onClick={() => router.push('/analyze')} endIcon={<ArrowForward />}
-              sx={{ borderRadius: 3, background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.dark})` }}>
+          <Box className="nb-shadow" sx={{ bgcolor: 'background.paper', p: 8, textAlign: 'center', borderRadius: 0, border: `3px solid ${isDark ? '#fefefe' : '#111827'}` }}>
+            <Assessment sx={{ fontSize: 64, color: 'text.secondary', mb: 3 }} />
+            <Typography variant="h5" sx={{ fontFamily: '"Manrope"', fontWeight: 900, mb: 2, textTransform: 'uppercase' }}>No forensic data yet</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 4, fontWeight: 600, maxWidth: 300, mx: 'auto' }}>Start your first analysis to see your audit history here.</Typography>
+            <Button 
+              variant="contained" 
+              onClick={() => router.push('/analyze')} 
+              endIcon={<ArrowForward />}
+              sx={{ 
+                borderRadius: 0, py: 1.5, px: 4, fontWeight: 900, textTransform: 'uppercase', fontSize: '0.9rem',
+                border: '3px solid #000', bgcolor: 'primary.main', color: '#fff',
+                boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000',
+                '&:hover': { bgcolor: 'primary.dark', transform: 'translate(-2px, -2px)' }
+              }}
+            >
               Analyze Now
             </Button>
           </Box>
@@ -84,3 +103,4 @@ export default function HistoryPage() {
     </Box>
   );
 }
+

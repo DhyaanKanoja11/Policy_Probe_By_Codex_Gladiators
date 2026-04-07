@@ -1,7 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap');
 
 * { box-sizing: border-box; }
-body { margin: 0; padding: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+body { 
+  margin: 0; padding: 0; 
+  -webkit-font-smoothing: antialiased; 
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
 html { scroll-behavior: smooth; }
 a { text-decoration: none; color: inherit; }
 
@@ -17,6 +22,33 @@ a { text-decoration: none; color: inherit; }
   -webkit-backdrop-filter: blur(24px);
 }
 
+/* Neubrutalism shadow utilities */
+.nb-shadow {
+  box-shadow: 4px 4px 0px #000;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.dark .nb-shadow {
+  box-shadow: 4px 4px 0px #fff;
+}
+.nb-shadow:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #000;
+}
+.dark .nb-shadow:active {
+  box-shadow: 1px 1px 0px #fff;
+}
+
+/* Radial theme expansion clip path */
+.theme-expand-anim {
+  clip-path: circle(0% at var(--expand-x, 50%) var(--expand-y, 50%));
+  animation: expand-circle 0.8s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes expand-circle {
+  0% { clip-path: circle(0% at var(--expand-x, 50%) var(--expand-y, 50%)); }
+  100% { clip-path: circle(150% at var(--expand-x, 50%) var(--expand-y, 50%)); }
+}
+
 /* Skeleton animation */
 @keyframes shimmer {
   0% { background-position: -200px 0; }
@@ -26,32 +58,90 @@ a { text-decoration: none; color: inherit; }
   background: linear-gradient(90deg, rgba(0,0,0,0.06) 25%, rgba(0,0,0,0.1) 37%, rgba(0,0,0,0.06) 63%);
   background-size: 200px 100%;
   animation: shimmer 1.5s ease-in-out infinite;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 .dark .skeleton {
   background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 37%, rgba(255,255,255,0.04) 63%);
   background-size: 200px 100%;
 }
 
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.2); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.4); }
-
-/* Print Styles for PDF Export */
-@media print {
-  body { background: white !important; color: black !important; }
-  header, footer, .no-print { display: none !important; }
-  main { padding: 0 !important; margin: 0 !important; }
-  * { box-shadow: none !important; }
-  .MuiContainer-root { max-width: none !important; padding: 0 !important; }
-  
-  /* Ensure charts break nicely or don't break across pages */
-  .recharts-wrapper { page-break-inside: avoid; }
-  
-  /* Solidify borders for print */
-  .MuiBox-root, .MuiCard-root { border-color: #ddd !important; }
-  
-  /* Fix chip print colors */
-  .MuiChip-root { border: 1px solid #ccc !important; }
+::-webkit-scrollbar-thumb { 
+  background: #2b3437; 
+  border: 2px solid #fefefe;
+  border-radius: 0px; 
 }
+.dark ::-webkit-scrollbar-thumb {
+  background: #fefefe;
+  border: 2px solid #1a1f22;
+}
+
+/* Print Styles for Professional PDF Audit Export */
+@media print {
+  @page { size: A4; margin: 15mm; }
+  
+  body { 
+    background: #fff !important; 
+    color: #000 !important; 
+    font-size: 11pt; 
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Hide non-essential UI */
+  header, footer, nav, .no-print, button, .MuiButton-root, .MuiIconButton-root, 
+  .MuiSwitch-root, .MuiLinearProgress-root, .MuiCircularProgress-root, 
+  input, .MuiInputBase-root { 
+    display: none !important; 
+  }
+
+  main { padding: 0 !important; margin: 0 !important; width: 100% !important; }
+
+  /* Reset Neubrutalism shadows for print (they look muddy on paper) */
+  .nb-shadow, .MuiBox-root, .MuiCard-root, .MuiAccordion-root { 
+    box-shadow: none !important; 
+    border: 1.5pt solid #000 !important; 
+    transform: none !important;
+    background: #fff !important;
+    page-break-inside: avoid;
+    margin-bottom: 5mm !important;
+  }
+
+  /* Typography Polish */
+  h1, h2, h3, h4, h5, h6 { 
+    color: #000 !important; 
+    font-family: 'Manrope', sans-serif !important; 
+    font-weight: 900 !important; 
+    text-transform: uppercase !important;
+    page-break-after: avoid;
+  }
+
+  p, span, li { color: #000 !important; font-weight: 600 !important; }
+
+  /* Charts and Visuals */
+  .recharts-wrapper { 
+    page-break-inside: avoid; 
+    max-width: 100% !important;
+    filter: saturate(1.5) contrast(1.2); /* Boost colors for print */
+  }
+
+  .MuiChip-root { 
+    border: 1pt solid #000 !important; 
+    color: #000 !important; 
+    background: #f8f9fa !important; 
+    font-weight: 800 !important;
+  }
+
+  /* Specific Results Polish */
+  .results-header { border-bottom: 4pt solid #000 !important; margin-bottom: 8mm !important; padding-bottom: 4mm !important; }
+  .risk-badge-A { background: #dcfce7 !important; color: #166534 !important; }
+  .risk-badge-B { background: #fef9c3 !important; color: #854d0e !important; }
+  .risk-badge-C { background: #fee2e2 !important; color: #991b1b !important; }
+  .risk-badge-D { background: #fecaca !important; color: #991b1b !important; }
+
+  /* Force display of crucial sections */
+  .evidence-section { display: block !important; border: 1pt dashed #000 !important; padding: 3mm !important; margin-top: 2mm !important; font-style: italic; }
+}
+
+

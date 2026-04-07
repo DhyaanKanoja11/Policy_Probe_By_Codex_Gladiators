@@ -3,14 +3,22 @@ import { AnalysisResult } from './types';
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
 
-const ANALYSIS_PROMPT = `You are a privacy policy analysis engine for educational apps. Analyze the following privacy policy text and return a STRICT JSON response (no markdown, no code fences, just raw JSON).
+const ANALYSIS_PROMPT = `You are "Probe-1", a high-precision privacy audit engine specializing in the Digital Personal Data Protection (DPDP) Act 2023 (India) and global standards.
+Analyze the provided privacy policy text and generate a forensic audit report in STRICT JSON format.
+
+CRITICAL FOCUS (DPDP Act 2023):
+1. CONSENT: Does the policy mention "clear, specific, and informed consent"?
+2. DATA FIDUCIARY: Does it clearly identify who controls the data?
+3. GRIEVANCE REDRESSAL: Is there a "Grievance Officer" mentioned with contact details?
+4. DATA MINIMIZATION: Does it only collect what is "necessary for the specified purpose"?
+5. RETENTION: Does it commit to deleting data once the purpose is fulfilled?
 
 The JSON must follow this EXACT schema:
 {
   "app_name": "string - the app name",
-  "overall_score": number 0-100 (Total = Sum of all categories. 100 = perfectly safe, 0 = critical risk),
+  "overall_score": number 0-100 (Total = Sum of weighted score_breakdown categories. 100 = perfectly safe),
   "privacy_grade": "A" | "B" | "C" | "D",
-  "confidence_score": number 0-100 (Formula: (sections_found / 6 expected_sections) * 100),
+  "confidence_score": number 0-100 (based on clarity of text),
   "risk_level": "Low" | "Medium" | "High",
   "readability_score": number 0-100,
   "transparency_score": number 0-100,
@@ -36,7 +44,7 @@ The JSON must follow this EXACT schema:
     "tracking_cookies": number (Max 5),
     "ambiguity": number (Max 5)
   },
-  "risk_reasons": [{"factor": "string", "impact": "Positive"|"Negative"|"Neutral", "weight": number, "explanation": "string", "evidence_snippet": "string - exact quote from policy"}],
+  "risk_reasons": [{"factor": "string", "impact": "Positive"|"Negative"|"Neutral", "weight": number, "explanation": "string", "evidence_snippet": "string - exact quote from policy if found"}],
   "compliance_flags": {
     "gdpr": {"compliant": boolean, "missing_requirements": ["string"]},
     "coppa": {"compliant": boolean, "missing_requirements": ["string"]},
@@ -44,7 +52,7 @@ The JSON must follow this EXACT schema:
     "ferpa": {"compliant": boolean, "missing_requirements": ["string"]}
   },
   "integrity_check": {
-    "missing_sections": ["string list of missing expected sections like collection, sharing, retention, rights, security, children"],
+    "missing_sections": ["string list"],
     "completeness": "High" | "Medium" | "Low",
     "notes": "string"
   }
@@ -53,18 +61,16 @@ The JSON must follow this EXACT schema:
 SCORING ALGORITHM (POINTS ADDED FOR GOOD PRACTICES):
 1. Data Collection (20): Minimal data=+18-20, Moderate=+10-17, Excessive=+0-9. (Penalty: Sensitive data -> -5).
 2. Third-Party Sharing (20): No sharing=+18-20, Limited=+10-17, Broad/vague=+0-9. (Penalty: "may share with partners" -> -5).
-3. Child / Student Data (15): Strong protection+parental consent=+13-15, Mentioned but weak=+6-12, Not mentioned=+0-5. (Penalty: Collects without safeguards -> -5).
-4. Retention Policy (10): Clearly defined=+8-10, Partial=+4-7, Not mentioned=+0-3.
-5. User Rights (10): Full rights=+8-10, Partial=+4-7, Missing=+0-3.
-6. Transparency (10): Clear/readable=+8-10, Moderate=+4-7, Complex=+0-3.
-7. Security (5): Strong encryption=+4-5, Basic=+2-3, Missing=+0-1.
-8. Tracking (5): Minimal=+4-5, Moderate=+2-3, Heavy=+0-1.
-9. Ambiguity (5): Start from +5. (Penalty: vague language -> -2, unclear clauses -> -2, contradictions -> -1).
+3. Child / Student Data (15): Strong protection+parental consent=+13-15, Mentioned but weak=+6-12, Not mentioned+targets kids=+0-5.
+4. Retention Policy (10): Clearly defined deletion timelines=+8-10, Partial=+4-7, missing=+0-3.
+5. User Rights (10): Erasure, Correction, Withdrawal of Consent=+8-10, Partial=+4-7.
+6. Transparency (10): Plain language=+8-10, Legalese=+0-5.
+7. Security (5): Encryption mentioned=+4-5, Basic/Missing=+0-3.
+8. Tracking (5): Opt-out found=+4-5, Heavy tracking (FB/AdMob)=+0-2.
+9. Ambiguity (5): Start from +5. (Penalty: "may", "etc.", "including but not limited to" -> -2 each).
 
-FINAL SCORE = Sum of all categories.
-GRADE: 85-100 = A (Low Risk), 70-84 = B (Medium Risk), 50-69 = C (High Risk), <50 = D (Very High Risk).
+Return ONLY valid JSON. No explanations outside the JSON block.`;
 
-Return ONLY valid JSON. No explanations outside the JSON.`;
 
 export async function analyzeWithGemini(policyText: string, appName: string, policyUrl?: string): Promise<AnalysisResult> {
   const truncatedText = policyText.substring(0, 15000); // Keep within token limits

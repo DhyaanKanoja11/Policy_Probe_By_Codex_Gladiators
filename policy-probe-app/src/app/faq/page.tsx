@@ -63,29 +63,40 @@ export default function FAQPage() {
           </Box>
         </motion.div>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {faqs.map((faq, i) => (
             <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={i + 1} key={i}>
               <Accordion 
                 disableGutters 
                 elevation={0}
+                className="nb-shadow"
                 sx={{ 
                   bgcolor: 'background.paper', 
-                  border: '2px solid', 
-                  borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-                  borderRadius: '0 !important',
+                  border: '3px solid', 
+                  borderColor: isDark ? '#fefefe' : '#111827',
+                  borderRadius: 0,
                   '&:before': { display: 'none' },
-                  boxShadow: isDark ? '4px 4px 0px rgba(255,255,255,0.05)' : '4px 4px 0px rgba(0,0,0,0.05)',
+                  transition: 'transform 0.1s', '&:active': { transform: 'translate(2px, 2px)' },
                 }}
               >
-                <AccordionSummary expandIcon={<ExpandMore />} sx={{ px: 3, py: 1.5 }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <InfoOutlined color="primary" sx={{ display: { xs: 'none', sm: 'block' } }} />
-                    <Typography sx={{ fontWeight: 800, fontSize: '1.05rem' }}>{faq.q}</Typography>
+                <AccordionSummary 
+                  expandIcon={<ExpandMore sx={{ color: 'primary.main', fontWeight: 900 }} />} 
+                  sx={{ px: 3, py: 2, '&.Mui-expanded': { minHeight: 0 } }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2.5 }}>
+                    <Box sx={{ 
+                      width: 32, height: 32, bgcolor: 'primary.main', color: '#fff', 
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      border: '2px solid', borderColor: isDark ? '#fefefe' : '#111827',
+                      borderRadius: 0
+                    }}>
+                      <Typography sx={{ fontWeight: 900, fontSize: '0.8rem' }}>Q</Typography>
+                    </Box>
+                    <Typography sx={{ fontWeight: 900, fontSize: '1.1rem', fontFamily: '"Manrope"', textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{faq.q}</Typography>
                   </Box>
                 </AccordionSummary>
-                <AccordionDetails sx={{ px: { xs: 3, sm: 7 }, pb: 4, pt: 0 }}>
-                  <Typography color="text.secondary" sx={{ lineHeight: 1.7, fontWeight: 500 }}>
+                <AccordionDetails sx={{ px: { xs: 3, sm: 8 }, pb: 4, pt: 1, borderTop: '2px solid', borderColor: 'divider' }}>
+                  <Typography sx={{ lineHeight: 1.8, fontWeight: 600, color: 'text.secondary', fontSize: '1rem' }}>
                     {faq.a}
                   </Typography>
                 </AccordionDetails>
@@ -97,3 +108,4 @@ export default function FAQPage() {
     </Box>
   );
 }
+

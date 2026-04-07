@@ -204,203 +204,137 @@ export default function ComparePage() {
     <Box sx={{ py: { xs: 6, md: 10 }, minHeight: '80vh' }}>
       <Container maxWidth="lg">
         <motion.div initial="hidden" animate="visible" variants={fadeUp}>
-          <Typography variant="h3" align="center" sx={{ fontWeight: 800, mb: 1.5, letterSpacing: '-0.02em', fontSize: { xs: '1.8rem', md: '2.5rem' } }}>
-            Compare Privacy Policies
+          <Typography variant="h3" align="center" sx={{ fontWeight: 900, mb: 1.5, letterSpacing: '-0.04em', fontSize: { xs: '2rem', md: '3rem' }, textTransform: 'uppercase' }}>
+            Privacy Duel
           </Typography>
-          <Typography align="center" color="text.secondary" sx={{ mb: 6, maxWidth: 600, mx: 'auto', lineHeight: 1.7 }}>
-            Enter two application URLs to run a full side-by-side comparison across {COMPARISON_FACTORS.length} factors.
+          <Typography align="center" color="text.secondary" sx={{ mb: 6, maxWidth: 600, mx: 'auto', lineHeight: 1.7, fontWeight: 600 }}>
+            Side-by-side audit of {COMPARISON_FACTORS.length} critical privacy checkpoints.
           </Typography>
         </motion.div>
 
-        {/* Show animated loading overlay while fetching */}
         {loading && <CompareLoadingOverlay urlA={urlA} urlB={urlB} />}
 
-        {/* Input form — hide while loading or when results shown */}
         {!loading && !results && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
-            <Box sx={{
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <Box className="nb-shadow" sx={{
               bgcolor: 'background.paper', p: { xs: 3, md: 5 }, borderRadius: 0,
-              boxShadow: isDark ? '6px 6px 0px #fff' : '6px 6px 0px #000',
-              border: '2px solid', borderColor: isDark ? 'text.primary' : '#000',
-              maxWidth: 700, mx: 'auto'
+              border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827',
+              maxWidth: 750, mx: 'auto'
             }}>
-              <Grid container spacing={3}>
+              <Grid container spacing={4}>
                 <Grid size={{ xs: 12, md: 5 }}>
-                  <Typography sx={{ fontWeight: 800, mb: 1 }}>App A (URL)</Typography>
-                  <TextField fullWidth placeholder="e.g. https://www.vedantu.com" value={urlA} onChange={(e) => setUrlA(e.target.value)}
-                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0 } }} />
+                  <Typography sx={{ fontWeight: 900, mb: 1.5, textTransform: 'uppercase', fontSize: '0.8rem' }}>PRIMARY APP</Typography>
+                  <TextField fullWidth placeholder="https://..." value={urlA} onChange={(e) => setUrlA(e.target.value)}
+                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0, border: '2px solid #000' } }} />
                 </Grid>
                 <Grid size={{ xs: 12, md: 2 }} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <Box sx={{ width: 40, height: 40, borderRadius: '50%', bgcolor: 'text.primary', color: 'background.paper', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Typography sx={{ fontWeight: 800, fontSize: '0.8rem' }}>VS</Typography>
+                  <Box sx={{ 
+                    width: 48, height: 48, bgcolor: 'text.primary', color: 'background.paper', 
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    border: '3px solid', borderColor: isDark ? '#fff' : '#000',
+                    boxShadow: '4px 4px 0px rgba(0,0,0,0.2)',
+                    fontWeight: 900
+                  }}>
+                    VS
                   </Box>
                 </Grid>
                 <Grid size={{ xs: 12, md: 5 }}>
-                  <Typography sx={{ fontWeight: 800, mb: 1 }}>App B (URL)</Typography>
-                  <TextField fullWidth placeholder="e.g. https://pw.live" value={urlB} onChange={(e) => setUrlB(e.target.value)}
-                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0 } }} />
+                  <Typography sx={{ fontWeight: 900, mb: 1.5, textTransform: 'uppercase', fontSize: '0.8rem' }}>COMPETING APP</Typography>
+                  <TextField fullWidth placeholder="https://..." value={urlB} onChange={(e) => setUrlB(e.target.value)}
+                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 0, border: '2px solid #000' } }} />
                 </Grid>
               </Grid>
 
-              {error && <Alert severity="error" sx={{ mt: 3, borderRadius: 0 }}>{error}</Alert>}
+              {error && <Alert severity="error" sx={{ mt: 3, borderRadius: 0, border: '2px solid #ef4444', fontWeight: 700 }}>{error}</Alert>}
 
-              <Button fullWidth variant="contained" size="large" disabled={loading} onClick={handleCompare}
+              <Button fullWidth variant="contained" size="large" onClick={handleCompare}
                 startIcon={<CompareArrows />}
                 sx={{
-                  mt: 4, py: 1.75, fontSize: '1rem', borderRadius: 0, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000',
-                  boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000', '&:hover': { transform: 'translate(-2px, -2px)' }
+                  mt: 5, py: 2, fontSize: '1.1rem', borderRadius: 0, border: '3px solid', borderColor: '#000',
+                  bgcolor: 'primary.main', fontWeight: 900,
+                  boxShadow: '6px 6px 0px #000', '&:hover': { transform: 'translate(-2px, -2px)', boxShadow: '8px 8px 0px #000' }
                 }}
               >
-                Compare Privacy Policies
+                START COMPARISON AUDIT
               </Button>
             </Box>
           </motion.div>
         )}
 
-        {/* Results */}
         {!loading && results && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            {/* Verdict Banner */}
+            {/* Results UI */}
             {(() => {
               const v = getVerdict();
-              const winnerName = v.winner === 'A' ? results.nameA : v.winner === 'B' ? results.nameB : null;
+              const winnerName = v.winner === 'A' ? results.nameA : v.winner === 'B' ? results.nameB : 'TIE';
+              const isTie = v.winner === 'Tie';
+              
               return (
-                <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 2 }}>
-                  <Button onClick={() => setResults(null)} startIcon={<ArrowForward sx={{ transform: 'rotate(180deg)' }} />} sx={{ fontWeight: 800, color: 'text.secondary' }}>
-                    New Comparison
-                  </Button>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
-                    <Chip label={`App A wins ${v.winsA}`} size="small" color={v.winner === 'A' ? 'success' : 'default'} icon={<TrendingUp />} />
-                    <Chip label={`Ties ${v.ties}`} size="small" icon={<Remove />} />
-                    <Chip label={`App B wins ${v.winsB}`} size="small" color={v.winner === 'B' ? 'success' : 'default'} icon={<TrendingDown />} />
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, bgcolor: v.winner !== 'Tie' ? 'success.main' : 'warning.main', color: '#fff', px: 2, py: 0.5 }}>
-                      <VerifiedUser fontSize="small" />
-                      <Typography sx={{ fontWeight: 800, fontSize: '0.8rem' }}>
-                        {winnerName ? `Safer: ${winnerName}` : 'Verdict: Tie'}
+                <>
+                  <Box sx={{ mb: 6 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
+                      <Button onClick={() => setResults(null)} 
+                        sx={{ fontWeight: 900, color: 'text.primary', border: '2px solid', borderColor: 'text.primary', borderRadius: 0, px: 2 }}>
+                        RE-SCAN APPS
+                      </Button>
+                      <Button variant="contained" disabled sx={{ fontWeight: 900, borderRadius: 0, border: '2px solid #000' }}>
+                        EXPORT AUDIT (PDF)
+                      </Button>
+                    </Box>
+
+                    <Box className="nb-shadow" sx={{ 
+                      p: 5, border: '3px solid', borderColor: '#000',
+                      bgcolor: isTie ? 'warning.main' : 'success.main',
+                      color: '#fff', textAlign: 'center', position: 'relative'
+                    }}>
+                      <Typography variant="h3" sx={{ fontWeight: 900, mb: 1, textTransform: 'uppercase', letterSpacing: '-0.04em' }}>
+                        {isTie ? "IT'S A DEAD HEAT!" : `THE SAFER CHOICE: ${winnerName}`}
+                      </Typography>
+                      <Typography sx={{ fontWeight: 700, fontSize: '1.2rem', opacity: 0.9 }}>
+                        {isTie ? 'Both policies offer similar levels of protection.' : `${winnerName} outperformed across ${v.winner === 'A' ? v.winsA : v.winsB} privacy checkpoints.`}
                       </Typography>
                     </Box>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: -2, mb: 6 }}>
+                      <Chip label={`A WINS: ${v.winsA}`} sx={{ border: '2px solid #000', bgcolor: '#fff', fontWeight: 900, color: '#000', borderRadius: 0 }} />
+                      <Chip label={`TIES: ${v.ties}`} sx={{ border: '2px solid #000', bgcolor: '#fff', fontWeight: 900, color: '#000', borderRadius: 0 }} />
+                      <Chip label={`B WINS: ${v.winsB}`} sx={{ border: '2px solid #000', bgcolor: '#fff', fontWeight: 900, color: '#000', borderRadius: 0 }} />
+                    </Box>
                   </Box>
-                </Box>
+
+                  <Box className="nb-shadow" sx={{ bgcolor: 'background.paper', border: '3px solid #000', mb: 6 }}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr 1fr 1fr', md: '2.5fr 1fr 1fr' }, borderBottom: '3px solid #000', bgcolor: isDark ? 'rgba(255,255,255,0.05)' : '#f8f9fa' }}>
+                      <Box sx={{ p: 3 }}><Typography sx={{ fontWeight: 900, textTransform: 'uppercase', fontSize: '0.8rem' }}>Checkpoints</Typography></Box>
+                      <Box sx={{ p: 3, borderLeft: '3px solid #000', textAlign: 'center' }}><Typography sx={{ fontWeight: 900 }}>{results.nameA}</Typography></Box>
+                      <Box sx={{ p: 3, borderLeft: '3px solid #000', textAlign: 'center' }}><Typography sx={{ fontWeight: 900 }}>{results.nameB}</Typography></Box>
+                    </Box>
+                    {COMPARISON_FACTORS.map((f, idx) => {
+                      const valA = f.getValueA(results.A);
+                      const valB = f.getValueB(results.B);
+                      const w = getWinner(valA, valB, f.direction);
+                      return (
+                        <Box key={f.key} sx={{ 
+                          display: 'grid', gridTemplateColumns: { xs: '1fr 1fr 1fr', md: '2.5fr 1fr 1fr' }, 
+                          borderBottom: idx === COMPARISON_FACTORS.length - 1 ? 'none' : '1px solid divider'
+                        }}>
+                          <Box sx={{ p: 2 }}><Typography sx={{ fontWeight: 700, fontSize: '0.9rem' }}>{f.label}</Typography></Box>
+                          <Box sx={{ p: 2, borderLeft: '1px solid divider', textAlign: 'center', bgcolor: w === 'A' ? 'rgba(16,185,129,0.05)' : 'transparent' }}>
+                            <Typography sx={{ fontWeight: 900, color: w === 'A' ? 'success.main' : w === 'B' ? 'error.main' : 'text.primary' }}>{f.format(valA)}</Typography>
+                          </Box>
+                          <Box sx={{ p: 2, borderLeft: '1px solid divider', textAlign: 'center', bgcolor: w === 'B' ? 'rgba(16,185,129,0.05)' : 'transparent' }}>
+                            <Typography sx={{ fontWeight: 900, color: w === 'B' ? 'success.main' : w === 'A' ? 'error.main' : 'text.primary' }}>{f.format(valB)}</Typography>
+                          </Box>
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                </>
               );
             })()}
-
-            {/* Comparison Table */}
-            <Box sx={{
-              bgcolor: 'background.paper', borderRadius: 0,
-              boxShadow: isDark ? '6px 6px 0px #fff' : '6px 6px 0px #000',
-              border: '2px solid', borderColor: isDark ? 'text.primary' : '#000',
-              overflow: 'hidden',
-            }}>
-              {/* Header */}
-              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr 1fr 1fr', md: '2fr 1fr 1fr' }, bgcolor: isDark ? 'rgba(255,255,255,0.05)' : '#f8f9fa', borderBottom: '2px solid', borderColor: 'text.primary' }}>
-                <Box sx={{ p: 2.5, display: 'flex', alignItems: 'center' }}>
-                  <Typography sx={{ fontWeight: 800, fontSize: '0.85rem', color: 'text.secondary' }}>COMPARISON FACTOR ({COMPARISON_FACTORS.length})</Typography>
-                </Box>
-                <Box sx={{ p: 2.5, borderLeft: '1px solid', borderColor: 'divider', textAlign: 'center' }}>
-                  <Typography sx={{ fontWeight: 800, fontSize: '1rem' }}>{results.nameA}</Typography>
-                  <Chip label={results.A.privacy_grade} size="small" color={results.A.privacy_grade === 'A' ? 'success' : results.A.privacy_grade === 'B' ? 'warning' : 'error'} sx={{ mt: 0.5, fontWeight: 800 }} />
-                </Box>
-                <Box sx={{ p: 2.5, borderLeft: '1px solid', borderColor: 'divider', textAlign: 'center' }}>
-                  <Typography sx={{ fontWeight: 800, fontSize: '1rem' }}>{results.nameB}</Typography>
-                  <Chip label={results.B.privacy_grade} size="small" color={results.B.privacy_grade === 'A' ? 'success' : results.B.privacy_grade === 'B' ? 'warning' : 'error'} sx={{ mt: 0.5, fontWeight: 800 }} />
-                </Box>
-              </Box>
-
-              {/* Factor Rows */}
-              {COMPARISON_FACTORS.map((factor, idx) => {
-                const valA = factor.getValueA(results.A);
-                const valB = factor.getValueB(results.B);
-                const winner = getWinner(valA, valB, factor.direction);
-                const isAlt = idx % 2 === 0;
-
-                return (
-                  <Box key={factor.key} sx={{
-                    display: 'grid', gridTemplateColumns: { xs: '1fr 1fr 1fr', md: '2fr 1fr 1fr' },
-                    borderBottom: '1px solid', borderColor: 'divider',
-                    bgcolor: isAlt ? (isDark ? 'rgba(255,255,255,0.015)' : 'rgba(0,0,0,0.01)') : 'transparent',
-                    '&:hover': { bgcolor: isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.025)' },
-                    transition: 'background 0.15s',
-                  }}>
-                    <Box sx={{ p: 2, display: 'flex', alignItems: 'center' }}>
-                      <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', color: 'text.secondary' }}>{factor.label}</Typography>
-                    </Box>
-                    {/* App A Cell */}
-                    <Box sx={{
-                      p: 2, borderLeft: winner === 'A' ? `3px solid ${theme.palette.success.main}` : '3px solid transparent',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1,
-                      bgcolor: winner === 'A' ? (isDark ? 'rgba(74,222,128,0.06)' : 'rgba(22,163,74,0.04)') : 'transparent',
-                    }}>
-                      {winner === 'A' && <CheckCircle sx={{ fontSize: 16, color: 'success.main' }} />}
-                      {winner === 'B' && <Cancel sx={{ fontSize: 16, color: 'error.main', opacity: 0.5 }} />}
-                      <Typography sx={{ fontWeight: 800, fontSize: '0.9rem', color: winner === 'A' ? 'success.main' : winner === 'B' ? 'error.main' : 'text.primary' }}>
-                        {factor.format(valA)}
-                      </Typography>
-                    </Box>
-                    {/* App B Cell */}
-                    <Box sx={{
-                      p: 2, borderLeft: winner === 'B' ? `3px solid ${theme.palette.success.main}` : '3px solid transparent',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1,
-                      bgcolor: winner === 'B' ? (isDark ? 'rgba(74,222,128,0.06)' : 'rgba(22,163,74,0.04)') : 'transparent',
-                    }}>
-                      {winner === 'B' && <CheckCircle sx={{ fontSize: 16, color: 'success.main' }} />}
-                      {winner === 'A' && <Cancel sx={{ fontSize: 16, color: 'error.main', opacity: 0.5 }} />}
-                      <Typography sx={{ fontWeight: 800, fontSize: '0.9rem', color: winner === 'B' ? 'success.main' : winner === 'A' ? 'error.main' : 'text.primary' }}>
-                        {factor.format(valB)}
-                      </Typography>
-                    </Box>
-                  </Box>
-                );
-              })}
-            </Box>
-
-            {/* Red Flags Comparison */}
-            <Grid container spacing={3} sx={{ mt: 3 }}>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Box sx={{ bgcolor: 'background.paper', p: 3, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000', boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000' }}>
-                  <Typography sx={{ fontWeight: 800, mb: 2 }}>🚩 {results.nameA} — Red Flags ({results.A.red_flags.length})</Typography>
-                  {results.A.red_flags.length === 0 ? (
-                    <Typography variant="body2" color="success.main" sx={{ fontWeight: 600 }}>No red flags detected ✓</Typography>
-                  ) : results.A.red_flags.map((f, i) => (
-                    <Box key={i} sx={{ mb: 1.5, pl: 2, borderLeft: `3px solid ${f.severity === 'Critical' ? theme.palette.error.main : theme.palette.warning.main}` }}>
-                      <Typography sx={{ fontWeight: 700, fontSize: '0.85rem' }}>{f.title}</Typography>
-                      <Typography variant="caption" color="text.secondary">{f.description}</Typography>
-                    </Box>
-                  ))}
-                </Box>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Box sx={{ bgcolor: 'background.paper', p: 3, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000', boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000' }}>
-                  <Typography sx={{ fontWeight: 800, mb: 2 }}>🚩 {results.nameB} — Red Flags ({results.B.red_flags.length})</Typography>
-                  {results.B.red_flags.length === 0 ? (
-                    <Typography variant="body2" color="success.main" sx={{ fontWeight: 600 }}>No red flags detected ✓</Typography>
-                  ) : results.B.red_flags.map((f, i) => (
-                    <Box key={i} sx={{ mb: 1.5, pl: 2, borderLeft: `3px solid ${f.severity === 'Critical' ? theme.palette.error.main : theme.palette.warning.main}` }}>
-                      <Typography sx={{ fontWeight: 700, fontSize: '0.85rem' }}>{f.title}</Typography>
-                      <Typography variant="caption" color="text.secondary">{f.description}</Typography>
-                    </Box>
-                  ))}
-                </Box>
-              </Grid>
-            </Grid>
-
-            {/* Summary */}
-            <Grid container spacing={3} sx={{ mt: 1 }}>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Box sx={{ bgcolor: 'background.paper', p: 3, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000', boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000' }}>
-                  <Typography sx={{ fontWeight: 800, mb: 1 }}>📝 {results.nameA} Summary</Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>{results.A.summary_plain_english}</Typography>
-                </Box>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Box sx={{ bgcolor: 'background.paper', p: 3, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000', boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000' }}>
-                  <Typography sx={{ fontWeight: 800, mb: 1 }}>📝 {results.nameB} Summary</Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>{results.B.summary_plain_english}</Typography>
-                </Box>
-              </Grid>
-            </Grid>
           </motion.div>
         )}
       </Container>
     </Box>
   );
 }
+

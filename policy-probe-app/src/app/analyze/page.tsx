@@ -80,47 +80,44 @@ export default function AnalyzePage() {
   };
 
   return (
-    <Box sx={{ py: { xs: 6, md: 10 }, minHeight: '80vh' }}>
+    <Box sx={{ py: { xs: 6, md: 10 }, minHeight: '80vh', bgcolor: 'background.default' }}>
       <Container maxWidth="md">
         <motion.div initial="hidden" animate="visible" variants={fadeUp}>
-          <Typography variant="h3" align="center" sx={{ fontWeight: 800, mb: 1.5, letterSpacing: '-0.02em', fontSize: { xs: '1.8rem', md: '2.5rem' } }}>
-            Analyze a Privacy Policy
+          <Typography variant="h3" align="center" sx={{ fontFamily: '"Manrope"', fontWeight: 900, mb: 1.5, letterSpacing: '-0.04em', textTransform: 'uppercase', fontSize: { xs: '1.8rem', md: '2.5rem' } }}>
+            Forensic Analyzer
           </Typography>
-          <Typography align="center" color="text.secondary" sx={{ mb: 6, maxWidth: 480, mx: 'auto', lineHeight: 1.7 }}>
-            Enter an app name, website URL, privacy policy link, or paste the policy text directly.
+          <Typography align="center" color="text.secondary" sx={{ mb: 6, maxWidth: 480, mx: 'auto', lineHeight: 1.7, fontWeight: 600 }}>
+            Submit an app name, website URL, or policy text for a detailed privacy breakdown.
           </Typography>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
-          <Box sx={{
-            bgcolor: 'background.paper', p: { xs: 3, md: 5 }, borderRadius: 4,
-            boxShadow: '0px 4px 40px rgba(0,0,0,0.04)',
-            border: `1px solid ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(171,179,183,0.1)'}`,
+          <Box className="nb-shadow" sx={{
+            bgcolor: 'background.paper', p: { xs: 3, md: 5 }, borderRadius: 0,
+            border: `3px solid ${isDark ? '#fefefe' : '#111827'}`,
           }}>
-            {/* Mode selector — 2×2 grid on mobile, row on desktop */}
             <Box sx={{ mb: 4 }}>
               <Box sx={{
                 display: 'grid',
                 gridTemplateColumns: { xs: '1fr 1fr', sm: 'repeat(4, 1fr)' },
-                gap: 1,
-                bgcolor: isDark ? 'rgba(255,255,255,0.04)' : '#f1f4f6',
-                borderRadius: 3,
-                p: 0.75,
+                gap: 1.5,
               }}>
                 {inputModes.map((m) => (
                   <Box
                     key={m.value}
                     onClick={() => { setMode(m.value); setValue(''); setError(''); }}
                     sx={{
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.75,
-                      px: { xs: 1, sm: 2 }, py: { xs: 1.25, sm: 1 },
-                      borderRadius: 2.5, cursor: 'pointer', fontWeight: 600,
-                      fontSize: { xs: '0.75rem', sm: '0.82rem' },
-                      transition: 'all 0.18s',
-                      color: mode === m.value ? 'primary.main' : 'text.secondary',
-                      bgcolor: mode === m.value ? (isDark ? 'rgba(77,142,255,0.15)' : '#fff') : 'transparent',
-                      boxShadow: mode === m.value ? (isDark ? 'none' : '0 1px 4px rgba(0,0,0,0.08)') : 'none',
-                      '&:hover': { color: 'primary.main', bgcolor: isDark ? 'rgba(77,142,255,0.08)' : 'rgba(255,255,255,0.7)' },
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1,
+                      px: { xs: 1, sm: 2 }, py: 1.5,
+                      borderRadius: 0, cursor: 'pointer', fontWeight: 900,
+                      fontSize: { xs: '0.75rem', sm: '0.85rem' },
+                      textTransform: 'uppercase',
+                      transition: 'all 0.1s',
+                      color: mode === m.value ? '#fff' : 'text.primary',
+                      bgcolor: mode === m.value ? 'primary.main' : (isDark ? 'rgba(255,255,255,0.03)' : '#f1f4f6'),
+                      border: '2px solid', borderColor: isDark ? '#fefefe' : '#111827',
+                      boxShadow: mode === m.value ? `2px 2px 0px ${isDark ? '#fefefe' : '#111827'}` : 'none',
+                      '&:hover': { transform: mode === m.value ? 'none' : 'translate(-1px, -1px)', boxShadow: mode === m.value ? `2px 2px 0px ${isDark ? '#fefefe' : '#111827'}` : `2px 2px 0px ${isDark ? '#fefefe' : '#111827'}` },
                       userSelect: 'none',
                     }}
                   >
@@ -134,22 +131,22 @@ export default function AnalyzePage() {
 
             {mode === 'text' ? (
               <TextField fullWidth multiline rows={8} placeholder={placeholders[mode]} value={value} onChange={(e) => setValue(e.target.value)} variant="outlined"
-                sx={{ mb: 3, '& .MuiOutlinedInput-root': { borderRadius: 3, bgcolor: isDark ? 'rgba(255,255,255,0.02)' : '#f1f4f6', '& fieldset': { border: 'none' }, '&:focus-within': { boxShadow: `0 0 0 2px ${theme.palette.primary.main}20` } } }} />
+                sx={{ mb: 3, '& .MuiOutlinedInput-root': { borderRadius: 0, bgcolor: isDark ? 'rgba(255,255,255,0.02)' : '#f8fafc', border: '2px solid', borderColor: isDark ? '#fefefe' : '#111827', '& fieldset': { border: 'none' } } }} />
             ) : (
               <TextField fullWidth placeholder={placeholders[mode]} value={value} onChange={(e) => setValue(e.target.value)} variant="outlined"
-                sx={{ mb: 3, '& .MuiOutlinedInput-root': { borderRadius: 3, bgcolor: isDark ? 'rgba(255,255,255,0.02)' : '#f1f4f6', py: 0.5, '& fieldset': { border: 'none' }, '&:focus-within': { boxShadow: `0 0 0 2px ${theme.palette.primary.main}20` } } }}
-                InputProps={{ sx: { fontSize: '1rem' } }} />
+                sx={{ mb: 3, '& .MuiOutlinedInput-root': { borderRadius: 0, bgcolor: isDark ? 'rgba(255,255,255,0.02)' : '#f8fafc', py: 0.5, border: '2px solid', borderColor: isDark ? '#fefefe' : '#111827', '& fieldset': { border: 'none' } } }}
+                InputProps={{ sx: { fontSize: '1rem', fontWeight: 600 } }} />
             )}
 
-            {error && <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>{error}</Alert>}
+            {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 0, border: '2px solid #000', fontWeight: 700 }}>{error}</Alert>}
 
-            <Box sx={{ mb: 3, p: { xs: 1.5, sm: 2 }, borderRadius: 3, bgcolor: isDark ? 'rgba(77,142,255,0.04)' : '#f8f9fa', border: `1px solid ${isDark ? 'rgba(77,142,255,0.1)' : 'rgba(0,90,194,0.1)'}` }}>
+            <Box sx={{ mb: 4, p: 2, borderRadius: 0, bgcolor: isDark ? 'rgba(77,142,255,0.04)' : '#f8f9fa', border: `2px solid ${isDark ? '#fff' : '#000'}` }}>
               <FormControlLabel
                 control={<Switch checked={deepAudit} onChange={(e) => setDeepAudit(e.target.checked)} color="primary" size="small" />}
                 label={
                   <Box>
-                    <Typography sx={{ fontWeight: 700, fontSize: { xs: '0.82rem', sm: '0.9rem' }, color: deepAudit ? 'primary.main' : 'text.primary' }}>Deep Audit (Behavioral Scan)</Typography>
-                    <Typography variant="caption" color="text.secondary">Simulate scanning for hidden trackers and permission mismatches.</Typography>
+                    <Typography sx={{ fontWeight: 900, fontSize: { xs: '0.85rem', sm: '0.95rem' }, color: deepAudit ? 'primary.main' : 'text.primary', textTransform: 'uppercase' }}>Deep Audit Protocol</Typography>
+                    <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>Enable behavioral forensics & hidden tracker scanning.</Typography>
                   </Box>
                 }
               />
@@ -158,33 +155,30 @@ export default function AnalyzePage() {
             <Button fullWidth variant="contained" size="large" disabled={!value.trim() || loading} onClick={handleAnalyze}
               endIcon={loading ? <CircularProgress size={18} color="inherit" /> : <ArrowForward />}
               sx={{
-                py: 1.75, fontSize: '1rem', borderRadius: 0, border: '2px solid', borderColor: isDark ? 'text.primary' : '#000',
-                boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #000',
-                '&:hover': { transform: 'translate(-2px, -2px)' }, '&:disabled': { opacity: 0.5 }, transition: 'all 0.2s',
+                py: 2, fontSize: '1.1rem', fontWeight: 900, textTransform: 'uppercase', borderRadius: 0, border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827',
+                bgcolor: 'primary.main', color: '#fff',
+                boxShadow: isDark ? '4px 4px 0px #fff' : '4px 4px 0px #111827',
+                '&:hover': { bgcolor: 'primary.dark', transform: 'translate(-2px, -2px)' }, '&:active': { transform: 'translate(1px, 1px)', boxShadow: '1px 1px 0px #000' },
+                '&:disabled': { opacity: 0.5 }, transition: 'all 0.15s',
               }}
             >
-              {loading ? 'Analyzing with AI...' : 'Start Analysis'}
+              {loading ? 'Initializing Analysis...' : 'Commence Analysis'}
             </Button>
-            {loading && <LinearProgress sx={{ mt: 2, height: 3 }} />}
+            {loading && <LinearProgress sx={{ mt: 3, height: 4, bgcolor: 'rgba(0,0,0,0.1)', '& .MuiLinearProgress-bar': { bgcolor: 'primary.main' } }} />}
 
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, mt: 4, p: 2, bgcolor: isDark ? 'rgba(74,222,128,0.05)' : 'rgba(22,163,74,0.05)', border: `2px solid ${isDark ? '#4ade80' : '#16a34a'}` }}>
-              <Lock sx={{ color: 'success.main', fontSize: 20, mt: 0.2 }} />
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 5, p: 2.5, bgcolor: isDark ? 'rgba(74,222,128,0.1)' : 'rgba(22,163,74,0.08)', border: `3px solid ${isDark ? '#4ade80' : '#16a34a'}` }}>
+              <Lock sx={{ color: isDark ? '#4ade80' : '#16a34a', fontSize: 24 }} />
               <Box>
-                <Typography sx={{ fontWeight: 700, fontSize: '0.85rem', color: 'success.main' }}>Privacy-First Processing Mode</Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, lineHeight: 1.4 }}>
-                  Your data is never stored. Analysis is strictly session-based and completely ephemeral.
+                <Typography sx={{ fontWeight: 900, fontSize: '0.95rem', color: isDark ? '#4ade80' : '#16a34a', textTransform: 'uppercase' }}>Secure Forensic Processing</Typography>
+                <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.secondary', mt: 0.25, lineHeight: 1.5 }}>
+                  Stateless execution. Your data is purged immediately after the session resolves.
                 </Typography>
               </Box>
             </Box>
-
-            <Alert severity="info" sx={{ mt: 3, borderRadius: 2, bgcolor: isDark ? 'rgba(77,142,255,0.06)' : '#d8e2ff', color: 'text.primary', '& .MuiAlert-icon': { color: 'primary.main' } }}>
-              <Typography variant="body2">
-                <strong>Powered by Gemini AI.</strong> Try "Google Classroom" or "Khan Academy" for instant analysis.
-              </Typography>
-            </Alert>
           </Box>
         </motion.div>
       </Container>
     </Box>
   );
 }
+
