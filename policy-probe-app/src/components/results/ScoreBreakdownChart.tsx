@@ -27,41 +27,63 @@ export default function ScoreBreakdownChart({ breakdown }: Props) {
   const pieData = Object.entries(breakdown).map(([k, v]) => ({ name: LABELS[k as keyof ScoreBreakdown], value: v }));
 
   const cardSx = {
-    bgcolor: 'background.paper', p: 3, borderRadius: 4, boxShadow: '0px 4px 40px rgba(0,0,0,0.03)',
-    border: `1px solid ${isDark ? 'rgba(255,255,255,0.04)' : 'rgba(171,179,183,0.05)'}`,
+    bgcolor: 'background.paper', p: 3, borderRadius: 0, boxShadow: '8px 8px 0px rgba(0,0,0,1)',
+    border: `4px solid #000`,
   };
-  const tooltipStyle = { backgroundColor: theme.palette.background.paper, border: `1px solid ${theme.palette.divider}`, borderRadius: 12, fontSize: 12 };
-  const textFill = theme.palette.text.secondary;
+  const tooltipStyle = { 
+    backgroundColor: theme.palette.background.paper, 
+    border: `3px solid #000`, 
+    borderRadius: 0, 
+    fontSize: 12,
+    fontWeight: 800,
+    boxShadow: '4px 4px 0px rgba(0,0,0,0.1)'
+  };
+  const textFill = theme.palette.text.primary;
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
       <Box sx={cardSx}>
-        <Typography sx={{ fontFamily: '"Manrope"', fontWeight: 700, fontSize: '0.95rem', mb: 2 }}>Score Radar</Typography>
-        <ResponsiveContainer width="100%" height={300}>
-          <RadarChart data={radarData}>
-            <PolarGrid stroke={isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'} />
-            <PolarAngleAxis dataKey="subject" tick={{ fontSize: 10, fill: textFill }} />
-            <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fontSize: 9, fill: textFill }} />
-            <Radar name="Score" dataKey="score" stroke={theme.palette.primary.main} fill={theme.palette.primary.main} fillOpacity={0.15} strokeWidth={2} />
+        <Typography sx={{ fontFamily: '"Manrope"', fontWeight: 900, fontSize: '1.2rem', mb: 3, textTransform: 'uppercase' }}>
+          Final Score Radar
+        </Typography>
+        <ResponsiveContainer width="100%" height={320}>
+          <RadarChart data={radarData} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
+            <PolarGrid stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} strokeWidth={2} />
+            <PolarAngleAxis dataKey="subject" tick={{ fontSize: 11, fill: textFill, fontWeight: 800 }} />
+            <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
+            <Radar 
+              name="Audit Score" 
+              dataKey="score" 
+              stroke={theme.palette.primary.main} 
+              fill={theme.palette.primary.main} 
+              fillOpacity={0.3} 
+              strokeWidth={4}
+              dot={{ r: 4, fill: '#000', stroke: '#fff', strokeWidth: 2 }}
+            />
+            <Tooltip contentStyle={tooltipStyle} />
           </RadarChart>
         </ResponsiveContainer>
       </Box>
       <Box sx={cardSx}>
-        <Typography sx={{ fontFamily: '"Manrope"', fontWeight: 700, fontSize: '0.95rem', mb: 2 }}>Category Scores</Typography>
-        <ResponsiveContainer width="100%" height={280}>
-          <BarChart data={barData} layout="vertical" margin={{ left: 10 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke={isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)'} />
-            <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 10, fill: textFill }} />
-            <YAxis dataKey="name" type="category" width={90} tick={{ fontSize: 10, fill: textFill }} />
-            <Tooltip contentStyle={tooltipStyle} />
-            <Bar dataKey="score" radius={[0, 6, 6, 0]} barSize={16}>
+        <Typography sx={{ fontFamily: '"Manrope"', fontWeight: 900, fontSize: '1.2rem', mb: 3, textTransform: 'uppercase' }}>
+          Diagnostic Category Scores
+        </Typography>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={barData} layout="vertical" margin={{ left: 10, right: 30 }}>
+            <CartesianGrid strokeDasharray="0" stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} />
+            <XAxis type="number" domain={[0, 100]} hide />
+            <YAxis dataKey="name" type="category" width={110} tick={{ fontSize: 11, fill: textFill, fontWeight: 700 }} axisLine={false} tickLine={false} />
+            <Tooltip cursor={{ fill: 'rgba(0,0,0,0.05)' }} contentStyle={tooltipStyle} />
+            <Bar dataKey="score" radius={[0, 0, 0, 0]} barSize={20} stroke="#000" strokeWidth={2}>
               {barData.map((e, i) => <Cell key={i} fill={getColor(e.score)} />)}
             </Bar>
           </BarChart>
         </ResponsiveContainer>
       </Box>
       <Box sx={cardSx}>
-        <Typography sx={{ fontFamily: '"Manrope"', fontWeight: 700, fontSize: '0.95rem', mb: 2 }}>Risk Distribution</Typography>
+        <Typography sx={{ fontFamily: '"Manrope"', fontWeight: 900, fontSize: '1.2rem', mb: 3, textTransform: 'uppercase' }}>
+          Privacy Risk Distribution
+        </Typography>
         <ResponsiveContainer width="100%" height={280}>
           <PieChart>
             <Pie data={pieData} cx="50%" cy="50%" outerRadius={95} innerRadius={50} dataKey="value" stroke={theme.palette.background.paper} strokeWidth={3} fillOpacity={0.75}>
