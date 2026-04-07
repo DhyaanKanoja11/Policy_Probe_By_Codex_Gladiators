@@ -94,12 +94,15 @@ export async function analyzeWithGemini(policyText: string, appName: string, pol
   if (!GEMINI_API_KEY) {
      throw new Error("GEMINI_API_KEY is not defined in environment variables.");
   }
+  
+  const sanitizedKey = GEMINI_API_KEY.trim();
+  console.log(`[Gemini-Probe] Initializing with key length: ${sanitizedKey.length}`);
 
   const response = await fetch(GEMINI_URL, {
     method: 'POST',
     headers: { 
       'Content-Type': 'application/json',
-      'X-goog-api-key': GEMINI_API_KEY
+      'x-goog-api-key': sanitizedKey
     },
     body: JSON.stringify(requestBody),
   });

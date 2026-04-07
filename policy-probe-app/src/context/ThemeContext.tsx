@@ -70,17 +70,19 @@ export function ThemeContextProvider({ children }: { children: ReactNode }) {
     <ThemeContext.Provider value={{ mode, toggleTheme }}>
       <MUIThemeProvider theme={theme}>
         <CssBaseline />
-        <div 
-          ref={overlayRef}
-          className={isExpanding ? 'theme-expand-anim' : ''}
-          style={{ 
-            position: 'fixed', 
-            top: 0, left: 0, right: 0, bottom: 0, 
-            zIndex: 9999, 
-            pointerEvents: 'none',
-            backgroundColor: mode === 'dark' ? '#fefefe' : '#1a1f22' // Expanded color (opposite of current)
-          }}
-        />
+        {isExpanding && (
+          <div 
+            ref={overlayRef}
+            className="theme-expand-anim"
+            style={{ 
+              position: 'fixed', 
+              top: 0, left: 0, right: 0, bottom: 0, 
+              zIndex: 9999, 
+              pointerEvents: 'none',
+              backgroundColor: mode === 'dark' ? '#fefefe' : '#1a1f22' // Opposite of current mode
+            }}
+          />
+        )}
         <div style={{ colorScheme: mode }}>
           {children}
         </div>
