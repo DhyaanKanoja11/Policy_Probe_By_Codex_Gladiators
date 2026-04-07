@@ -43,55 +43,55 @@ export default function PrivacyPage() {
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {[
             {
-              title: "1. Zero-Data Architecture and Collection Scope",
+              title: "1. 0% Data Collection Commitment",
               content: (
                 <>
-                  <Typography sx={{ mb: 2 }}>PolicyProbe operates on a strict zero-trust, zero-retention architecture. We do not collect, store, or process Personally Identifiable Information (PII), device identifiers, or location data from our users.</Typography>
-                  <Box sx={{ pl: 2, borderLeft: '3px solid', borderColor: 'primary.main' }}>
-                    <Typography sx={{ fontWeight: 800, mb: 1 }}>What you provide: <Box component="span" sx={{ fontWeight: 400 }}>The only input processed is the public App Store URL or Web Domain submitted into the search bar.</Box></Typography>
-                    <Typography sx={{ fontWeight: 800 }}>What we collect: <Box component="span" sx={{ fontWeight: 400 }}>Nothing. We do not use cookies, analytics SDKs, or session trackers.</Box></Typography>
+                  <Typography sx={{ mb: 2 }}>Policy Probe is a zero-collection platform. We do not intake, observed, or store any personal identifiers. No usage statistics are recorded. No unique device fingerprints are generated. We operate with absolute purpose limitation.</Typography>
+                  <Box sx={{ pl: 2, borderLeft: '3px solid', borderColor: 'primary.main', bgcolor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)', p: 2 }}>
+                    <Typography sx={{ fontWeight: 900, mb: 1 }}>DATA INTAKE: <Box component="span" sx={{ fontWeight: 600 }}>Zero. We only process public document URLs provided for audit.</Box></Typography>
+                    <Typography sx={{ fontWeight: 900 }}>COLLECTION SCOPE: <Box component="span" sx={{ fontWeight: 600 }}>Zero. We do not use cookies, trackers, or telemetry scripts.</Box></Typography>
                   </Box>
                 </>
               )
             },
             {
-              title: "2. Third-Party Processing and Data Sharing",
-              content: "PolicyProbe does not share, sell, or rent user data to any third parties. To generate the audit, our backend utilizes external APIs (Google Gemini, Exodus Privacy). Crucially, no user data is transmitted to these services. We exclusively transmit the public text and public metadata of the target application you are auditing. Your IP address and browser footprint are stripped locally before any external API request is made."
+              title: "2. Zero Third-Party Information Sharing",
+              content: "User data is never shared, sold, or rented. Audit intelligence is gathered strictly from public-facing domain metadata. We act as a blind relay; no user identity, IP address, or browser footprint is ever transmitted to external services (including Google Gemini or Exodus). All external requests are anonymized at the server level before execution."
             },
             {
-              title: "3. Security Measures and Encryption Practices",
-              content: "All communications between your browser and the PolicyProbe server are secured using industry-standard TLS 1.3 encryption. Data processed during the active audit is handled exclusively in secure, isolated server memory (RAM) and is never written to a physical disk or database."
+              title: "3. Volatile RAM Processing",
+              content: "All audit logic executes exclusively in volatile server memory (RAM). Database writes are physically disabled for user-provided URLs. Analysis artifacts are never committed to permanent storage. This ensures that no data persists beyond the active processing cycle."
             },
             {
-              title: "4. Data Retention and Deletion Mechanism",
+              title: "4. Instant Session Destruction",
               content: (
                 <>
-                  <Typography sx={{ mb: 2 }}>PolicyProbe utilizes an ephemeral processing model.</Typography>
-                  <Box sx={{ pl: 2, borderLeft: '3px solid', borderColor: 'primary.main' }}>
-                    <Typography sx={{ fontWeight: 800, mb: 1 }}>Retention: <Box component="span" sx={{ fontWeight: 400 }}>The URL query and subsequent report exist only for the duration of your active session. Once the audit report is rendered on your screen, all associated session memory is immediately and permanently destroyed.</Box></Typography>
-                    <Typography sx={{ fontWeight: 800 }}>Data Deletion Procedures: <Box component="span" sx={{ fontWeight: 400 }}>Because we maintain no databases and store no user profiles, there is no historical data to delete. Users can execute a complete data deletion of their active session at any time simply by closing the browser tab.</Box></Typography>
+                  <Typography sx={{ mb: 2 }}>Policy Probe enforces a strict ephemeral session model.</Typography>
+                  <Box sx={{ pl: 2, borderLeft: '3px solid', borderColor: 'primary.main', bgcolor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)', p: 2 }}>
+                    <Typography sx={{ fontWeight: 900, mb: 1 }}>RETENTION: <Box component="span" sx={{ fontWeight: 600 }}>Zero. All session artifacts are destroyed the moment the audit report is generated.</Box></Typography>
+                    <Typography sx={{ fontWeight: 900 }}>DELETION: <Box component="span" sx={{ fontWeight: 600 }}>Automatic. We maintain no user records. Closing the browser tab results in an absolute erasure of all session data.</Box></Typography>
                   </Box>
                 </>
               )
             },
             {
-              title: "5. Child Privacy and COPPA/FERPA Compliance",
-              content: "PolicyProbe is an auditing tool, not a consumer application. We strictly comply with the Children's Online Privacy Protection Act (COPPA) and the Family Educational Rights and Privacy Act (FERPA). We do not knowingly collect or solicit any information from children under the age of 13, nor do we access, process, or store student educational records."
+              title: "5. Absolute Child & Student Privacy",
+              content: "We are strictly compliant with the Children's Online Privacy Protection Act (COPPA) and the Family Educational Rights and Privacy Act (FERPA). We do not collect information from children under 13. We do not access, process, or store student educational records. Our platform is a public policy auditing tool, not a data-capturing service."
             },
             {
-              title: "6. Regulatory Compliance Matrix",
+              title: "6. DPDP & GDPR Mandatory Alignment",
               content: (
                 <>
-                  <Typography sx={{ fontWeight: 800, mb: 1 }}>DPDP Act 2023 (India):</Typography>
-                  <Typography sx={{ mb: 2 }}>PolicyProbe processes zero personal principal data. We strictly adhere to the DPDP Act’s mandates for purpose limitation. Because no personal data is collected, the risks of data breach or unauthorized processing are structurally eliminated.</Typography>
-                  <Typography sx={{ fontWeight: 800, mb: 1 }}>GDPR (EU):</Typography>
-                  <Typography>Under the General Data Protection Regulation, users possess the right to access, rectify, and erase personal data. PolicyProbe fulfills these rights by default through our zero-retention architecture; we hold no data to be accessed, rectified, or erased.</Typography>
+                  <Typography sx={{ fontWeight: 900, mb: 1 }}>DPDP Act 2023 (India):</Typography>
+                  <Typography sx={{ mb: 2 }}>We process zero personal principal data. We strictly fulfill the mandates for purpose limitation and data minimization. Without personal data collection, the risks of unauthorized processing are structurally impossible.</Typography>
+                  <Typography sx={{ fontWeight: 900, mb: 1 }}>GDPR (European Union):</Typography>
+                  <Typography>We exceed GDPR standards through data nihilism. Rights of access, rectification, and erasure are satisfied by default because no data exists to be accessed, rectified, or erased.</Typography>
                 </>
               )
             },
             {
-              title: "7. Policy Updates",
-              content: "This policy is static and dictates the core architecture of the PolicyProbe platform. We will not alter this policy to allow for data collection or tracking in the future."
+              title: "7. Unalterable Policy Architecture",
+              content: "This policy is an architectural mandate, not a guideline. We will never introduce data collection or behavioral tracking to the Policy Probe platform. This commitment is final and hardcoded into our service deployment."
             }
           ].map((section, idx) => (
             <motion.div key={idx} initial="hidden" animate="visible" variants={fadeUp} custom={idx + 1}>
