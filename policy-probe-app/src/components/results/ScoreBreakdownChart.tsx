@@ -46,19 +46,19 @@ export default function ScoreBreakdownChart({ breakdown }: Props) {
         <Typography sx={{ fontFamily: '"Manrope"', fontWeight: 900, fontSize: '1.2rem', mb: 3, textTransform: 'uppercase' }}>
           Final Score Radar
         </Typography>
-        <ResponsiveContainer width="100%" height={320}>
-          <RadarChart data={radarData} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>
-            <PolarGrid stroke={isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} strokeWidth={2} />
-            <PolarAngleAxis dataKey="subject" tick={{ fontSize: 11, fill: textFill, fontWeight: 800 }} />
+        <ResponsiveContainer width="100%" height={380}>
+          <RadarChart data={radarData} margin={{ top: 30, right: 40, bottom: 30, left: 40 }}>
+            <PolarGrid stroke={isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)'} strokeWidth={2} />
+            <PolarAngleAxis dataKey="subject" tick={{ fontSize: 12, fill: textFill, fontWeight: 800 }} />
             <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
             <Radar 
               name="Audit Score" 
               dataKey="score" 
               stroke={theme.palette.primary.main} 
               fill={theme.palette.primary.main} 
-              fillOpacity={0.3} 
+              fillOpacity={0.4} 
               strokeWidth={4}
-              dot={{ r: 4, fill: '#000', stroke: '#fff', strokeWidth: 2 }}
+              dot={{ r: 5, fill: '#000', stroke: theme.palette.primary.main, strokeWidth: 3 }}
             />
             <Tooltip contentStyle={tooltipStyle} />
           </RadarChart>
