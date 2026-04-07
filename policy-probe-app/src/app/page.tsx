@@ -17,39 +17,65 @@ const steps = [
   { icon: <Description sx={{ fontSize: 36 }} />, num: '4', title: 'Generate Report', desc: 'Receive a professional intelligence brief ready for school board review.' },
 ];
 
-const ParticleBackground = ({ isDark, isHovered }: { isDark: boolean, isHovered: boolean }) => {
-  const colors = isDark 
-    ? ['#4D8EFF', '#00C853', '#FFD600', '#FF3D00', '#ffffff', '#ffffff'] 
-    : ['#1A73E8', '#0F9D58', '#F4B400', '#DB4437', '#000000', '#000000'];
-    
+const AntiGravityBackground = ({ isDark }: { isDark: boolean }) => {
+  const elements = Array.from({ length: 45 });
+  const themeColor = isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.1)';
+  const highlightColor = isDark ? 'rgba(77, 142, 255, 0.3)' : 'rgba(26, 115, 232, 0.2)';
+
   return (
-    <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', zIndex: 0, pointerEvents: 'none', opacity: 0.5 }}>
-      {[...Array(60)].map((_, i) => {
-        const size = Math.random() * 4 + 2;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        const angle = Math.random() * Math.PI * 2;
-        const radius = Math.random() * 45 + 5;
-        const startX = `calc(50vw + ${Math.cos(angle) * radius}vw)`;
-        const startY = `calc(50vh + ${Math.sin(angle) * radius}vh)`;
+    <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', zIndex: 0, pointerEvents: 'none' }}>
+      {elements.map((_, i) => {
+        const type = i % 4; // 0: circle, 1: square, 2: plus, 3: dot
+        const size = Math.random() * 30 + 10;
+        const color = i % 5 === 0 ? highlightColor : themeColor;
         
         return (
           <motion.div
             key={i}
-            initial={{ opacity: 0, x: startX, y: startY, rotate: Math.random() * 180 }}
-            animate={{ 
-              opacity: isHovered ? [0.1, 0.7, 0.1] : 0, 
-              scale: isHovered ? [1, 1.2, 1] : 0.8, 
-              rotate: isHovered ? [0, 90, 180] : 0 
+            initial={{ 
+              x: `${Math.random() * 100}vw`, 
+              y: `${100 + Math.random() * 20}vh`, 
+              rotate: Math.random() * 360,
+              scale: Math.random() * 0.5 + 0.5
             }}
-            transition={{ duration: Math.random() * 4 + 3, repeat: Infinity, ease: "easeInOut", delay: Math.random() * 2 }}
-            style={{ position: 'absolute', width: size, height: size, backgroundColor: color, borderRadius: Math.random() > 0.5 ? '50%' : '0%' }}
-          />
+            animate={{ 
+              y: '-20vh',
+              rotate: Math.random() > 0.5 ? 360 : -360
+            }}
+            transition={{ 
+              duration: Math.random() * 20 + 25, 
+              repeat: Infinity, 
+              ease: "linear", 
+              delay: Math.random() * -30 // Negative delay so they are on screen immediately
+            }}
+            style={{ 
+              position: 'absolute', 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center' 
+            }}
+          >
+            {type === 0 && (
+              <Box sx={{ width: size, height: size, border: `2px solid ${color}`, borderRadius: '50%' }} />
+            )}
+            {type === 1 && (
+              <Box sx={{ width: size, height: size, border: `2px solid ${color}` }} />
+            )}
+            {type === 2 && (
+              <Box sx={{ position: 'relative', width: size, height: size }}>
+                <Box sx={{ position: 'absolute', top: '50%', left: 0, right: 0, height: 2, bgcolor: color, transform: 'translateY(-50%)' }} />
+                <Box sx={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 2, bgcolor: color, transform: 'translateX(-50%)' }} />
+              </Box>
+            )}
+            {type === 3 && (
+              <Box sx={{ width: 6, height: 6, bgcolor: color, borderRadius: '50%' }} />
+            )}
+          </motion.div>
         );
       })}
     </Box>
   );
 };
-
 export default function LandingPage() {
   const theme = useTheme();
   const router = useRouter();
@@ -65,7 +91,7 @@ export default function LandingPage() {
         onMouseLeave={() => setIsHovered(false)} 
         sx={{ position: 'relative', pb: 10, pt: 16, minHeight: '90vh', display: 'flex', alignItems: 'center', bgcolor: isDark ? '#000' : '#fefefe' }}
       >
-        <ParticleBackground isDark={isDark} isHovered={isHovered} />
+        <AntiGravityBackground isDark={isDark} />
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>          <Grid container spacing={6} alignItems="center" justifyContent="center">
             <Grid size={{ xs: 12, md: 10, lg: 9 }} sx={{ textAlign: 'center' }}>
               <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
