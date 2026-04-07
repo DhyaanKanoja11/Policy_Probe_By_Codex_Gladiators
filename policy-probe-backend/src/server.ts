@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import ipaddr from 'ipaddr.js';
 import dns from 'dns';
 import { promisify } from 'util';
-import { analyzeWithGemini } from './utils/gemini';
+import { analyzeWithGemini, GeminiError } from './utils/gemini';
 import { analyzePolicy } from './utils/analyzer';
 import { AnalyzeRequest } from './utils/types';
 import { rateLimit } from './utils/rateLimit';
@@ -139,13 +139,32 @@ app.post('/api/analyze', async (req: Request, res: Response): Promise<void> => {
       const result = await analyzeWithGemini(policyText, name, resolvedUrl, !!body.deepAudit);
       res.set('X-RateLimit-Remaining', String(remaining));
       res.json({ ...result, analysis_method: 'ai' });
-    } catch (aiError: any) {
-      console.error('[Gemini-Error] Analysis failed:', aiError.message);
-      if (aiError.stack) console.error(aiError.stack);
-      
+    } catch (aiError: unknown) {
+      // ── Structured fallback logging ─────────────────────────────────────────
+      const isGeminiErr = aiError instanceof GeminiError;
+      const reason = isGeminiErr ? aiError.reason : 'unknown';
+      const message = aiError instanceof Error ? aiError.message : String(aiError);
+
+      // Permanent config failure — no point running analysis, surface the problem clearly
+      if (reason === 'missing_api_key' || reason === 'invalid_api_key') {
+        console.error(`[Gemini-Fatal] reason=${reason} — keyword fallback suppressed. Fix environment variable GEMINI_API_KEY on Render.`);
+        res.status(503).json({
+          error: 'AI analysis unavailable: API key configuration error.',
+          fallback_reason: reason,
+          analysis_method: 'none',
+        });
+        return;
+      }
+
+      // Transient or parseable failure — use keyword fallback but log clearly
+      console.error(`[Gemini-Fallback] reason=${reason} message=${message}`);
+      if (isGeminiErr && aiError.statusCode) {
+        console.error(`[Gemini-Fallback] HTTP status=${aiError.statusCode}`);
+      }
+
       const result = analyzePolicy(policyText, name, resolvedUrl);
       res.set('X-RateLimit-Remaining', String(remaining));
-      res.json({ ...result, analysis_method: 'keyword' });
+      res.json({ ...result, analysis_method: 'keyword', fallback_reason: reason });
     }
   } catch (error) {
     console.error('Audit Engine Critical Fail:', error);
