@@ -38,7 +38,11 @@ export default function LandingPage() {
                   🇮🇳 INDIA'S FIRST · DPDP ACT 2023
                 </Box>
                 <Typography variant="h1" sx={{ fontFamily: '"Manrope"', fontWeight: 900, fontSize: { xs: '2.6rem', md: '4.2rem', lg: '5rem' }, lineHeight: 0.95, mb: 4, color: 'text.primary', textTransform: 'uppercase', letterSpacing: '-0.06em' }}>
-                  India{"'s"} First <br/>
+                  <Box component="span" sx={{ 
+                    bgcolor: 'error.main', color: '#fff', px: 1.5, py: 0.5,
+                    display: 'inline-block', border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827',
+                    boxShadow: `4px 4px 0px ${isDark ? '#fefefe' : '#111827'}`,
+                  }}>India{"'s"} First</Box> <br/>
                   <Box component="span" sx={{ 
                     bgcolor: isDark ? 'primary.main' : 'warning.main', 
                     color: isDark ? '#fff' : '#000', px: 1.5, 

@@ -71,17 +71,14 @@ export default function Navbar() {
               onClick={() => router.push('/')}
             >
               <Box 
+                component="img"
+                src="/logo.png"
+                alt="PolicyProbe"
                 sx={{ 
-                  width: 36, height: 36, borderRadius: 0, 
-                  bgcolor: 'primary.main', border: '2px solid', 
-                  borderColor: isDark ? '#fefefe' : '#111827',
-                  boxShadow: `3px 3px 0px ${isDark ? '#fefefe' : '#111827'}`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontWeight: 900, color: '#fff', fontSize: '1.2rem'
+                  width: 38, height: 38, objectFit: 'contain',
+                  filter: isDark ? 'brightness(1.2)' : 'none',
                 }}
-              >
-                P
-              </Box>
+              />
               <Typography
                 sx={{
                   fontFamily: '"Manrope", sans-serif',
