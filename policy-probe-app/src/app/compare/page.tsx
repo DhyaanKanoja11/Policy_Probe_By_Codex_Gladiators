@@ -179,6 +179,14 @@ export default function ComparePage() {
       if (!resB.ok) { const d = await resB.json().catch(() => ({})); throw new Error(`App B: ${d.error || resB.statusText}`); }
       const dataA: AnalysisResult = await resA.json();
       const dataB: AnalysisResult = await resB.json();
+      
+      // PERSISTENT HISTORY logic for comparison
+      const historyStr = localStorage.getItem('probe_history') || '[]';
+      const history = JSON.parse(historyStr);
+      // Add both to history, limit to last 20
+      const newHistory = [dataA, dataB, ...history].slice(0, 20);
+      localStorage.setItem('probe_history', JSON.stringify(newHistory));
+
       setResults({ A: dataA, B: dataB, nameA: resolveAppName(dataA.app_name, urlA), nameB: resolveAppName(dataB.app_name, urlB) });
     } catch (err: any) {
       setError(err.message || 'Comparison failed.');

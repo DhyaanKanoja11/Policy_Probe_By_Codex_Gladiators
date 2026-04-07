@@ -45,11 +45,13 @@ export default function AnalyzePage() {
     setError('');
 
     try {
-      const body: Record<string, string> = {};
+      const body: Record<string, any> = {};
       if (mode === 'name') body.appName = value;
       else if (mode === 'url') body.url = value;
       else if (mode === 'policy') body.policyUrl = value;
       else body.rawText = value;
+      
+      body.deepAudit = deepAudit;
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/analyze`, {
         method: 'POST',
@@ -63,13 +65,20 @@ export default function AnalyzePage() {
       }
 
       const result = await res.json();
+      
+      // PERSISTENT HISTORY logic
+      const historyStr = localStorage.getItem('probe_history') || '[]';
+      const history = JSON.parse(historyStr);
+      // Add to front of list, limit to last 20
+      const newHistory = [result, ...history].slice(0, 20);
+      localStorage.setItem('probe_history', JSON.stringify(newHistory));
+
       if (deepAudit) {
-        // Indicate to results page that deep audit was requested
         sessionStorage.setItem('deep-audit-requested', 'true');
       } else {
         sessionStorage.removeItem('deep-audit-requested');
       }
-      // Store result in sessionStorage for the results page
+      
       sessionStorage.setItem('analysis-result', JSON.stringify(result));
       router.push('/results?source=live');
     } catch (err: any) {

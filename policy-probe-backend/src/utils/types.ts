@@ -86,4 +86,5 @@ export interface AnalyzeRequest {
   url?: string;
   policyUrl?: string;
   rawText?: string;
+  deepAudit?: boolean;
 }

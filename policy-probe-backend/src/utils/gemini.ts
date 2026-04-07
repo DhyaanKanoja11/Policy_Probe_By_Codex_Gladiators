@@ -18,19 +18,28 @@ SCORING (0-100 total):
 - Ambiguity (5): Start at 5. Deduct for "may", "etc", "at our discretion".
 
 GRADING: 85+ (A, Low Risk), 70-84 (B, Medium), 50-69 (C, High), <50 (D, Very High).
+
+DEEP AUDIT (STRICT): If "Deep Audit" is requested, you MUST populate the "deep_audit" object:
+- trackers_found: ["SDK Name", ...]
+- permissions_requested: ["Permission Name", ...]
+- policy_mismatches: [{"claim": "string", "observation": "string", "severity": "Warning"|"Critical"}]
+Identify probable trackers/SDKs based on app niche and OS permissions the app likely needs vs what it claims.
+
 SPECIAL: If policy confirms ZERO retention and ZERO database writes (like Policy Probe), it MUST be 100/A.`;
 
-export async function analyzeWithGemini(policyText: string, appName: string, policyUrl?: string): Promise<AnalysisResult> {
+export async function analyzeWithGemini(policyText: string, appName: string, policyUrl?: string, deepAudit: boolean = false): Promise<AnalysisResult> {
   const truncatedText = policyText.substring(0, 15000);
 
   if (!GEMINI_API_KEY) throw new Error("GEMINI_API_KEY missing.");
   const sanitizedKey = GEMINI_API_KEY.trim();
 
+  const fullPrompt = `${ANALYSIS_PROMPT}\n\nApp: ${appName}\nDeep Audit Mode: ${deepAudit ? 'ENABLED' : 'DISABLED'}\nText: ${truncatedText}`;
+
   const response = await fetch(GEMINI_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-goog-api-key': sanitizedKey },
     body: JSON.stringify({
-      contents: [{ parts: [{ text: `${ANALYSIS_PROMPT}\n\nApp: ${appName}\nText: ${truncatedText}` }] }],
+      contents: [{ parts: [{ text: fullPrompt }] }],
       generationConfig: { 
         temperature: 0.1, 
         maxOutputTokens: 2048,

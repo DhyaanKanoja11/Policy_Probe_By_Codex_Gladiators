@@ -136,7 +136,7 @@ app.post('/api/analyze', async (req: Request, res: Response): Promise<void> => {
     const name = appName || 'Analyzed Entity';
 
     try {
-      const result = await analyzeWithGemini(policyText, name, resolvedUrl);
+      const result = await analyzeWithGemini(policyText, name, resolvedUrl, !!body.deepAudit);
       res.set('X-RateLimit-Remaining', String(remaining));
       res.json({ ...result, analysis_method: 'ai' });
     } catch (aiError) {

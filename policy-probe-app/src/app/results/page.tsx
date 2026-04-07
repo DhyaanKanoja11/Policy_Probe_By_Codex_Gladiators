@@ -32,19 +32,18 @@ function ResultsContent() {
   const [showDeepAudit, setShowDeepAudit] = useState(false);
 
   useEffect(() => {
-    const isDeepAudit = sessionStorage.getItem('deep-audit-requested') === 'true';
-    setShowDeepAudit(isDeepAudit);
-
-    if (source === 'live') {
-      const stored = sessionStorage.getItem('analysis-result');
-      if (stored) {
-        try { 
-          const parsed = JSON.parse(stored);
-          setResult(parsed); 
-        } catch { 
-           router.push('/analyze');
+    const stored = sessionStorage.getItem('analysis-result');
+    if (stored) {
+      try { 
+        const parsed = JSON.parse(stored) as AnalysisResult;
+        setResult(parsed); 
+        // Auto-show deep audit if data exists in the result
+        if (parsed.deep_audit) {
+          setShowDeepAudit(true);
+        } else {
+          setShowDeepAudit(sessionStorage.getItem('deep-audit-requested') === 'true');
         }
-      } else {
+      } catch { 
          router.push('/analyze');
       }
     } else {
@@ -52,7 +51,7 @@ function ResultsContent() {
     }
     // Simulate brief loading for animation
     setTimeout(() => setLoading(false), 600);
-  }, [source, router]);
+  }, [router]);
 
   if (loading || !result) return <LoadingSkeleton />;
 

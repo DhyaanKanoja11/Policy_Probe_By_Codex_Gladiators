@@ -16,31 +16,50 @@ export default function HistoryPage() {
   const riskColors = { Low: 'success', Medium: 'warning', High: 'error' } as const;
 
   useEffect(() => {
-    // In our Ephemeral Architecture, history is only stored loosely in current active session if at all.
-    const stored = sessionStorage.getItem('analysis-result');
+    // Persistent History from localStorage
+    const stored = localStorage.getItem('probe_history');
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        setHistory([parsed]);
+        if (Array.isArray(parsed)) {
+          setHistory(parsed);
+        }
       } catch (e) {
         setHistory([]);
       }
     }
   }, []);
 
+  const handleClearHistory = () => {
+    localStorage.removeItem('probe_history');
+    setHistory([]);
+  };
+
+  const handleViewDetails = (item: AnalysisResult) => {
+    sessionStorage.setItem('analysis-result', JSON.stringify(item));
+    router.push('/results?source=live');
+  };
+
   return (
     <Box sx={{ py: { xs: 4, md: 6 }, minHeight: '80vh', bgcolor: 'background.default' }}>
       <Container maxWidth="md">
         <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
-          <Typography variant="h3" sx={{ fontFamily: '"Manrope"', fontWeight: 900, mb: 1.5, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>Analysis History</Typography>
-          <Typography color="text.secondary" sx={{ mb: 6, fontWeight: 600 }}>Your ephemeral forensic audit history.</Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
+            <Typography variant="h3" sx={{ fontFamily: '"Manrope"', fontWeight: 900, letterSpacing: '-0.04em', textTransform: 'uppercase' }}>Analysis History</Typography>
+            {history.length > 0 && (
+              <Button size="small" variant="outlined" onClick={handleClearHistory} sx={{ fontWeight: 800, borderRadius: 0, color: 'error.main', borderColor: theme.palette.divider, '&:hover': { borderColor: 'error.main' } }}>
+                Clear All
+              </Button>
+            )}
+          </Box>
+          <Typography color="text.secondary" sx={{ mb: 6, fontWeight: 600 }}>Your forensic audit history from this device.</Typography>
         </motion.div>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {history.length > 0 && history.map((item, i) => (
             <motion.div key={i} initial="hidden" animate="visible" variants={fadeUp} custom={i + 1}>
               <Box
-                onClick={() => router.push(`/results?source=live`)}
+                onClick={() => handleViewDetails(item)}
                 className="nb-shadow"
                 sx={{
                   bgcolor: 'background.paper', p: 3, borderRadius: 0, cursor: 'pointer',
