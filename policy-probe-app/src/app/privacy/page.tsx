@@ -70,68 +70,51 @@ export default function PrivacyPage() {
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
           {[
             {
-              title: "1. Data Fiduciary & Informed Consent",
+              title: "1. Data Collection & Deletion Guarantee",
               content: (
                 <>
-                  <Typography sx={{ mb: 2 }}>Policy Probe, operated by <strong>CODEX GLADIATORS</strong>, acts as the absolute Data Fiduciary. We strictly process data ONLY upon receiving clear, specific, and informed consent from the Data Principal. Processing is entirely restricted to public policy analysis.</Typography>
+                  <Typography sx={{ mb: 2 }}>We absolutely guarantee that Policy Probe acts as a secure, ephemeral processor. We commit to a strict protocol where <strong>all data is completely deleted after you close the website.</strong> There are no exceptions to this rule.</Typography>
                   <Box sx={{ pl: 2, borderLeft: '4px solid', borderColor: 'primary.main', bgcolor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)', p: 3 }}>
-                    <Typography sx={{ fontWeight: 900, mb: 1.5 }}>LEGAL BASIS: <Box component="span" sx={{ fontWeight: 600 }}>Zero collection. Processing is ephemeral and requires explicit user-triggered action.</Box></Typography>
-                    <Typography sx={{ fontWeight: 900 }}>CONSENT STATUS: <Box component="span" sx={{ fontWeight: 600 }}>Active. Withdrawal of consent is possible at any microsecond via session termination.</Box></Typography>
+                    <Typography sx={{ fontWeight: 900, mb: 1.5 }}>COLLECTION SCOPE: <Box component="span" sx={{ fontWeight: 600 }}>We exclusively ingest public URLs. We do not track, profile, or collect personal device identifiers.</Box></Typography>
+                    <Typography sx={{ fontWeight: 900 }}>DELETION PROMISE: <Box component="span" sx={{ fontWeight: 600 }}>Closing your browser tab immediately executes a zero-recoverability wipe of your session data.</Box></Typography>
                   </Box>
                 </>
               )
             },
             {
-              title: "2. Rights of the Data Principal (DPDP / GDPR)",
+              title: "2. Third-Party Sharing & Secure Processing",
+              content: "We strictly limit any third-party sharing for proper algorithm analysis only. This sharing is routed exclusively through secure TLS and SSL layering to our trusted analytical partners (Google Gemini, Exodus Privacy). We guarantee that your personal IP address and browser footprints are stripped prior to this secure transfer, acting as a complete privacy firewall."
+            },
+            {
+              title: "3. Absolute Security & SSL Layering",
+              content: "We commit to enforcing the highest cryptographic standards available. All audit logic and data streams are protected by advanced SSL layering and TLS 1.3 tunnels. Our infrastructure is fundamentally designed to execute entirely in volatile server memory (RAM), guaranteeing physical inability to write your data to any permanent database."
+            },
+            {
+              title: "4. Explicit Rights & Consent Structure",
               content: (
                 <>
-                  <Typography sx={{ mb: 2 }}>We rigidly uphold the following statutory rights for all users:</Typography>
+                  <Typography sx={{ mb: 2 }}>We operate strictly under your specific, informed consent. We uphold the following absolute rights:</Typography>
                   <Box component="ul" sx={{ fontWeight: 800, pl: 3, lineHeight: 2 }}>
-                    <li><strong>Right to Erasure:</strong> All session data is purged automatically.</li>
-                    <li><strong>Right to Correction:</strong> Zero-storage architecture ensures no stale data exists.</li>
-                    <li><strong>Right to Withdrawal:</strong> Stop processing instantly by closing the tab.</li>
-                    <li><strong>Right to Grievance:</strong> Direct access to the Grievance Officer provided below.</li>
+                    <li><strong>Right to Erasure:</strong> Achieved instantly when you close the website.</li>
+                    <li><strong>Right to Safety:</strong> Ensured via our strict TLS and SSL layering protocols.</li>
+                    <li><strong>Right to Withdrawal:</strong> You can completely terminate processing by ending your session.</li>
                   </Box>
                 </>
               )
             },
             {
-              title: "3. Deletion Mechanism & Retention Timeline",
-              content: (
-                <>
-                  <Typography sx={{ mb: 2 }}>Our <strong>Deletion Mechanism</strong> is built into the core network stack. Policy Probe maintains an absolute zero-retention timeline.</Typography>
-                  <Box sx={{ pl: 2, borderLeft: '4px solid', borderColor: 'primary.main', bgcolor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)', p: 3 }}>
-                    <Typography sx={{ fontWeight: 900, mb: 1 }}>RETENTION TIMELINE: <Box component="span" sx={{ fontWeight: 600 }}>0 Seconds. Data never touches physical disk storage.</Box></Typography>
-                    <Typography sx={{ fontWeight: 900 }}>STORAGE TYPE: <Box component="span" sx={{ fontWeight: 600 }}>Volatile RAM strictly; erased upon report generation.</Box></Typography>
-                  </Box>
-                </>
-              )
+              title: "5. Child & Student Privacy (COPPA/FERPA)",
+              content: "We absolutely commit to the protection of minors. We do not intake, process, or ever request children's PII or student educational records. Policy Probe is an infrastructure tool, maintaining safe boundaries for all users universally."
             },
             {
-              title: "4. Zero-Tracker & Anti-Telemetry Policy",
-              content: "Policy Probe utilizes zero tracking cookies, zero third-party SDKs, and zero telemetry. We rigidly prohibit any form of behavioral analysis. Any external intelligence calls (Exodus/Gemini) are proxied through an anonymized vault; your identity is never leaked to third parties."
-            },
-            {
-              title: "5. Grievance Redressal & Support",
-              content: (
-                <Box sx={{ p: 4, border: '4px solid #000', bgcolor: 'primary.main', color: '#fff' }}>
-                  <Typography sx={{ fontWeight: 900, mb: 2, textTransform: 'uppercase' }}>Grievance Officer: CODEX Compliance Lead</Typography>
-                  <Typography sx={{ fontWeight: 700, mb: 1 }}>Email: <Box component="span" sx={{ textDecoration: 'underline' }}>privacy@policyprobe.io</Box></Typography>
-                  <Typography sx={{ fontWeight: 700 }}>Resolution Timeline: Under 24 Hours for any compliance inquiries.</Typography>
-                </Box>
-              )
-            },
-            {
-              title: "6. Regulatory Compliance Matrix (S-GRADE)",
+              title: "6. Regulatory Compliance Shield",
               content: (
                 <Grid container spacing={3}>
                   {[
-                    { label: "DPDP 2023", status: "S-GRADE", color: "success.main" },
-                    { label: "GDPR (EU)", status: "COMPLIANT", color: "info.main" },
-                    { label: "COPPA (US)", status: "SECURE", color: "warning.main" },
-                    { label: "FERPA (US)", status: "PASSED", color: "primary.main" }
+                    { label: "DPDP Act (India)", status: "COMPLIANT", color: "success.main" },
+                    { label: "GDPR (EU)", status: "SECURED", color: "info.main" },
                   ].map((cell, i) => (
-                    <Grid size={{ xs: 6, sm: 3 }} key={i}>
+                    <Grid size={{ xs: 6 }} key={i}>
                       <Box sx={{ p: 3, border: '3px solid #000', textAlign: 'center', bgcolor: isDark ? 'rgba(255,255,255,0.05)' : '#fff' }}>
                         <Typography sx={{ fontWeight: 900, fontSize: '0.8rem', mb: 1 }}>{cell.label}</Typography>
                         <Typography sx={{ color: cell.color, fontWeight: 900, fontSize: '0.9rem' }}>{cell.status}</Typography>
@@ -142,8 +125,14 @@ export default function PrivacyPage() {
               )
             },
             {
-              title: "7. Mandatory Unalterable Policy",
-              content: "This document is the FINAL architectural constraint of Policy Probe. Changes that degrade user privacy are technically prohibited by our decentralized deployment model. Your privacy is not a promise; it is a structural certainty."
+              title: "7. Dedicated Grievance Redressal",
+              content: (
+                <Box sx={{ p: 4, border: '4px solid #000', bgcolor: 'primary.main', color: '#fff' }}>
+                  <Typography sx={{ fontWeight: 900, mb: 2, textTransform: 'uppercase' }}>Chief Grievance Officer: CODEX Lead</Typography>
+                  <Typography sx={{ fontWeight: 700, mb: 1 }}>Contact: <Box component="span" sx={{ textDecoration: 'underline' }}>privacy@policyprobe.io</Box></Typography>
+                  <Typography sx={{ fontWeight: 700 }}>Resolution Protocol: We guarantee a response and resolution mapping within 24 hours.</Typography>
+                </Box>
+              )
             }
           ].map((section, idx) => (
             <motion.div key={idx} initial="hidden" animate="visible" variants={fadeUp} custom={idx + 2}>
