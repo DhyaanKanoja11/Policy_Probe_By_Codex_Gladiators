@@ -1,8 +1,9 @@
 import { AnalysisResult } from './types';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
+const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent`;
 
+// ... keeping prompt ...
 const ANALYSIS_PROMPT = `You are "Probe-1", a high-precision privacy audit engine for the Digital Personal Data Protection (DPDP) Act 2023 (India) and global standards.
 Analyze the provided privacy policy and return a forensic audit.
 
@@ -43,12 +44,15 @@ export async function analyzeWithGemini(policyText: string, appName: string, pol
       generationConfig: { 
         temperature: 0.1, 
         maxOutputTokens: 2048,
-        response_mime_type: "application/json" 
+        responseMimeType: "application/json" 
       }
     }),
   });
 
-  if (!response.ok) throw new Error(`Gemini API error: ${response.status}`);
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Gemini API error: ${response.status} - ${errorText}`);
+  }
 
   const data = await response.json();
   const jsonText = data?.candidates?.[0]?.content?.parts?.[0]?.text;

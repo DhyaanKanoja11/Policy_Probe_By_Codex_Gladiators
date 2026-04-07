@@ -139,8 +139,10 @@ app.post('/api/analyze', async (req: Request, res: Response): Promise<void> => {
       const result = await analyzeWithGemini(policyText, name, resolvedUrl, !!body.deepAudit);
       res.set('X-RateLimit-Remaining', String(remaining));
       res.json({ ...result, analysis_method: 'ai' });
-    } catch (aiError) {
-      console.warn('Gemini AI fallback triggered.');
+    } catch (aiError: any) {
+      console.error('[Gemini-Error] Analysis failed:', aiError.message);
+      if (aiError.stack) console.error(aiError.stack);
+      
       const result = analyzePolicy(policyText, name, resolvedUrl);
       res.set('X-RateLimit-Remaining', String(remaining));
       res.json({ ...result, analysis_method: 'keyword' });
