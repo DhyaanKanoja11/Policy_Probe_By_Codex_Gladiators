@@ -1,15 +1,9 @@
 import { AnalysisResult } from './types';
 
 // ─── Model Config ────────────────────────────────────────────────────────────
-// gemini-2.5-flash: primary (confirmed working, highest capability)
-// gemini-2.0-flash: secondary (higher RPM on paid, same free tier)
-// gemini-2.0-flash-lite: tertiary (highest free-tier RPM quota)
-// NOTE: gemini-1.5-flash is excluded — returns 404 on v1beta for this project.
-const GEMINI_MODELS = [
-  'gemini-2.5-flash',
-  'gemini-2.0-flash',
-  'gemini-2.0-flash-lite',
-];
+// gemini-2.5-flash: confirmed working with new API key.
+const GEMINI_MODEL = 'gemini-2.5-flash';
+
 const GEMINI_TIMEOUT_MS = 25000; // 25 seconds — generous but bounded
 
 // ─── Prompt ──────────────────────────────────────────────────────────────────
@@ -186,53 +180,32 @@ export async function analyzeWithGemini(
   const truncatedText = policyText.substring(0, 15000);
   const fullPrompt = `${ANALYSIS_PROMPT}\n\nApp: ${appName}\nDeep Audit Mode: ${deepAudit ? 'ENABLED' : 'DISABLED'}\nText: ${truncatedText}`;
 
-  let lastError: GeminiError | null = null;
+  console.log(`[Gemini] Attempting model: ${GEMINI_MODEL}`);
+  const raw = await callGeminiModel(GEMINI_MODEL, fullPrompt, apiKey);
 
-  // Try each model in order (primary then fallback within Gemini)
-  for (const model of GEMINI_MODELS) {
-    try {
-      console.log(`[Gemini] Attempting model: ${model}`);
-      const raw = await callGeminiModel(model, fullPrompt, apiKey);
+  // Merge with safe defaults — do NOT override valid AI scores
+  const result: AnalysisResult = {
+    ...raw,
+    app_name: raw.app_name || appName,
+    overall_score: raw.overall_score ?? 50,
+    privacy_grade: raw.privacy_grade || 'C',
+    risk_level: raw.risk_level || 'High',
+    analyzed_at: new Date().toISOString(),
+    policy_url: policyUrl,
+    score_breakdown: raw.score_breakdown || {
+      data_collection: 10,
+      third_party_sharing: 10,
+      child_safety: 10,
+      retention_clarity: 5,
+      user_rights: 5,
+      transparency: 5,
+      security: 3,
+      tracking_cookies: 2,
+      ambiguity: 0,
+    },
+  };
 
-      // Merge with safe defaults — do NOT override valid AI scores
-      const result: AnalysisResult = {
-        ...raw,
-        app_name: raw.app_name || appName,
-        overall_score: raw.overall_score ?? 50,
-        privacy_grade: raw.privacy_grade || 'C',
-        risk_level: raw.risk_level || 'High',
-        analyzed_at: new Date().toISOString(),
-        policy_url: policyUrl,
-        score_breakdown: raw.score_breakdown || {
-          data_collection: 10,
-          third_party_sharing: 10,
-          child_safety: 10,
-          retention_clarity: 5,
-          user_rights: 5,
-          transparency: 5,
-          security: 3,
-          tracking_cookies: 2,
-          ambiguity: 0,
-        },
-      };
-
-      console.log(`[Gemini] Success with model=${model} score=${result.overall_score}`);
-      return result;
-    } catch (err) {
-      if (err instanceof GeminiError) {
-        lastError = err;
-        console.error(`[Gemini] model=${model} reason=${err.reason} message=${err.message}`);
-
-        // Do not retry on permanent config errors
-        if (err.reason === 'missing_api_key' || err.reason === 'invalid_api_key') {
-          break;
-        }
-      } else {
-        lastError = new GeminiError('unknown', String(err));
-        console.error(`[Gemini] model=${model} unknown error:`, err);
-      }
-    }
-  }
-
-  throw lastError ?? new GeminiError('unknown', 'All Gemini models failed with no error details');
+  console.log(`[Gemini] Success with model=${GEMINI_MODEL} score=${result.overall_score}`);
+  return result;
 }
+
