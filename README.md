@@ -429,7 +429,7 @@ See **[DEPLOYMENT.md](./DEPLOYMENT.md)** for the full guide covering Render (bac
 Built by **Team CODEX** for the **CODEX Gladiators Gen AI Hackathon** 🏆
 
 - **Dhyaan Kanoja** — Full-Stack & AI Integration
-
+- **Aarya Manchanda** — Frontend Development
 ---
 
 ## 📄 License
