@@ -17,17 +17,45 @@ const steps = [
   { icon: <Description sx={{ fontSize: 36 }} />, num: '4', title: 'Generate Report', desc: 'Receive a professional intelligence brief ready for school board review.' },
 ];
 
-export default function LandingPage() {
-  const theme = useTheme();
+const ParticleBackground = ({ isDark }: { isDark: boolean }) => {
+  const colors = isDark 
+    ? ['#4D8EFF', '#00C853', '#FFD600', '#FF3D00', '#ffffff', '#ffffff'] 
+    : ['#1A73E8', '#0F9D58', '#F4B400', '#DB4437', '#000000', '#000000'];
+    
+  return (
+    <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', zIndex: 0, pointerEvents: 'none', opacity: 0.5 }}>
+      {[...Array(60)].map((_, i) => {
+        const size = Math.random() * 4 + 2;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const angle = Math.random() * Math.PI * 2;
+        const radius = Math.random() * 45 + 5;
+        const startX = `calc(50vw + ${Math.cos(angle) * radius}vw)`;
+        const startY = `calc(50vh + ${Math.sin(angle) * radius}vh)`;
+        
+        return (
+          <motion.div
+            key={i}
+            initial={{ opacity: Math.random() * 0.4 + 0.1, x: startX, y: startY, rotate: Math.random() * 180 }}
+            animate={{ opacity: [0.1, 0.7, 0.1], scale: [1, 1.2, 1], rotate: [0, 90, 180] }}
+            transition={{ duration: Math.random() * 4 + 3, repeat: Infinity, ease: "easeInOut", delay: Math.random() * 2 }}
+            style={{ position: 'absolute', width: size, height: size, backgroundColor: color, borderRadius: Math.random() > 0.5 ? '50%' : '0%' }}
+          />
+        );
+      })}
+    </Box>
+  );
+};
+
+export default function LandingPage() {  const theme = useTheme();
   const router = useRouter();
   const isDark = theme.palette.mode === 'dark';
 
   return (
     <Box>
       {/* Hero */}
-      <Box className="hero-grid" sx={{ pb: 10, pt: 16, minHeight: '90vh', display: 'flex', alignItems: 'center', bgcolor: isDark ? '#000' : '#fefefe' }}>
-        <Container maxWidth="lg">
-          <Grid container spacing={6} alignItems="center" justifyContent="center">
+      <Box className="hero-grid" sx={{ position: 'relative', pb: 10, pt: 16, minHeight: '90vh', display: 'flex', alignItems: 'center', bgcolor: isDark ? '#000' : '#fefefe' }}>
+        <ParticleBackground isDark={isDark} />
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>          <Grid container spacing={6} alignItems="center" justifyContent="center">
             <Grid size={{ xs: 12, md: 10, lg: 9 }} sx={{ textAlign: 'center' }}>
               <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
                 <Box className="nb-shadow" sx={{ 
@@ -37,14 +65,7 @@ export default function LandingPage() {
                 }}>
                   🇮🇳 INDIA'S FIRST · DPDP ACT 2023
                 </Box>
-                <motion.div 
-                  initial={{ y: 0 }}
-                  animate={{ y: [-10, 10, -10] }}
-                  transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                  style={{ display: 'flex', justifyContent: 'center', marginBottom: '2rem' }}
-                >
-                  <Box component="img" src="/logo.png" alt="PolicyProbe Shield" sx={{ width: 100, height: 100, filter: isDark ? 'brightness(1.2)' : 'none' }} />
-                </motion.div>
+
                 <Typography variant="h1" sx={{ fontFamily: '"Manrope"', fontWeight: 900, fontSize: { xs: '2.2rem', md: '3.6rem', lg: '4.2rem' }, lineHeight: 1.1, mb: 4, color: 'text.primary', textTransform: 'uppercase', letterSpacing: '-0.06em' }}>
                   <Box component="span" sx={{ 
                     bgcolor: 'error.main', color: '#fff', px: 1.5, py: 0.5,
