@@ -17,7 +17,7 @@ const steps = [
   { icon: <Description sx={{ fontSize: 36 }} />, num: '4', title: 'Generate Report', desc: 'Receive a professional intelligence brief ready for school board review.' },
 ];
 
-const ParticleBackground = ({ isDark }: { isDark: boolean }) => {
+const ParticleBackground = ({ isDark, isHovered }: { isDark: boolean, isHovered: boolean }) => {
   const colors = isDark 
     ? ['#4D8EFF', '#00C853', '#FFD600', '#FF3D00', '#ffffff', '#ffffff'] 
     : ['#1A73E8', '#0F9D58', '#F4B400', '#DB4437', '#000000', '#000000'];
@@ -35,8 +35,12 @@ const ParticleBackground = ({ isDark }: { isDark: boolean }) => {
         return (
           <motion.div
             key={i}
-            initial={{ opacity: Math.random() * 0.4 + 0.1, x: startX, y: startY, rotate: Math.random() * 180 }}
-            animate={{ opacity: [0.1, 0.7, 0.1], scale: [1, 1.2, 1], rotate: [0, 90, 180] }}
+            initial={{ opacity: 0, x: startX, y: startY, rotate: Math.random() * 180 }}
+            animate={{ 
+              opacity: isHovered ? [0.1, 0.7, 0.1] : 0, 
+              scale: isHovered ? [1, 1.2, 1] : 0.8, 
+              rotate: isHovered ? [0, 90, 180] : 0 
+            }}
             transition={{ duration: Math.random() * 4 + 3, repeat: Infinity, ease: "easeInOut", delay: Math.random() * 2 }}
             style={{ position: 'absolute', width: size, height: size, backgroundColor: color, borderRadius: Math.random() > 0.5 ? '50%' : '0%' }}
           />
@@ -46,15 +50,22 @@ const ParticleBackground = ({ isDark }: { isDark: boolean }) => {
   );
 };
 
-export default function LandingPage() {  const theme = useTheme();
+export default function LandingPage() {
+  const theme = useTheme();
   const router = useRouter();
   const isDark = theme.palette.mode === 'dark';
+  const [isHovered, setIsHovered] = React.useState(false);
 
   return (
     <Box>
       {/* Hero */}
-      <Box className="hero-grid" sx={{ position: 'relative', pb: 10, pt: 16, minHeight: '90vh', display: 'flex', alignItems: 'center', bgcolor: isDark ? '#000' : '#fefefe' }}>
-        <ParticleBackground isDark={isDark} />
+      <Box 
+        className="hero-grid" 
+        onMouseEnter={() => setIsHovered(true)} 
+        onMouseLeave={() => setIsHovered(false)} 
+        sx={{ position: 'relative', pb: 10, pt: 16, minHeight: '90vh', display: 'flex', alignItems: 'center', bgcolor: isDark ? '#000' : '#fefefe' }}
+      >
+        <ParticleBackground isDark={isDark} isHovered={isHovered} />
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>          <Grid container spacing={6} alignItems="center" justifyContent="center">
             <Grid size={{ xs: 12, md: 10, lg: 9 }} sx={{ textAlign: 'center' }}>
               <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
