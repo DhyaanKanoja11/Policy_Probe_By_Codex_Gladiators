@@ -153,7 +153,7 @@ export default function Navbar() {
             <Box sx={{
               display: { xs: 'none', sm: 'flex' },
               alignItems: 'center',
-              bgcolor: 'success.main',
+              bgcolor: 'primary.main',
               color: '#fff',
               border: '2px solid',
               borderColor: isDark ? '#fefefe' : '#111827',
@@ -163,7 +163,7 @@ export default function Navbar() {
               borderRadius: 0,
             }}>
               <Typography variant="caption" sx={{ fontWeight: 900, letterSpacing: '0.08em' }}>
-                LIVE SCAN READY
+                PROBE ENGINE: ACTIVE
               </Typography>
             </Box>
 

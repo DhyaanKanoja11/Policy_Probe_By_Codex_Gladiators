@@ -231,8 +231,8 @@ export default function ComparePage() {
                   <Box sx={{ 
                     width: 48, height: 48, bgcolor: 'text.primary', color: 'background.paper', 
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    border: '3px solid', borderColor: isDark ? '#fff' : '#000',
-                    boxShadow: '4px 4px 0px rgba(0,0,0,0.2)',
+                    border: '3px solid', borderColor: isDark ? '#fff' : '#111827',
+                    boxShadow: `4px 4px 0px ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.2)'}`,
                     fontWeight: 900
                   }}>
                     VS
@@ -250,9 +250,9 @@ export default function ComparePage() {
               <Button fullWidth variant="contained" size="large" onClick={handleCompare}
                 startIcon={<CompareArrows />}
                 sx={{
-                  mt: 5, py: 2, fontSize: '1.1rem', borderRadius: 0, border: '3px solid', borderColor: '#000',
+                  mt: 5, py: 2, fontSize: '1.1rem', borderRadius: 0, border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827',
                   bgcolor: 'primary.main', fontWeight: 900,
-                  boxShadow: '6px 6px 0px #000', '&:hover': { transform: 'translate(-2px, -2px)', boxShadow: '8px 8px 0px #000' }
+                  boxShadow: `6px 6px 0px ${isDark ? '#fefefe' : '#111827'}`, '&:hover': { transform: 'translate(-2px, -2px)', boxShadow: `8px 8px 0px ${isDark ? '#fefefe' : '#111827'}` }
                 }}
               >
                 START COMPARISON AUDIT
@@ -277,13 +277,13 @@ export default function ComparePage() {
                         sx={{ fontWeight: 900, color: 'text.primary', border: '2px solid', borderColor: 'text.primary', borderRadius: 0, px: 2 }}>
                         RE-SCAN APPS
                       </Button>
-                      <Button variant="contained" disabled sx={{ fontWeight: 900, borderRadius: 0, border: '2px solid #000' }}>
+                      <Button variant="contained" disabled sx={{ fontWeight: 900, borderRadius: 0, border: '2px solid', borderColor: isDark ? '#fefefe' : '#111827' }}>
                         EXPORT AUDIT (PDF)
                       </Button>
                     </Box>
 
                     <Box className="nb-shadow" sx={{ 
-                      p: 5, border: '3px solid', borderColor: '#000',
+                      p: 5, border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827',
                       bgcolor: isTie ? 'warning.main' : 'success.main',
                       color: '#fff', textAlign: 'center', position: 'relative'
                     }}>
@@ -296,17 +296,17 @@ export default function ComparePage() {
                     </Box>
 
                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: -2, mb: 6 }}>
-                      <Chip label={`A WINS: ${v.winsA}`} sx={{ border: '2px solid #000', bgcolor: '#fff', fontWeight: 900, color: '#000', borderRadius: 0 }} />
-                      <Chip label={`TIES: ${v.ties}`} sx={{ border: '2px solid #000', bgcolor: '#fff', fontWeight: 900, color: '#000', borderRadius: 0 }} />
-                      <Chip label={`B WINS: ${v.winsB}`} sx={{ border: '2px solid #000', bgcolor: '#fff', fontWeight: 900, color: '#000', borderRadius: 0 }} />
+                    <Chip label={`A WINS: ${v.winsA}`} sx={{ border: '2px solid', borderColor: isDark ? '#fefefe' : '#111827', bgcolor: isDark ? 'background.paper' : '#fff', fontWeight: 900, color: 'text.primary', borderRadius: 0 }} />
+                    <Chip label={`TIES: ${v.ties}`} sx={{ border: '2px solid', borderColor: isDark ? '#fefefe' : '#111827', bgcolor: isDark ? 'background.paper' : '#fff', fontWeight: 900, color: 'text.primary', borderRadius: 0 }} />
+                    <Chip label={`B WINS: ${v.winsB}`} sx={{ border: '2px solid', borderColor: isDark ? '#fefefe' : '#111827', bgcolor: isDark ? 'background.paper' : '#fff', fontWeight: 900, color: 'text.primary', borderRadius: 0 }} />
                     </Box>
                   </Box>
 
-                  <Box className="nb-shadow" sx={{ bgcolor: 'background.paper', border: '3px solid #000', mb: 6 }}>
-                    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr 1fr 1fr', md: '2.5fr 1fr 1fr' }, borderBottom: '3px solid #000', bgcolor: isDark ? 'rgba(255,255,255,0.05)' : '#f8f9fa' }}>
+                  <Box className="nb-shadow" sx={{ bgcolor: 'background.paper', border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827', mb: 6 }}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr 1fr 1fr', md: '2.5fr 1fr 1fr' }, borderBottom: '3px solid', borderColor: isDark ? '#fefefe' : '#111827', bgcolor: isDark ? 'rgba(255,255,255,0.05)' : '#f8f9fa' }}>
                       <Box sx={{ p: 3 }}><Typography sx={{ fontWeight: 900, textTransform: 'uppercase', fontSize: '0.8rem' }}>Checkpoints</Typography></Box>
-                      <Box sx={{ p: 3, borderLeft: '3px solid #000', textAlign: 'center' }}><Typography sx={{ fontWeight: 900 }}>{results.nameA}</Typography></Box>
-                      <Box sx={{ p: 3, borderLeft: '3px solid #000', textAlign: 'center' }}><Typography sx={{ fontWeight: 900 }}>{results.nameB}</Typography></Box>
+                      <Box sx={{ p: 3, borderLeft: '3px solid', borderColor: isDark ? '#fefefe' : '#111827', textAlign: 'center' }}><Typography sx={{ fontWeight: 900 }}>{results.nameA}</Typography></Box>
+                      <Box sx={{ p: 3, borderLeft: '3px solid', borderColor: isDark ? '#fefefe' : '#111827', textAlign: 'center' }}><Typography sx={{ fontWeight: 900 }}>{results.nameB}</Typography></Box>
                     </Box>
                     {COMPARISON_FACTORS.map((f, idx) => {
                       const valA = f.getValueA(results.A);

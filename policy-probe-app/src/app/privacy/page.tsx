@@ -100,10 +100,38 @@ export default function PrivacyPage() {
           <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={5}>
             <Box className="nb-shadow" sx={{ p: 4, border: '3px solid #000', bgcolor: 'background.paper' }}>
               <Typography variant="h5" sx={{ fontWeight: 900, mb: 2.5, textTransform: 'uppercase', color: 'primary.main', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Gavel /> 5. CONSENT & USER SOVEREIGNTY
+                <Gavel /> 5. DATA PROCESSING TABLE (DPDP SECTION 10)
               </Typography>
+              <Box sx={{ border: '2px solid #000', overflowX: 'auto', mb: 3 }}>
+                <Box component="table" sx={{ width: '100%', borderCollapse: 'collapse', bgcolor: '#fefefe', color: '#000' }}>
+                  <Box component="thead">
+                    <Box component="tr" sx={{ borderBottom: '2px solid #000', bgcolor: 'rgba(77,142,255,0.05)' }}>
+                      <Box component="th" sx={{ p: 1.5, textAlign: 'left', fontWeight: 900, borderRight: '1px solid #000', fontSize: '0.8rem' }}>Category</Box>
+                      <Box component="th" sx={{ p: 1.5, textAlign: 'left', fontWeight: 900, borderRight: '1px solid #000', fontSize: '0.8rem' }}>Purpose</Box>
+                      <Box component="th" sx={{ p: 1.5, textAlign: 'left', fontWeight: 900, fontSize: '0.8rem' }}>Retention</Box>
+                    </Box>
+                  </Box>
+                  <Box component="tbody">
+                    <Box component="tr" sx={{ borderBottom: '1px solid #000' }}>
+                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontWeight: 800, fontSize: '0.75rem' }}>Identity Data</td>
+                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontSize: '0.75rem', fontWeight: 600 }}>Account & Auth</td>
+                      <td style={{ padding: '12px', fontSize: '0.75rem', fontWeight: 600 }}>Duration + 12mo</td>
+                    </Box>
+                    <Box component="tr" sx={{ borderBottom: '1px solid #000' }}>
+                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontWeight: 800, fontSize: '0.75rem' }}>Audit Logs</td>
+                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontSize: '0.75rem', fontWeight: 600 }}>Security (SSRF)</td>
+                      <td style={{ padding: '12px', fontSize: '0.75rem', fontWeight: 600 }}>90 Days</td>
+                    </Box>
+                    <Box component="tr">
+                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontWeight: 800, fontSize: '0.75rem' }}>Analysis</td>
+                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontSize: '0.75rem', fontWeight: 600 }}>Policy Auditing</td>
+                      <td style={{ padding: '12px', fontSize: '0.75rem', fontWeight: 600 }}>Ephemeral (Session)</td>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
               <Typography sx={{ lineHeight: 1.8, fontWeight: 700, color: 'text.secondary', mb: 2 }}>
-                Every audit request is an act of explicit consent. You retain the right to:
+                Every audit request is an act of explicit consent. Under the **Digital Personal Data Protection Act 2023**, you retain:
               </Typography>
               <Box component="ul" sx={{ color: 'text.secondary', fontWeight: 700, lineHeight: 1.8, pl: 3 }}>
                 <li><strong>Right of Access:</strong> Transparent view of how we analyze policies.</li>

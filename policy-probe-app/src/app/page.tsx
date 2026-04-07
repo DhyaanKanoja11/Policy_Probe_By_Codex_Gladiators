@@ -32,17 +32,17 @@ export default function LandingPage() {
               <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={0}>
                 <Box className="nb-shadow" sx={{ 
                   display: 'inline-block', bgcolor: 'success.main', color: '#fff', px: 2, py: 0.5, 
-                  border: '2px solid #000', mb: 4, fontWeight: 900, fontSize: '0.75rem', letterSpacing: '0.15em', 
+                  border: '2px solid', borderColor: isDark ? '#fefefe' : '#111827', mb: 4, fontWeight: 900, fontSize: '0.75rem', letterSpacing: '0.15em', 
                   textTransform: 'uppercase' 
                 }}>
-                  DPDP ACT 2023 READY
+                  🇮🇳 INDIA'S FIRST · DPDP ACT 2023
                 </Box>
-                <Typography variant="h1" sx={{ fontFamily: '"Manrope"', fontWeight: 900, fontSize: { xs: '3rem', md: '4.8rem', lg: '5.5rem' }, lineHeight: 0.95, mb: 4, color: 'text.primary', textTransform: 'uppercase', letterSpacing: '-0.06em' }}>
-                  Student Data <br/>
+                <Typography variant="h1" sx={{ fontFamily: '"Manrope"', fontWeight: 900, fontSize: { xs: '2.6rem', md: '4.2rem', lg: '5rem' }, lineHeight: 0.95, mb: 4, color: 'text.primary', textTransform: 'uppercase', letterSpacing: '-0.06em' }}>
+                  India{"'s"} First <br/>
                   <Box component="span" sx={{ 
                     bgcolor: isDark ? 'primary.main' : 'warning.main', 
                     color: isDark ? '#fff' : '#000', px: 1.5, 
-                    display: 'inline-block', border: '4px solid #000',
+                    display: 'inline-block', border: '4px solid', borderColor: isDark ? '#fefefe' : '#111827',
                     transform: 'rotate(-1deg)', mt: 1
                   }}>PRIVACY AUDIT</Box>
                 </Typography>
@@ -57,18 +57,18 @@ export default function LandingPage() {
                   <Button variant="contained" size="large" onClick={() => router.push('/analyze')}
                     sx={{ 
                       px: 5, py: 2.2, fontSize: '1.1rem', fontWeight: 900, borderRadius: 0, 
-                      bgcolor: 'primary.main', color: '#fff', border: '3px solid #000', 
-                      boxShadow: '6px 6px 0px #000', transition: 'all 0.1s',
-                      '&:hover': { transform: 'translate(-2px, -2px)', boxShadow: '8px 8px 0px #000', bgcolor: 'primary.dark' } 
+                      bgcolor: 'primary.main', color: '#fff', border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827', 
+                      boxShadow: `6px 6px 0px ${isDark ? '#fefefe' : '#111827'}`, transition: 'all 0.1s',
+                      '&:hover': { transform: 'translate(-2px, -2px)', boxShadow: `8px 8px 0px ${isDark ? '#fefefe' : '#111827'}`, bgcolor: 'primary.dark' } 
                     }}>
                     VERIFY AN APP <ArrowForward sx={{ ml: 1, fontWeight: 900 }} />
                   </Button>
                   <Button variant="outlined" size="large" onClick={() => router.push('/compare')}
                     sx={{ 
                       px: 5, py: 2.2, fontSize: '1.1rem', fontWeight: 900, borderRadius: 0, 
-                      bgcolor: '#fff', color: '#000', border: '3px solid #000', 
-                      boxShadow: '6px 6px 0px #000', transition: 'all 0.1s',
-                      '&:hover': { transform: 'translate(-2px, -2px)', boxShadow: '8px 8px 0px #000', bgcolor: 'rgba(0,0,0,0.05)' } 
+                      bgcolor: isDark ? 'background.paper' : '#fff', color: 'text.primary', border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827', 
+                      boxShadow: `6px 6px 0px ${isDark ? '#fefefe' : '#111827'}`, transition: 'all 0.1s',
+                      '&:hover': { transform: 'translate(-2px, -2px)', boxShadow: `8px 8px 0px ${isDark ? '#fefefe' : '#111827'}`, bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)' } 
                     }}>
                     COMPARE VENDORS
                   </Button>
@@ -80,7 +80,7 @@ export default function LandingPage() {
       </Box>
 
       {/* Stats / Proof */}
-      <Box sx={{ py: 6, borderY: '3px solid #000', bgcolor: isDark ? 'primary.dark' : 'primary.main', overflow: 'hidden' }}>
+      <Box sx={{ py: 6, borderY: '3px solid', borderColor: isDark ? '#fefefe' : '#111827', bgcolor: isDark ? 'primary.dark' : 'primary.main', overflow: 'hidden' }}>
         <Box sx={{ display: 'flex', whiteSpace: 'nowrap', gap: 8 }}>
           {[1,2,3,4,5].map(i => (
             <Typography key={i} sx={{ color: '#fff', fontWeight: 900, fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
@@ -105,12 +105,12 @@ export default function LandingPage() {
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp} custom={i + 1}>
                   <Box className="nb-shadow" sx={{ 
                     bgcolor: 'background.paper', p: 4, borderRadius: 0, height: '100%', 
-                    border: '3px solid #000', position: 'relative'
+                    border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827', position: 'relative'
                   }}>
                     <Box sx={{ 
                       width: 48, height: 48, bgcolor: 'warning.main', color: '#000', 
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      border: '2px solid #000', mb: 3, fontWeight: 900, fontSize: '1.2rem'
+                      border: '2px solid', borderColor: isDark ? '#fefefe' : '#111827', mb: 3, fontWeight: 900, fontSize: '1.2rem'
                     }}>
                       {s.num}
                     </Box>
@@ -130,10 +130,10 @@ export default function LandingPage() {
           <Grid container spacing={4}>
             <Grid size={{ xs: 12, lg: 8 }}>
               <Box className="nb-shadow" sx={{ 
-                p: { xs: 4, md: 6 }, border: '3px solid #000', height: '100%',
+                p: { xs: 4, md: 6 }, border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827', height: '100%',
                 bgcolor: isDark ? '#1a1a1a' : '#fff'
               }}>
-                <Box sx={{ bgcolor: 'error.main', color: '#fff', px: 2, py: 0.5, border: '2px solid #000', display: 'inline-block', fontWeight: 900, mb: 4, fontSize: '0.7rem' }}>CORE INTELLIGENCE</Box>
+                <Box sx={{ bgcolor: 'error.main', color: '#fff', px: 2, py: 0.5, border: '2px solid', borderColor: isDark ? '#fefefe' : '#111827', display: 'inline-block', fontWeight: 900, mb: 4, fontSize: '0.7rem' }}>CORE INTELLIGENCE</Box>
                 <Typography variant="h3" sx={{ fontWeight: 900, mb: 3, textTransform: 'uppercase' }}>Negative Clause Intelligence</Typography>
                 <Typography sx={{ fontWeight: 600, color: 'text.secondary', fontSize: '1.1rem', mb: 4, maxWidth: 500 }}>
                   We don't just find what's there — we find what's missing. Our AI flags critical omissions that traditional scanners miss.
@@ -152,12 +152,12 @@ export default function LandingPage() {
             </Grid>
             <Grid size={{ xs: 12, lg: 4 }}>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, height: '100%' }}>
-                <Box className="nb-shadow" sx={{ p: 5, border: '3px solid #000', bgcolor: 'primary.main', color: '#fff', cursor: 'pointer' }} onClick={() => router.push('/compare')}>
+                <Box className="nb-shadow" sx={{ p: 5, border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827', bgcolor: 'primary.main', color: '#fff', cursor: 'pointer' }} onClick={() => router.push('/compare')}>
                   <CompareArrows sx={{ fontSize: 48, mb: 2 }} />
                   <Typography variant="h5" sx={{ fontWeight: 900, mb: 1 }}>SIDE-BY-SIDE</Typography>
                   <Typography sx={{ fontWeight: 600, opacity: 0.9 }}>Compare vendor policies and pick the safest choice for your school.</Typography>
                 </Box>
-                <Box className="nb-shadow" sx={{ p: 5, border: '3px solid #000', bgcolor: 'success.main', color: '#fff', cursor: 'pointer' }}>
+                <Box className="nb-shadow" sx={{ p: 5, border: '3px solid', borderColor: isDark ? '#fefefe' : '#111827', bgcolor: 'success.main', color: '#fff', cursor: 'pointer' }}>
                   <VerifiedUser sx={{ fontSize: 48, mb: 2 }} />
                   <Typography variant="h5" sx={{ fontWeight: 900, mb: 1 }}>ZERO RETAIN</Typography>
                   <Typography sx={{ fontWeight: 600, opacity: 0.9 }}>We never store institutional data. All analysis is ephemeral and secure.</Typography>
@@ -172,21 +172,22 @@ export default function LandingPage() {
       <Box sx={{ py: 12, bgcolor: isDark ? '#000' : '#fefefe' }}>
         <Container maxWidth="lg">
           <Box className="nb-shadow" sx={{ 
-            p: { xs: 4, md: 8 }, border: '4px solid #000', bgcolor: 'warning.main', textAlign: 'center',
+            p: { xs: 4, md: 8 }, border: '4px solid', borderColor: isDark ? '#fefefe' : '#111827', bgcolor: 'warning.main', textAlign: 'center',
             position: 'relative'
           }}>
-            <Typography variant="h2" sx={{ fontWeight: 900, mb: 3, textTransform: 'uppercase', letterSpacing: '-0.04em' }}>Ready for a safer Digital India?</Typography>
+            <Typography variant="h2" sx={{ fontWeight: 900, mb: 3, textTransform: 'uppercase', letterSpacing: '-0.04em', color: '#000' }}>Ready for a safer Digital India?</Typography>
             <Typography sx={{ fontWeight: 800, mb: 6, fontSize: '1.2rem', color: '#000', opacity: 0.8 }}>Join 50+ schools auditing their platform privacy with PolicyProbe.</Typography>
             <Button variant="contained" size="large" onClick={() => router.push('/analyze')}
               sx={{ 
                 px: 8, py: 2.5, fontSize: '1.2rem', fontWeight: 900, borderRadius: 0, 
-                bgcolor: '#000', color: '#fff', border: '3px solid #000',
-                '&:hover': { bgcolor: 'rgba(0,0,0,0.8)' }
+                bgcolor: '#111827', color: '#fff', border: '3px solid #111827',
+                boxShadow: '5px 5px 0px rgba(0,0,0,0.3)',
+                '&:hover': { bgcolor: '#000', transform: 'translate(-2px,-2px)', boxShadow: '7px 7px 0px rgba(0,0,0,0.3)' }
               }}>
               START FREE AUDIT NOW
             </Button>
-            <Warning sx={{ position: 'absolute', top: 20, left: 20, fontSize: 40, opacity: 0.2, color: '#000' }} />
-            <Warning sx={{ position: 'absolute', bottom: 20, right: 20, fontSize: 40, opacity: 0.2, color: '#000' }} />
+            <Warning sx={{ position: 'absolute', top: 20, left: 20, fontSize: 40, opacity: 0.2, color: '#111827' }} />
+            <Warning sx={{ position: 'absolute', bottom: 20, right: 20, fontSize: 40, opacity: 0.2, color: '#111827' }} />
           </Box>
         </Container>
       </Box>
