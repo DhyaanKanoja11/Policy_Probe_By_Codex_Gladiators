@@ -46,7 +46,7 @@ export default function PrivacyPage() {
               title: "1. 0% Data Collection Commitment",
               content: (
                 <>
-                  <Typography sx={{ mb: 2 }}>Policy Probe is a zero-collection platform. We do not intake, observed, or store any personal identifiers. No usage statistics are recorded. No unique device fingerprints are generated. We operate with absolute purpose limitation.</Typography>
+                  <Typography sx={{ mb: 2 }}>Policy Probe is a zero-collection platform. We do not intake, observe, or store any personal identifiers. No usage statistics are recorded. No unique device fingerprints are generated. We operate with absolute purpose limitation.</Typography>
                   <Box sx={{ pl: 2, borderLeft: '3px solid', borderColor: 'primary.main', bgcolor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)', p: 2 }}>
                     <Typography sx={{ fontWeight: 900, mb: 1 }}>DATA INTAKE: <Box component="span" sx={{ fontWeight: 600 }}>Zero. We only process public document URLs provided for audit.</Box></Typography>
                     <Typography sx={{ fontWeight: 900 }}>COLLECTION SCOPE: <Box component="span" sx={{ fontWeight: 600 }}>Zero. We do not use cookies, trackers, or telemetry scripts.</Box></Typography>
