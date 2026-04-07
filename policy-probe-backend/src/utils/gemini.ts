@@ -1,12 +1,14 @@
 import { AnalysisResult } from './types';
 
 // ─── Model Config ────────────────────────────────────────────────────────────
-// gemini-2.5-flash is the latest stable model — confirmed working.
-// Falls back through 2.0 and 1.5 if a model is unavailable or quota-limited.
+// gemini-2.5-flash: primary (confirmed working, highest capability)
+// gemini-2.0-flash: secondary (higher RPM on paid, same free tier)
+// gemini-2.0-flash-lite: tertiary (highest free-tier RPM quota)
+// NOTE: gemini-1.5-flash is excluded — returns 404 on v1beta for this project.
 const GEMINI_MODELS = [
   'gemini-2.5-flash',
   'gemini-2.0-flash',
-  'gemini-1.5-flash',
+  'gemini-2.0-flash-lite',
 ];
 const GEMINI_TIMEOUT_MS = 25000; // 25 seconds — generous but bounded
 
