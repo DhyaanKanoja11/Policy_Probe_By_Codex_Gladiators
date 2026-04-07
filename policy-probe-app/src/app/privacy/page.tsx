@@ -33,7 +33,7 @@ export default function PrivacyPage() {
                 Transparency Shield
               </Typography>
               <Typography sx={{ fontWeight: 800, opacity: 0.9, fontSize: '1.1rem' }}>
-                Forensic Audit Documentation for Policy Probe (v1.2)
+                Full Privacy Policy (Version 2.0) • Effective April 7, 2026
               </Typography>
             </Box>
             <Shield sx={{ position: 'absolute', right: -20, top: -20, fontSize: 180, opacity: 0.1, color: '#fff' }} />
@@ -41,91 +41,76 @@ export default function PrivacyPage() {
         </motion.div>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={1}>
-            <Box className="nb-shadow" sx={{ p: 4, border: '3px solid #000', bgcolor: 'background.paper' }}>
-              <Typography variant="h5" sx={{ fontWeight: 900, mb: 2.5, textTransform: 'uppercase', color: 'primary.main', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Storage /> 1. ABSOLUTE ZERO DATA COLLECTION
-              </Typography>
-              <Grid container spacing={3}>
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 900, color: 'success.main', mb: 1 }}>DATA WE PROCESS</Typography>
-                  <Typography variant="body2" sx={{ fontWeight: 700, opacity: 0.8 }}>Public URLs submitted for audit purposes. This data is handled ephemerally and processed in volatile memory only.</Typography>
-                </Grid>
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 900, color: 'error.main', mb: 1 }}>DATA WE REJECT</Typography>
-                  <Typography variant="body2" sx={{ fontWeight: 700, opacity: 0.8 }}>We explicitly reject PII, biometric data, browser fingerprints, precise geolocation, device hardware IDs, and payment details.</Typography>
-                </Grid>
-              </Grid>
-            </Box>
-          </motion.div>
-
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={2}>
-            <Box className="nb-shadow" sx={{ p: 4, border: '3px solid #000', bgcolor: 'success.main', color: '#fff' }}>
-              <Typography variant="h5" sx={{ fontWeight: 900, mb: 2, textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Shield /> 2. ZERO-TRACKER GUARANTEE
-              </Typography>
-              <Typography sx={{ lineHeight: 1.8, fontWeight: 800 }}>
-                We do not track users. We do not use advertising. We do not collect cookies. We rigidly prohibit third-party data sharing. Your privacy audits remain entirely confidential and isolated. Absolutely no data is shared or sold.
-              </Typography>
-            </Box>
-          </motion.div>
-
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={3}>
-            <Box className="nb-shadow" sx={{ p: 4, border: '3px solid #000', bgcolor: 'background.paper' }}>
-              <Typography variant="h5" sx={{ fontWeight: 900, mb: 2.5, textTransform: 'uppercase', color: 'primary.main', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <DeleteForever /> 3. COMPLIANCE & ERASURE
-              </Typography>
-              <Typography sx={{ lineHeight: 1.8, fontWeight: 700, color: 'text.secondary', mb: 2 }}>
-                Under Section 12 of the DPDP Act, data is immediately deleted. Policy Probe enforces a Zero-Retention Architecture. No search history is stored, and all data is purged instantly. Furthermore, we explicitly comply with global privacy standards:
-              </Typography>
-              <Box component="ul" sx={{ color: 'text.secondary', fontWeight: 700, lineHeight: 1.8, pl: 3 }}>
-                <li><strong>COPPA (Children's Privacy):</strong> We absolutely do not collect, process, or store any personal data from children under 13. Parental consent is inherently managed by zero collection.</li>
-                <li><strong>FERPA (Student Privacy):</strong> We do not access or store any educational records. We act in full compliance with FERPA.</li>
-                <li><strong>GDPR (European Data):</strong> We do not collect or transfer personal data. We are fully compliant with GDPR data minimization principles.</li>
-              </Box>
-            </Box>
-          </motion.div>
-
-          <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={4}>
-            <Box className="nb-shadow" sx={{ p: 4, border: '3px solid #000', bgcolor: 'background.paper' }}>
-              <Typography variant="h5" sx={{ fontWeight: 900, mb: 2.5, textTransform: 'uppercase', color: 'primary.main', display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Gavel /> 4. DATA PROCESSING TABLE (DPDP SECTION 10)
-              </Typography>
-              <Box sx={{ border: '2px solid #000', overflowX: 'auto', mb: 3 }}>
-                <Box component="table" sx={{ width: '100%', borderCollapse: 'collapse', bgcolor: '#fefefe', color: '#000' }}>
-                  <Box component="thead">
-                    <Box component="tr" sx={{ borderBottom: '2px solid #000', bgcolor: 'rgba(77,142,255,0.05)' }}>
-                      <Box component="th" sx={{ p: 1.5, textAlign: 'left', fontWeight: 900, borderRight: '1px solid #000', fontSize: '0.8rem' }}>Category</Box>
-                      <Box component="th" sx={{ p: 1.5, textAlign: 'left', fontWeight: 900, borderRight: '1px solid #000', fontSize: '0.8rem' }}>Purpose</Box>
-                      <Box component="th" sx={{ p: 1.5, textAlign: 'left', fontWeight: 900, fontSize: '0.8rem' }}>Retention</Box>
-                    </Box>
+          {[
+            {
+              title: "1. Zero-Data Architecture and Collection Scope",
+              content: (
+                <>
+                  <Typography sx={{ mb: 2 }}>PolicyProbe operates on a strict zero-trust, zero-retention architecture. We do not collect, store, or process Personally Identifiable Information (PII), device identifiers, or location data from our users.</Typography>
+                  <Box sx={{ pl: 2, borderLeft: '3px solid', borderColor: 'primary.main' }}>
+                    <Typography sx={{ fontWeight: 800, mb: 1 }}>What you provide: <Box component="span" sx={{ fontWeight: 400 }}>The only input processed is the public App Store URL or Web Domain submitted into the search bar.</Box></Typography>
+                    <Typography sx={{ fontWeight: 800 }}>What we collect: <Box component="span" sx={{ fontWeight: 400 }}>Nothing. We do not use cookies, analytics SDKs, or session trackers.</Box></Typography>
                   </Box>
-                  <Box component="tbody">
-                    <Box component="tr" sx={{ borderBottom: '1px solid #000' }}>
-                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontWeight: 800, fontSize: '0.75rem' }}>Audit Logs</td>
-                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontSize: '0.75rem', fontWeight: 600 }}>Security Checks</td>
-                      <td style={{ padding: '12px', fontSize: '0.75rem', fontWeight: 600 }}>24 Hours then erased</td>
-                    </Box>
-                    <Box component="tr">
-                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontWeight: 800, fontSize: '0.75rem' }}>User Input</td>
-                      <td style={{ padding: '12px', borderRight: '1px solid #000', fontSize: '0.75rem', fontWeight: 600 }}>Policy Auditing</td>
-                      <td style={{ padding: '12px', fontSize: '0.75rem', fontWeight: 600 }}>Immediate Deletion</td>
-                    </Box>
+                </>
+              )
+            },
+            {
+              title: "2. Third-Party Processing and Data Sharing",
+              content: "PolicyProbe does not share, sell, or rent user data to any third parties. To generate the audit, our backend utilizes external APIs (Google Gemini, Exodus Privacy). Crucially, no user data is transmitted to these services. We exclusively transmit the public text and public metadata of the target application you are auditing. Your IP address and browser footprint are stripped locally before any external API request is made."
+            },
+            {
+              title: "3. Security Measures and Encryption Practices",
+              content: "All communications between your browser and the PolicyProbe server are secured using industry-standard TLS 1.3 encryption. Data processed during the active audit is handled exclusively in secure, isolated server memory (RAM) and is never written to a physical disk or database."
+            },
+            {
+              title: "4. Data Retention and Deletion Mechanism",
+              content: (
+                <>
+                  <Typography sx={{ mb: 2 }}>PolicyProbe utilizes an ephemeral processing model.</Typography>
+                  <Box sx={{ pl: 2, borderLeft: '3px solid', borderColor: 'primary.main' }}>
+                    <Typography sx={{ fontWeight: 800, mb: 1 }}>Retention: <Box component="span" sx={{ fontWeight: 400 }}>The URL query and subsequent report exist only for the duration of your active session. Once the audit report is rendered on your screen, all associated session memory is immediately and permanently destroyed.</Box></Typography>
+                    <Typography sx={{ fontWeight: 800 }}>Data Deletion Procedures: <Box component="span" sx={{ fontWeight: 400 }}>Because we maintain no databases and store no user profiles, there is no historical data to delete. Users can execute a complete data deletion of their active session at any time simply by closing the browser tab.</Box></Typography>
                   </Box>
-                </Box>
+                </>
+              )
+            },
+            {
+              title: "5. Child Privacy and COPPA/FERPA Compliance",
+              content: "PolicyProbe is an auditing tool, not a consumer application. We strictly comply with the Children's Online Privacy Protection Act (COPPA) and the Family Educational Rights and Privacy Act (FERPA). We do not knowingly collect or solicit any information from children under the age of 13, nor do we access, process, or store student educational records."
+            },
+            {
+              title: "6. Regulatory Compliance Matrix",
+              content: (
+                <>
+                  <Typography sx={{ fontWeight: 800, mb: 1 }}>DPDP Act 2023 (India):</Typography>
+                  <Typography sx={{ mb: 2 }}>PolicyProbe processes zero personal principal data. We strictly adhere to the DPDP Act’s mandates for purpose limitation. Because no personal data is collected, the risks of data breach or unauthorized processing are structurally eliminated.</Typography>
+                  <Typography sx={{ fontWeight: 800, mb: 1 }}>GDPR (EU):</Typography>
+                  <Typography>Under the General Data Protection Regulation, users possess the right to access, rectify, and erase personal data. PolicyProbe fulfills these rights by default through our zero-retention architecture; we hold no data to be accessed, rectified, or erased.</Typography>
+                </>
+              )
+            },
+            {
+              title: "7. Policy Updates",
+              content: "This policy is static and dictates the core architecture of the PolicyProbe platform. We will not alter this policy to allow for data collection or tracking in the future."
+            }
+          ].map((section, idx) => (
+            <motion.div key={idx} initial="hidden" animate="visible" variants={fadeUp} custom={idx + 1}>
+              <Box className="nb-shadow" sx={{ p: 4, border: '3px solid #000', bgcolor: 'background.paper' }}>
+                <Typography variant="h5" sx={{ fontWeight: 900, mb: 2.5, textTransform: 'uppercase', color: 'primary.main' }}>
+                  {section.title}
+                </Typography>
+                {typeof section.content === 'string' ? (
+                  <Typography sx={{ lineHeight: 1.8, fontWeight: 700, color: 'text.secondary' }}>
+                    {section.content}
+                  </Typography>
+                ) : (
+                  <Box sx={{ lineHeight: 1.8, fontWeight: 700, color: 'text.secondary' }}>
+                    {section.content}
+                  </Box>
+                )}
               </Box>
-              <Typography sx={{ lineHeight: 1.8, fontWeight: 700, color: 'text.secondary', mb: 2 }}>
-                We collect exactly zero personal information. Under the Digital Personal Data Protection Act 2023, you have absolute rights:
-              </Typography>
-              <Box component="ul" sx={{ color: 'text.secondary', fontWeight: 700, lineHeight: 1.8, pl: 3 }}>
-                <li><strong>Right of Access:</strong> Transparent view of how we work.</li>
-                <li><strong>Right of Erasure:</strong> All data is purged instantly, ensuring absolute zero residual trails.</li>
-                <li><strong>Right of Withdrawal:</strong> Stop processing any request at any time.</li>
-              </Box>
-            </Box>
-          </motion.div>
-
+            </motion.div>
+          ))}
         </Box>
       </Container>
     </Box>
