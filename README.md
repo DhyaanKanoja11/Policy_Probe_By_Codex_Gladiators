@@ -430,6 +430,8 @@ Built by **Team CODEX** for the **CODEX Gladiators Gen AI Hackathon** 🏆
 
 - **Dhyaan Kanoja** — Full-Stack & AI Integration
 - **Aarya Manchanda** — Frontend Development
+- **Prateek Sharma** — Ideation and Policy Development
+- **Saumya Agarwal** -- Version Control and Debugging
 ---
 
 ## 📄 License
