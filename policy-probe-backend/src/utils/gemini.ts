@@ -1,4 +1,5 @@
 import { AnalysisResult } from './types';
+import { logger } from './logger';
 
 // ─── Model Config ────────────────────────────────────────────────────────────
 const MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-flash'];
@@ -97,7 +98,7 @@ export async function analyzeWithGemini(policyText: string, appName: string, pol
 
   for (const model of MODELS) {
     try {
-      console.log(`[Gemini] Attempting ${model}...`);
+      logger.info(`[Gemini] Attempting ${model}...`);
       const result = await callModel(model, fullPrompt, apiKey);
       
       return {
@@ -108,7 +109,7 @@ export async function analyzeWithGemini(policyText: string, appName: string, pol
       };
     } catch (e: any) {
       lastErr = e;
-      console.error(`[Gemini] ${model} failed: ${e.message}`);
+      logger.error(`[Gemini] ${model} failed: ${e.message}`);
       if (model !== MODELS[MODELS.length - 1]) {
         await new Promise(r => setTimeout(r, 1500)); // Small gap
       }

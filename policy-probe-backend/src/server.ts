@@ -6,6 +6,7 @@ import { analyzeWithGemini } from './utils/gemini';
 import { analyzePolicy } from './utils/analyzer';
 import { AnalyzeRequest } from './utils/types';
 import { rateLimit } from './utils/rateLimit';
+import { logger } from './utils/logger';
 
 dotenv.config();
 
@@ -103,19 +104,19 @@ app.post('/api/analyze', async (req: Request, res: Response): Promise<void> => {
       res.json({ ...result, analysis_method: 'ai' });
       return;
     } catch (aiError) {
-      console.warn('Gemini AI fallback:', aiError);
+      logger.warn('Gemini AI fallback:', aiError);
       const result = analyzePolicy(policyText, name, resolvedUrl);
       res.set('X-RateLimit-Remaining', String(remaining));
       res.json({ ...result, analysis_method: 'keyword' });
       return;
     }
   } catch (error) {
-    console.error('Analysis error:', error);
+    logger.error('Analysis error:', error);
     res.status(500).json({ error: 'An unexpected error occurred.' });
     return;
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Backend server running on http://localhost:${PORT}`);
+  logger.info(`Backend server running on http://localhost:${PORT}`);
 });
