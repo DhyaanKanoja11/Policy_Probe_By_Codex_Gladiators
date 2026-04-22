@@ -188,8 +188,8 @@ export default function ComparePage() {
       localStorage.setItem('probe_history', JSON.stringify(newHistory));
 
       setResults({ A: dataA, B: dataB, nameA: resolveAppName(dataA.app_name, urlA), nameB: resolveAppName(dataB.app_name, urlB) });
-    } catch (err: any) {
-      setError(err.message || 'Comparison failed.');
+    } catch (err: unknown) {
+      setError(err instanceof Error && err.message ? err.message : 'Comparison failed.');
     } finally {
       setLoading(false);
     }
