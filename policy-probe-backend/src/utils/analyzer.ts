@@ -19,7 +19,7 @@ const RIGHTS_KEYWORDS = ['access', 'correct', 'delete', 'port', 'opt-out', 'opt 
 const SECURITY_KEYWORDS = ['encrypt', 'ssl', 'tls', 'secure', 'security', 'protect', 'safeguard', 'firewall', 'audit'];
 const VAGUE_KEYWORDS = ['may', 'might', 'could', 'possible', 'certain circumstances', 'as needed', 'as necessary', 'from time to time', 'at our discretion'];
 
-function countKeywordHits(text: string, keywords: string[]): number {
+export function countKeywordHits(text: string, keywords: string[]): number {
   const lower = text.toLowerCase();
   return keywords.filter(k => lower.includes(k)).length;
 }
