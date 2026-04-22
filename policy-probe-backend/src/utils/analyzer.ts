@@ -24,7 +24,7 @@ function countKeywordHits(text: string, keywords: string[]): number {
   return keywords.filter(k => lower.includes(k)).length;
 }
 
-function detectDataCategories(text: string): DataCategory[] {
+export function detectDataCategories(text: string): DataCategory[] {
   const lower = text.toLowerCase();
   const categories: DataCategory[] = [];
 
