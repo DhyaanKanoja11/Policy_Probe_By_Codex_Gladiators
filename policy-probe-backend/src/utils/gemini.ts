@@ -78,7 +78,7 @@ async function callModel(model: string, prompt: string, apiKey: string): Promise
     if (!raw) throw new Error('Empty response');
 
     return JSON.parse(stripFences(raw)) as AnalysisResult;
-  } catch (e: any) {
+  } catch (e: unknown) {
     clearTimeout(tid);
     throw e;
   }
@@ -93,7 +93,7 @@ export async function analyzeWithGemini(policyText: string, appName: string, pol
   const truncated = policyText.substring(0, 15000);
   const fullPrompt = `${ANALYSIS_PROMPT}\n\nApp: ${appName}\nText: ${truncated}`;
 
-  let lastErr: any = null;
+  let lastErr: unknown = null;
 
   for (const model of MODELS) {
     try {
@@ -106,9 +106,10 @@ export async function analyzeWithGemini(policyText: string, appName: string, pol
         analyzed_at: new Date().toISOString(),
         policy_url: policyUrl,
       };
-    } catch (e: any) {
+    } catch (e: unknown) {
       lastErr = e;
-      console.error(`[Gemini] ${model} failed: ${e.message}`);
+      const errorMessage = e instanceof Error ? e.message : String(e);
+      console.error(`[Gemini] ${model} failed: ${errorMessage}`);
       if (model !== MODELS[MODELS.length - 1]) {
         await new Promise(r => setTimeout(r, 1500)); // Small gap
       }
