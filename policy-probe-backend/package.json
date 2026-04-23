@@ -7,7 +7,7 @@
     "dev": "ts-node --transpile-only src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx ts-node --transpile-only tests/utils/analyzer.test.ts"
   },
   "keywords": [],
   "author": "",
