@@ -64,7 +64,7 @@ const COMPARISON_FACTORS: ComparisonFactor[] = [
   { label: 'Confidence Score', key: 'confidence', getValueA: r => r.confidence_score, getValueB: r => r.confidence_score, format: v => `${v}/100`, direction: 'higher', maxScore: 100 },
 ];
 
-function getWinner(valA: number | string | boolean, valB: number | string | boolean, direction: 'higher' | 'lower' | 'bool'): 'A' | 'B' | 'Tie' {
+export function getWinner(valA: number | string | boolean, valB: number | string | boolean, direction: 'higher' | 'lower' | 'bool'): 'A' | 'B' | 'Tie' {
   if (direction === 'bool') {
     if (valA === valB) return 'Tie';
     return valA ? 'A' : 'B';
