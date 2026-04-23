@@ -193,7 +193,10 @@ export function analyzePolicy(text: string, appName: string = 'Unknown App', pol
   );
 
   const sensitive_data_flags = [
-    ...(data_collected.filter(d => d.risk === 'High').map(d => `High-risk: ${d.category}`)),
+    ...data_collected.reduce((acc: string[], d) => {
+      if (d.risk === 'High') acc.push(`High-risk: ${d.category}`);
+      return acc;
+    }, []),
     ...(child_data_flags.length > 0 ? ['Processes data related to minors'] : []),
   ];
 
