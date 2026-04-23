@@ -72,15 +72,41 @@ app.post('/api/analyze', async (req: Request, res: Response): Promise<void> => {
           res.status(400).json({ error: `Failed to fetch: ${response.status}` });
           return;
         }
-        const html = await response.text();
+        const MAX_SIZE = 500 * 1024; // 500KB limit
+        let html = '';
+        if (response.body) {
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+          let bytesRead = 0;
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            if (value) {
+              bytesRead += value.length;
+              if (bytesRead > MAX_SIZE) {
+                controller.abort();
+                throw new Error('Response too large');
+              }
+              html += decoder.decode(value, { stream: true });
+            }
+          }
+          html += decoder.decode();
+        } else {
+          html = await response.text();
+        }
+
         policyText = html
           .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
           .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
           .replace(/<[^>]+>/g, ' ')
           .replace(/&nbsp;/gi, ' ').replace(/&amp;/gi, '&').replace(/&lt;/gi, '<').replace(/&gt;/gi, '>').replace(/&quot;/gi, '"').replace(/&#39;/gi, "'")
           .replace(/\s+/g, ' ').trim();
-      } catch {
-         res.status(400).json({ error: 'Could not fetch URL. Please paste the text directly.' });
+      } catch (err: any) {
+         if (err.message === 'Response too large') {
+           res.status(400).json({ error: 'The policy document is too large to fetch (max 500KB).' });
+         } else {
+           res.status(400).json({ error: 'Could not fetch URL. Please paste the text directly.' });
+         }
          return;
       }
     } else if (appName && appName.trim()) {

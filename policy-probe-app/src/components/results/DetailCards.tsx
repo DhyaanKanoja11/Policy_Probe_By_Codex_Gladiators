@@ -4,8 +4,6 @@ import { Box, Typography, Chip, useTheme, Button } from '@mui/material';
 import { Storage, Share, Warning, Error as ErrorIcon, CheckCircle, ChildCare, Recommend, Gavel, Info, Visibility } from '@mui/icons-material';
 import { DataCategory, ThirdPartyEntry, RedFlag, RiskReason } from '@/lib/types';
 
-// ... (previous cards)
-
 export function RiskReasonsCard({ reasons }: { reasons: RiskReason[] }) {
   const isDark = useTheme().palette.mode === 'dark';
   const [expanded, setExpanded] = React.useState<number | null>(null);
@@ -61,7 +59,7 @@ export function RiskReasonsCard({ reasons }: { reasons: RiskReason[] }) {
                     fontStyle: 'italic', fontSize: '0.75rem', lineHeight: 1.6, fontWeight: 500
                   }}>
                     <Typography variant="caption" sx={{ fontWeight: 900, textTransform: 'uppercase', fontSize: '0.6rem', color: 'primary.main', mb: 0.5, display: 'block' }}>Policy Extract:</Typography>
-                    "{r.evidence_snippet}"
+                    &quot;{r.evidence_snippet}&quot;
                   </Box>
                 )}
               </Box>

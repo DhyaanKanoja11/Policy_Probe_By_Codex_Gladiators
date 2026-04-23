@@ -20,11 +20,17 @@ const SECURITY_KEYWORDS = ['encrypt', 'ssl', 'tls', 'secure', 'security', 'prote
 const VAGUE_KEYWORDS = ['may', 'might', 'could', 'possible', 'certain circumstances', 'as needed', 'as necessary', 'from time to time', 'at our discretion'];
 
 export function countKeywordHits(text: string, keywords: string[]): number {
-  const lower = text.toLowerCase();
-  return keywords.filter(k => lower.includes(k)).length;
+  const lowerText = text.toLowerCase();
+  let count = 0;
+  for (let i = 0; i < keywords.length; i++) {
+    if (lowerText.includes(keywords[i])) {
+      count++;
+    }
+  }
+  return count;
 }
 
-function detectDataCategories(text: string): DataCategory[] {
+export function detectDataCategories(text: string): DataCategory[] {
   const lower = text.toLowerCase();
   const categories: DataCategory[] = [];
 
@@ -193,7 +199,10 @@ export function analyzePolicy(text: string, appName: string = 'Unknown App', pol
   );
 
   const sensitive_data_flags = [
-    ...(data_collected.filter(d => d.risk === 'High').map(d => `High-risk: ${d.category}`)),
+    ...data_collected.reduce((acc: string[], d) => {
+      if (d.risk === 'High') acc.push(`High-risk: ${d.category}`);
+      return acc;
+    }, []),
     ...(child_data_flags.length > 0 ? ['Processes data related to minors'] : []),
   ];
 

@@ -81,8 +81,8 @@ export default function AnalyzePage() {
       
       sessionStorage.setItem('analysis-result', JSON.stringify(result));
       router.push('/results?source=live');
-    } catch (err: any) {
-      setError(err.message || 'An error occurred during analysis');
+    } catch (err: unknown) {
+      setError(err instanceof Error && err.message ? err.message : 'An error occurred during analysis');
     } finally {
       setLoading(false);
     }
