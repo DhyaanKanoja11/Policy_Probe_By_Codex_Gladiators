@@ -7,6 +7,7 @@ import {
 import { Search, Link as LinkIcon, Description, TextSnippet, ArrowForward, Lock } from '@mui/icons-material';
 import { motion, Variants } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import LoadingSkeleton from '@/components/results/LoadingSkeleton';
 
 type InputMode = 'name' | 'url' | 'policy' | 'text';
 
@@ -87,6 +88,10 @@ export default function AnalyzePage() {
       setLoading(false);
     }
   };
+
+  if (loading) {
+    return <LoadingSkeleton />;
+  }
 
   return (
     <Box sx={{ py: { xs: 6, md: 10 }, minHeight: '80vh', bgcolor: 'background.default' }}>
