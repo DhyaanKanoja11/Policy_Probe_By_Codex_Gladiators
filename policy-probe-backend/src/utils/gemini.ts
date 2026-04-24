@@ -110,8 +110,9 @@ export async function analyzeWithGemini(policyText: string, appName: string, pol
       lastErr = e;
       const errorMessage = e instanceof Error ? e.message : String(e);
       console.error(`[Gemini] ${model} failed: ${errorMessage}`);
-      if (model !== MODELS[MODELS.length - 1]) {
-        await new Promise(r => setTimeout(r, 1500)); // Small gap
+      if (model !== MODELS[MODELS.length - 1] && String(errorMessage).includes("429")) {
+        await new Promise(r => setTimeout(r, 500)); // Rate limit gap
+
       }
     }
   }
